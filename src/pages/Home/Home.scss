@@ -1,0 +1,22 @@
+form {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 10px;
+
+    width: 350px;
+    padding: 10px;
+    border-radius: 5px;
+
+    background-color: rgb(190, 190, 190);
+
+    h2 {
+        text-align: center;
+    }
+
+    // labels are from FormInput component
+    label {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
