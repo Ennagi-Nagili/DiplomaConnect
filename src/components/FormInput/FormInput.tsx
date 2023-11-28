@@ -1,4 +1,4 @@
-type FormInputProps = {
+export type FormInputProps = {
   label: string;
   inputType?: string;
   setValue(value: string): void;
@@ -8,9 +8,9 @@ const FormInput = ({ label, inputType = "text", setValue }: FormInputProps) => {
   return (
     <>
       <label>
-        {label}{" "}
+        {label}
         <input
-        //   required
+          // required
           type={inputType}
           placeholder={`Enter ${label}`}
           onChange={(e) => {
