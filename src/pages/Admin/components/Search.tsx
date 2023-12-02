@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SearchInput: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const isSmallScreen = useMediaQuery("(max-width: 650px)");
+  const isSmallScreen = useMediaQuery("(max-width: 750px)");
 
   const handleSearch = () => {
     // Implement your search logic here

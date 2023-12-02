@@ -66,7 +66,7 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="h6" noWrap component="div" color="primary">
+          <Typography variant="h6" component="div" color="primary">
             DiplomaConnect
           </Typography>
 
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           <SearchInput />
           </Box>
 
-          <Box sx={{display: "flex"}}>
+          <Box sx={{display: "flex", alignItems:"center"}}>
             <NotificationsButton />
             <ProfileButton />
           </Box>
