@@ -2,9 +2,11 @@ import React, { useRef } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const SearchInput: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const isSmallScreen = useMediaQuery("(max-width: 650px)");
 
   const handleSearch = () => {
     // Implement your search logic here
@@ -37,28 +39,35 @@ const SearchInput: React.FC = () => {
       style={{
         display: "flex",
         alignItems: "center",
+        justifyContent: isSmallScreen ? "flex-end" : "center",
         maxWidth: "400px",
         margin: "auto",
       }}
     >
-      <TextField
-        inputRef={inputRef}
-        variant="outlined"
-        fullWidth
-        size="small"
-        onClick={handleInputClick}
-        onBlur={handleInputBlur}
-        onKeyDown={handleKeyDown}
-        InputProps={{
-          style: { borderRadius: "25px" }, // Adjust the borderRadius as needed
-          startAdornment: (
-            <IconButton onClick={handleSearch} size="small">
-              <SearchIcon />
-            </IconButton>
-          ),
-        }}
-        placeholder="Search..."
-      />
+      {isSmallScreen ? (
+        <IconButton onClick={handleSearch} size="small">
+          <SearchIcon color="primary" />
+        </IconButton>
+      ) : (
+        <TextField
+          inputRef={inputRef}
+          variant="outlined"
+          fullWidth
+          size="small"
+          onClick={handleInputClick}
+          onBlur={handleInputBlur}
+          onKeyDown={handleKeyDown}
+          InputProps={{
+            style: { borderRadius: "25px" }, // Adjust the borderRadius as needed
+            startAdornment: (
+              <IconButton onClick={handleSearch} size="small">
+                <SearchIcon />
+              </IconButton>
+            ),
+          }}
+          placeholder="Search..."
+        />
+      )}
     </div>
   );
 };

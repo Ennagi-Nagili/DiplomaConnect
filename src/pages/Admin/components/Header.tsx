@@ -2,10 +2,8 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import {
-  Autocomplete,
   Box,
   IconButton,
-  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -72,10 +70,11 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
             DiplomaConnect
           </Typography>
 
-
+          <Box sx={{width: "100%"}}>
           <SearchInput />
+          </Box>
 
-          <Box>
+          <Box sx={{display: "flex"}}>
             <NotificationsButton />
             <ProfileButton />
           </Box>
