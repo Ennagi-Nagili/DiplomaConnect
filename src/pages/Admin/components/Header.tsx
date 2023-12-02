@@ -10,6 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import NotificationsButton from "./NotificationsButton";
+import ProfileButton from "./ProfileButton";
+import SearchInput from "./Search";
 
 const drawerWidth = 240;
 
@@ -69,25 +72,13 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
             DiplomaConnect
           </Typography>
 
-          <Autocomplete
-            freeSolo
-            id="free-solo-2-demo"
-            disableClearable
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Search input"
-                InputProps={{
-                  ...params.InputProps,
-                  type: "search",
-                }}
-              />
-            )}
-            options={[]}
-            sx={{ width: 300 }}
-          />
 
-          <Box></Box>
+          <SearchInput />
+
+          <Box>
+            <NotificationsButton />
+            <ProfileButton />
+          </Box>
         </Box>
       </Toolbar>
     </AppBar>
