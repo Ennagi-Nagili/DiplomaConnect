@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EditIcon from "@mui/icons-material/Edit";
+import { ListItemButton } from "@mui/material";
 
 const ProfileButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -76,30 +77,33 @@ const ProfileButton: React.FC = () => {
           <Divider />
           <ListItem
             sx={{ alignItems: "center", cursor: "pointer" }}
-            button
             onClick={handleEditProfileClick}
           >
-            <EditIcon />
-            <ListItemText primary="Edit Profile" sx={{ marginLeft: "8px" }} />
+            <ListItemButton>
+              <EditIcon />
+              <ListItemText primary="Edit Profile" sx={{ marginLeft: "8px" }} />
+            </ListItemButton>
           </ListItem>
           <ListItem
             sx={{ alignItems: "center", cursor: "pointer" }}
-            button
             onClick={handleProfileSettingsClick}
           >
-            <SettingsIcon />
-            <ListItemText
-              primary="Profile Settings"
-              sx={{ marginLeft: "8px" }}
-            />
+            <ListItemButton>
+              <SettingsIcon />
+              <ListItemText
+                primary="Profile Settings"
+                sx={{ marginLeft: "8px" }}
+              />
+            </ListItemButton>
           </ListItem>
           <ListItem
             sx={{ alignItems: "center", cursor: "pointer" }}
-            button
             onClick={handleLogoutClick}
           >
-            <ExitToAppIcon />
-            <ListItemText primary="Logout" sx={{ marginLeft: "8px" }} />
+            <ListItemButton>
+              <ExitToAppIcon />
+              <ListItemText primary="Logout" sx={{ marginLeft: "8px" }} />
+            </ListItemButton>
           </ListItem>
         </List>
       </Popover>

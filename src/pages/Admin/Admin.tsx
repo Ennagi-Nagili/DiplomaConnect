@@ -67,7 +67,6 @@ export const pages = [
 ];
 
 export default function Admin() {
-
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -81,11 +80,7 @@ export default function Admin() {
 
         <Routes>
           {pages.map((page, index) => (
-            <Route
-              key={index}
-              path={`${page.link}`}
-              element={page.element}
-            />
+            <Route key={index} path={`${page.link}`} element={page.element} />
           ))}
         </Routes>
       </Main>

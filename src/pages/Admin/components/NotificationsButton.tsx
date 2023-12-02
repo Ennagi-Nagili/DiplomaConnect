@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import { ListItemButton } from "@mui/material";
 
 const NotificationsButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -35,7 +36,7 @@ const NotificationsButton: React.FC = () => {
 
   // Set the total number of notifications
   useEffect(() => {
-    setShowDot(false)
+    setShowDot(false);
     setTotalNotifications(notifications.length);
 
     const timeoutId = setTimeout(() => {
@@ -67,7 +68,9 @@ const NotificationsButton: React.FC = () => {
               ) : (
                 totalNotifications.toString()
               )
-            ) : 0
+            ) : (
+              0
+            )
           }
           color="error"
           variant={showDot || totalNotifications === 0 ? "dot" : "standard"}
@@ -91,8 +94,10 @@ const NotificationsButton: React.FC = () => {
       >
         <List sx={{ p: 2, minWidth: "250px" }}>
           {notifications.map((notification) => (
-            <ListItem key={notification.id} button>
-              <ListItemText primary={notification.message} />
+            <ListItem key={notification.id}>
+              <ListItemButton>
+                <ListItemText primary={notification.message} />
+              </ListItemButton>
             </ListItem>
           ))}
         </List>
