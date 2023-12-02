@@ -2,7 +2,6 @@ import "./Home.scss";
 import FormInput, { FormInputProps } from "../../components/FormInput/FormInput";
 import { Form, Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Password from "antd/es/input/Password";
 
 const Home = () => {
   const [firstName, setFirstName] = useState("");
@@ -43,7 +42,7 @@ const Home = () => {
   ];
 
   return (
-    <>
+    <div className="home-container">
       <h1>Home Page</h1>
 
       <form onSubmit={handleOnSubmit}>
@@ -54,10 +53,10 @@ const Home = () => {
         ))}
 
         <Link to="/login">Already have an account?</Link>
-
+          
         <button type="submit">Submit</button>
       </form>
-    </>
+    </div>
   );
 };
 
