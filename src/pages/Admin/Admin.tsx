@@ -1,9 +1,8 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import { SvgIconProps } from "@mui/material";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import SchoolIcon from "@mui/icons-material/School";
@@ -81,26 +80,14 @@ export default function Admin() {
         <DrawerHeader />
 
         <Routes>
-          
+          {pages.map((page, index) => (
+            <Route
+              key={index}
+              path={`${page.link}`}
+              element={page.element}
+            />
+          ))}
         </Routes>
-        {/* Almost the only changing part will be this one. I'll have to create routes for this. */}
-        {/* There will be routes from each option in drawer. */}
-
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
       </Main>
     </Box>
   );
