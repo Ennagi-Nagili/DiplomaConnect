@@ -7,7 +7,7 @@ import NotificationsButton from "./NotificationsButton";
 import ProfileButton from "./ProfileButton";
 import SearchInput from "./Search";
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -21,8 +21,8 @@ const AppBar = styled(MuiAppBar, {
     duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
+    // width: `calc(100% - ${drawerWidth}px)`,
+    // marginLeft: `${drawerWidth}px`,
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           aria-label="open drawer"
           onClick={handleDrawerOpen}
           edge="start"
-          sx={{ mr: 2, ...(open && { display: "none" }) }}
+          sx={{ mr: 2}}
         >
           <MenuIcon color="primary" />
         </IconButton>

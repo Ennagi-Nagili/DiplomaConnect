@@ -118,7 +118,7 @@ const AddTeacher: React.FC = () => {
       <Card
         style={{
           maxWidth: "1000px",
-          minWidth: "400px",
+          minWidth: "366px",
           margin: "auto",
         }}
       >
@@ -154,7 +154,7 @@ const AddTeacher: React.FC = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              margin: "auto",
+              margin: "14px auto auto auto",
             }}
           >
             <Box
@@ -177,8 +177,8 @@ const AddTeacher: React.FC = () => {
                     src="/images/example.jpg"
                     style={{
                       margin: "10px",
-                      width: "120px",
-                      height: "120px",
+                      width: "200px",
+                      height: "200px",
                       position: "relative",
                     }}
                   />
@@ -221,7 +221,7 @@ const AddTeacher: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               minWidth: "330px",
-              width: "70%",
+              width: "62.3%",
               maxWidth: "600px",
               margin: "auto",
               marginBottom: 0,

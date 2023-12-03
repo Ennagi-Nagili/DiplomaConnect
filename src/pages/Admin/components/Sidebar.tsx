@@ -24,12 +24,15 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-interface SidebarProps {
+interface TemporaryDrawerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({open, setOpen}) => {
+export const Sidebar: React.FC<TemporaryDrawerProps> = ({
+  open,
+  setOpen,
+}) => {
   const navigate = useNavigate();
 
   const handleDrawerClose = () => {
@@ -52,9 +55,10 @@ export const Sidebar: React.FC<SidebarProps> = ({open, setOpen}) => {
           boxSizing: "border-box",
         },
       }}
-      variant="persistent"
+      variant="temporary" // Change to temporary
       anchor="left"
       open={open}
+      onClose={() => setOpen(false)} // Close the drawer when clicking outside
     >
       <DrawerHeader sx={{ display: "flex", justifyContent: "flex-start" }}>
         <IconButton onClick={handleDrawerClose}>
@@ -81,6 +85,7 @@ export const Sidebar: React.FC<SidebarProps> = ({open, setOpen}) => {
             disablePadding
             onClick={() => {
               navigate(`/profile/${page.link}`);
+              setOpen(false); // Close the drawer on item click
             }}
           >
             <ListItemButton>

@@ -12,7 +12,7 @@ import Users from "./pages/Users/Users";
 import { Header } from "./components/Header";
 import { DrawerHeader, Sidebar } from "./components/Sidebar";
 
-const drawerWidth = 240;
+// const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -23,7 +23,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  // marginLeft: `-${drawerWidth}px`,
   ...(open && {
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.easeOut,
@@ -74,7 +74,7 @@ export default function Admin() {
       <Header open={open} setOpen={setOpen} />
       <Sidebar open={open} setOpen={setOpen} />
 
-      <Main open={open} sx={{padding: 0,}}>
+      <Main open={open} sx={{}}>
         {/* Without this component upper part of main section would be under Header component. */}
         <DrawerHeader />
 
