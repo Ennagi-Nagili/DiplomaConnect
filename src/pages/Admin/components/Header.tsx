@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { Box, IconButton, Link, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsButton from "./NotificationsButton";
 import ProfileButton from "./ProfileButton";
@@ -48,7 +48,7 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           aria-label="open drawer"
           onClick={handleDrawerOpen}
           edge="start"
-          sx={{ mr: 2}}
+          sx={{ mr: 2 }}
         >
           <MenuIcon color="primary" />
         </IconButton>
@@ -62,7 +62,10 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           }}
         >
           <Typography variant="h6" component="div" color="primary">
-            DiplomaConnect
+            {/* This Link is from MUI, not from the react-router-dom */}
+            <Link href="/profile" underline="none">
+              DiplomaConnect
+            </Link>
           </Typography>
 
           <Box sx={{ width: "100%" }}>

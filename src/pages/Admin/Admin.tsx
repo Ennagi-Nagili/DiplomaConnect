@@ -42,7 +42,7 @@ export type Page = {
 export const pages = [
   {
     title: "Dashboard",
-    link: "dashboard",
+    link: "", // Because Dashboard is opened in profile
     icon: <BarChartIcon />,
     element: <Dashboard />,
   },

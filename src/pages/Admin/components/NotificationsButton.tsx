@@ -32,6 +32,10 @@ const NotificationsButton: React.FC = () => {
     { id: 2, message: "You have 3 new friend requests" },
     { id: 3, message: "Appointment reminder: Meeting at 2 PM" },
     // ... add more notifications as needed
+    // TODO: After user views the notifications, if new notifications come, it counts all of them
+    // instead of showing number of only new notifications. Fix this.
+    // Maybe I can creat two arrays: one for viewed, other for not viewed notifications.
+    // TODO: When notification popover is open and enw notification comes in, it is not counted as viewed.
   ];
 
   // Set the total number of notifications
@@ -53,27 +57,10 @@ const NotificationsButton: React.FC = () => {
       <IconButton onClick={handleClick} size="small">
         <Badge
           badgeContent={
-            showDot ? (
-              <div
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  backgroundColor: "#f00", // Red color
-                  borderRadius: "50%",
-                }}
-              />
-            ) : totalNotifications > 0 ? (
-              totalNotifications >= 100 ? (
-                "99+"
-              ) : (
-                totalNotifications.toString()
-              )
-            ) : (
-              0
-            )
+            totalNotifications >= 100 ? "99+" : totalNotifications
           }
           color="error"
-          variant={showDot || totalNotifications === 0 ? "dot" : "standard"}
+          variant={showDot ? "dot" : "standard"}
         >
           <NotificationsIcon />
         </Badge>
