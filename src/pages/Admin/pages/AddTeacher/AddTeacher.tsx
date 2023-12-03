@@ -8,13 +8,17 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import EditIcon from "@mui/icons-material/Edit";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Box, IconButton } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
+import EditIcon from "@mui/icons-material/Edit";
 
 const AddTeacher: React.FC = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
+    useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+  const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -27,15 +31,21 @@ const AddTeacher: React.FC = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    setPasswordError(password.trim() === "");
-  }, [password]);
+    setPasswordError(passwordTouched && password.trim() === "");
+  }, [password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(confirmPassword !== password);
-  }, [confirmPassword, password]);
+    setConfirmPasswordError(
+      confirmPasswordTouched && confirmPassword !== password
+    );
+  }, [confirmPassword, password, confirmPasswordTouched]);
 
   const handleTogglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
+  };
+
+  const handleToggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible((prev) => !prev);
   };
 
   const handleProfilePhotoClick = () => {
@@ -71,12 +81,14 @@ const AddTeacher: React.FC = () => {
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
+    setPasswordTouched(true);
   };
 
   const handleConfirmPasswordChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     setConfirmPassword(e.target.value);
+    setConfirmPasswordTouched(true);
   };
 
   const handleSubmit = () => {
@@ -167,8 +179,19 @@ const AddTeacher: React.FC = () => {
                       margin: "10px",
                       width: "120px",
                       height: "120px",
+                      position: "relative",
                     }}
                   />
+                  <IconButton
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                    }}
+                    onClick={() => console.log("Edit profile photo clicked")}
+                  >
+                    <EditIcon />
+                  </IconButton>
                 </IconButton>
               </label>
             </Box>
@@ -201,15 +224,18 @@ const AddTeacher: React.FC = () => {
               width: "70%",
               maxWidth: "600px",
               margin: "auto",
+              marginBottom: 0,
             }}
           >
             {/* Box for First Name and Last Name with wrap */}
             <Box
               style={{
+                minWidth: "330px",
+                // width: "70%",
+                maxWidth: "600px",
                 display: "flex",
-                flexDirection: "row",
-                gap: "20px",
                 flexWrap: "wrap",
+                columnGap: "20px",
               }}
             >
               {/* First Name */}
@@ -222,7 +248,7 @@ const AddTeacher: React.FC = () => {
                 value={firstName}
                 onChange={handleFirstNameChange}
                 error={firstNameError}
-                helperText={firstNameError ? "First Name is required" : ""}
+                helperText={firstNameError ? "First Name is required" : " "}
               />
 
               {/* Last Name */}
@@ -235,7 +261,7 @@ const AddTeacher: React.FC = () => {
                 value={lastName}
                 onChange={handleLastNameChange}
                 error={lastNameError}
-                helperText={lastNameError ? "Last Name is required" : ""}
+                helperText={lastNameError ? "Last Name is required" : " "}
               />
             </Box>
 
@@ -250,7 +276,7 @@ const AddTeacher: React.FC = () => {
               value={email}
               onChange={handleEmailChange}
               error={emailError}
-              helperText={emailError ? "Enter a valid email address" : ""}
+              helperText={emailError ? "Enter a valid email address" : " "}
             />
 
             {/* Password */}
@@ -263,8 +289,12 @@ const AddTeacher: React.FC = () => {
               required
               value={password}
               onChange={handlePasswordChange}
-              error={passwordError}
-              helperText={passwordError ? "Password is required" : ""}
+              error={passwordTouched && password.trim() === ""}
+              helperText={
+                passwordTouched && password.trim() === ""
+                  ? "Password is required"
+                  : " "
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -286,17 +316,17 @@ const AddTeacher: React.FC = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              type={isPasswordVisible ? "text" : "password"}
+              type={isConfirmPasswordVisible ? "text" : "password"}
               required
               value={confirmPassword}
               onChange={handleConfirmPasswordChange}
               error={confirmPasswordError}
-              helperText={confirmPasswordError ? "Passwords do not match" : ""}
+              helperText={confirmPasswordError ? "Passwords do not match" : " "}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={handleTogglePasswordVisibility}>
-                      {isPasswordVisible ? (
+                    <IconButton onClick={handleToggleConfirmPasswordVisibility}>
+                      {isConfirmPasswordVisible ? (
                         <VisibilityIcon />
                       ) : (
                         <VisibilityOffIcon />

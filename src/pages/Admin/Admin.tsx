@@ -74,7 +74,7 @@ export default function Admin() {
       <Header open={open} setOpen={setOpen} />
       <Sidebar open={open} setOpen={setOpen} />
 
-      <Main open={open}>
+      <Main open={open} sx={{padding: 0,}}>
         {/* Without this component upper part of main section would be under Header component. */}
         <DrawerHeader />
 
