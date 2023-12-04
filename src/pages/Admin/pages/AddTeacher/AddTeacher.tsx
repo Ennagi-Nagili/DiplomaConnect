@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -11,9 +10,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { Box, IconButton } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
-import EditIcon from "@mui/icons-material/Edit";
+import UploadAvatar from "./UploadAvatar";
 
 const AddTeacher: React.FC = () => {
+  // Use States
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
@@ -46,11 +46,6 @@ const AddTeacher: React.FC = () => {
 
   const handleToggleConfirmPasswordVisibility = () => {
     setIsConfirmPasswordVisible((prev) => !prev);
-  };
-
-  const handleProfilePhotoClick = () => {
-    // Implement logic to allow updating the profile photo
-    console.log("Profile photo clicked");
   };
 
   const handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -164,36 +159,7 @@ const AddTeacher: React.FC = () => {
                 marginBottom: 8,
               }}
             >
-              <input
-                id="profile-image-update"
-                type="file"
-                accept=".jpg"
-                style={{ display: "none" }}
-                onChange={handleProfilePhotoClick}
-              />
-              <label htmlFor="profile-image-update">
-                <IconButton component="span">
-                  <Avatar
-                    src="/images/example.jpg"
-                    style={{
-                      margin: "10px",
-                      width: "200px",
-                      height: "200px",
-                      position: "relative",
-                    }}
-                  />
-                  <IconButton
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      right: 0,
-                    }}
-                    onClick={() => console.log("Edit profile photo clicked")}
-                  >
-                    <EditIcon />
-                  </IconButton>
-                </IconButton>
-              </label>
+              <UploadAvatar />
             </Box>
 
             {/* Choose File */}
