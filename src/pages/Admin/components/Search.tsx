@@ -65,7 +65,7 @@ const SearchInput: React.FC = () => {
               </IconButton>
             ),
           }}
-          placeholder="Search..."
+          placeholder="Search for users..."
         />
       )}
     </div>

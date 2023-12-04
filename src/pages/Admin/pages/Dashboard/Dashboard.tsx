@@ -1,3 +1,9 @@
+// Ideas about statistics to show:
+// 1. Total Visit
+// 2. Total Students; Total Teachers; Their Ratio
+// 3. Popular teachers by the number of applications
+// 4. Popular subjects
+
 const Dashboard = () => {
   return (
     <div>

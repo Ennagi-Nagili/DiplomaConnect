@@ -8,7 +8,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import SchoolIcon from "@mui/icons-material/School";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AddTeacher from "./pages/AddTeacher/AddTeacher";
-import Users from "./pages/Users/Users";
+import Teachers from "./pages/Teachers/Teachers";
 import { Header } from "./components/Header";
 import { DrawerHeader, Sidebar } from "./components/Sidebar";
 
@@ -56,13 +56,13 @@ export const pages = [
     title: "Teachers",
     link: "teachers",
     icon: <SchoolIcon />,
-    element: <Users />,
+    element: <Teachers />,
   },
   {
     title: "Students",
     link: "students",
     icon: <SchoolIcon />,
-    element: <Users />,
+    element: <Teachers />,
   },
 ];
 
