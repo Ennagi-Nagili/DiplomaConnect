@@ -10,7 +10,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import AddTeacher from "./pages/AddTeacher/AddTeacher";
 import Teachers from "./pages/Teachers/Teachers";
 import { Header } from "./components/Header";
-import { DrawerHeader, Sidebar } from "./components/Sidebar";
+import { Sidebar } from "./components/Sidebar";
 
 // const drawerWidth = 240;
 
@@ -56,6 +56,7 @@ export const pages = [
     title: "Teachers",
     link: "teachers",
     icon: <SchoolIcon />,
+    // element: <Teachers />,
     element: <Teachers />,
   },
   {
@@ -74,10 +75,8 @@ export default function Admin() {
       <Header open={open} setOpen={setOpen} />
       <Sidebar open={open} setOpen={setOpen} />
 
-      <Main open={open} sx={{}}>
-        {/* Without this component upper part of main section would be under Header component. */}
-        <DrawerHeader />
-
+      {/* Without marginTop Header shows on top of Main component */}
+      <Main open={open} sx={{ marginTop: "64px" }}>
         <Routes>
           {pages.map((page, index) => (
             <Route key={index} path={`${page.link}`} element={page.element} />
