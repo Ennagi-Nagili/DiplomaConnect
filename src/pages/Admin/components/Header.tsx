@@ -5,7 +5,7 @@ import { Box, IconButton, Link, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsButton from "./NotificationsButton";
 import ProfileButton from "./ProfileButton";
-import SearchInput from "./Search";
+import SearchBar from "./SearchBar";
 
 // const drawerWidth = 240;
 
@@ -69,7 +69,8 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           </Typography>
 
           <Box sx={{ width: "100%" }}>
-            <SearchInput />
+            {/* <SearchBar /> */}
+            <SearchBar />
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
