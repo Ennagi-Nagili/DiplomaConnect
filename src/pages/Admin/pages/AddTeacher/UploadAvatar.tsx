@@ -6,7 +6,7 @@ const UploadAvatar: React.FC = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
+    console.log(file)
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
