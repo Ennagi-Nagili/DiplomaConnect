@@ -1,11 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { SvgIconProps } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import SchoolIcon from "@mui/icons-material/School";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import AddTeacher from "./pages/AddTeacher/AddTeacher";
 import Teachers from "./pages/Teachers/Teachers";
@@ -33,39 +29,38 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   }),
 }));
 
-export type Page = {
-  title: string;
+type Page = {
   link: string;
-  icon: React.ReactElement<SvgIconProps>;
   element: JSX.Element;
 };
-export const pages = [
+
+const AdminSidebarPages: Page[] = [
   {
-    title: "Dashboard",
+    // TODO: this link should be reserved for Homepage (that is for Authentication Page)
     link: "", // Because Dashboard is opened in profile
-    icon: <BarChartIcon />,
     element: <Dashboard />,
   },
   {
-    title: "Add Teacher",
     link: "add-teacher",
-    icon: <PersonAddIcon />,
     element: <AddTeacher />,
   },
   {
-    title: "Teachers",
     link: "teachers",
-    icon: <SchoolIcon />,
-    // element: <Teachers />,
     element: <Teachers />,
   },
   {
-    title: "Students",
     link: "students",
-    icon: <SchoolIcon />,
     element: <Teachers />,
   },
 ];
+
+// TODO: Add links
+const TeacherSidebarPages: Page[] = [
+  {
+    link: "",
+    element: <></>
+  }
+]
 
 export default function Admin() {
   const [open, setOpen] = React.useState(false);
@@ -77,8 +72,16 @@ export default function Admin() {
 
       {/* Without marginTop Header shows on top of Main component */}
       <Main open={open} sx={{ marginTop: "64px" }}>
+        {/* TODO: If admin: */}
         <Routes>
-          {pages.map((page, index) => (
+          {AdminSidebarPages.map((page, index) => (
+            <Route key={index} path={`${page.link}`} element={page.element} />
+          ))}
+        </Routes>
+
+        {/* TODO: If teacher: */}
+        <Routes>
+          {TeacherSidebarPages.map((page, index) => (
             <Route key={index} path={`${page.link}`} element={page.element} />
           ))}
         </Routes>
