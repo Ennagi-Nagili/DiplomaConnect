@@ -107,7 +107,7 @@ export const DetailsPage = () => {
                 <MainListItems profile={false} />
               </div>
               <Divider sx={{ my: 1 }} />
-              <SecondaryListItems open={open} />
+              <SecondaryListItems open={open} profile={false} />
             </div>
           </List>
         </Drawer>

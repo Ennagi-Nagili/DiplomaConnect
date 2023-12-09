@@ -177,7 +177,7 @@ export const ProfilePage = () => {
                 <MainListItems profile={true} />
               </div>
               <Divider sx={{ my: 1 }} />
-              <SecondaryListItems open={open} />
+              <SecondaryListItems open={open} profile={true} />
             </div>
           </List>
         </Drawer>

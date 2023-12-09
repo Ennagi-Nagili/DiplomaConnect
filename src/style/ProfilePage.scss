@@ -3,15 +3,6 @@ body {
     margin: 0;
 }
 
-.logo {
-    width: 135px;
-    height: 90px;
-}
-
-.logo-container {
-    display: inline-block;
-}
-
 .avatar {
     width: 64px !important; 
     height: 64px !important;
@@ -93,6 +84,8 @@ body {
 .logo_text {
     flex-grow: 1 !important;
     color: white !important;
+    font-size: 22px !important;
+    font-weight: bold !important;
 }
 
 .notification_icon {
