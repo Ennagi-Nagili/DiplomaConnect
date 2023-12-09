@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Divider, List, ListSubheader } from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -68,8 +68,6 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
     },
   ];
 
-  const [itemKey, setItemKey] = useState(1);
-
   return (
     <>
       {listContent.map((list, index) => (
@@ -92,8 +90,9 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
                 }}
               >
                 <ListItemButton
-                  selected={itemKey === listItem.id}
-                  onClick={() => setItemKey(listItem.id)}
+                  selected={
+                    window.location.pathname === `/profile/${listItem.link}`
+                  }
                 >
                   <ListItemIcon>{listItem.icon}</ListItemIcon>
                   <ListItemText primary={listItem.title} />
