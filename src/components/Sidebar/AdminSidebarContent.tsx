@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { Collapse, Divider, List, ListSubheader } from "@mui/material";
+import { Divider, List, ListSubheader } from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { People, Person, School } from "@mui/icons-material";
+import { Person, School } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import Teachers from "../pages/Teachers/Teachers";
-import AddTeacher from "../pages/AddTeacher/AddTeacher";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import Teachers from "../../pages/Admin/pages/Teachers/Teachers";
+import AddTeacher from "../../pages/Admin/pages/AddTeacher/AddTeacher";
+import Dashboard from "../../pages/Admin/pages/Dashboard/Dashboard";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
@@ -23,18 +21,13 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const [usersOpen, setUsersOpen] = useState(false);
-
-  const handleUsersToggle = () => {
-    setUsersOpen(!usersOpen);
-  };
-
   // Add types if needed
   const listContent = [
     {
       subheader: "Dashboard",
       content: [
         {
+          id: 1,
           title: "Dashboard",
           link: "", // Because Dashboard is opened in profile [Note: this link is "/profile"]
           icon: <BarChartIcon />,
@@ -46,12 +39,14 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
       subheader: "Users",
       content: [
         {
+          id: 2,
           title: "Teachers",
           link: "teachers",
           icon: <Person />,
           element: <Teachers />,
         },
         {
+          id: 3,
           title: "Students",
           link: "students",
           icon: <School />,
@@ -63,6 +58,7 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
       subheader: "AddTeacher",
       content: [
         {
+          id: 4,
           title: "Add Teacher",
           link: "add-teacher",
           icon: <PersonAddIcon />,
@@ -72,21 +68,7 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
     },
   ];
 
-  // TODO: Maybe change name
-  const usersCollapsePages = [
-    {
-      title: "Teachers",
-      link: "teachers",
-      icon: <Person />,
-      element: <Teachers />,
-    },
-    {
-      title: "Students",
-      link: "students",
-      icon: <School />,
-      element: <Teachers />,
-    },
-  ];
+  const [itemKey, setItemKey] = useState(1);
 
   return (
     <>
@@ -109,7 +91,10 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({
                   setOpen(false); // Close the drawer on item click
                 }}
               >
-                <ListItemButton>
+                <ListItemButton
+                  selected={itemKey === listItem.id}
+                  onClick={() => setItemKey(listItem.id)}
+                >
                   <ListItemIcon>{listItem.icon}</ListItemIcon>
                   <ListItemText primary={listItem.title} />
                 </ListItemButton>

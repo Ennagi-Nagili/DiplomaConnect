@@ -1,34 +1,11 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { Box, IconButton, Link, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsButton from "./NotificationsButton";
 import ProfileButton from "./ProfileButton";
-import SearchBar from "./SearchBar";
-
-// const drawerWidth = 240;
-
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(["margin", "width"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    // width: `calc(100% - ${drawerWidth}px)`,
-    // marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
+// import SearchBar from "./SearchBar";
+import SearchBar from "../../pages/Admin/components/Temporary";
+import { StyledHeader } from "./styled/StyledHeader";
 
 interface HeaderProps {
   open: boolean;
@@ -41,7 +18,11 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
   };
 
   return (
-    <AppBar position="fixed" open={open} sx={{ backgroundColor: "white" }}>
+    <StyledHeader
+      position="fixed"
+      open={open}
+      sx={{ backgroundColor: "white" }}
+    >
       <Toolbar>
         <IconButton
           color="inherit"
@@ -68,8 +49,8 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
             </Link>
           </Typography>
 
+          {/* SearchBar */}
           <Box sx={{ width: "100%" }}>
-            {/* <SearchBar /> */}
             <SearchBar />
           </Box>
 
@@ -79,6 +60,6 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           </Box>
         </Box>
       </Toolbar>
-    </AppBar>
+    </StyledHeader>
   );
 };

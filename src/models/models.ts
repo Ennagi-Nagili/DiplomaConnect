@@ -38,12 +38,12 @@ export interface Exercise {
   supplementaryMaterials: string[];
 }
 
-export interface studentAnswer {
+export interface StudentAnswer {
   comment?: string;
   materials?: string[];
 }
 
-export interface teacherResponse {
+export interface TeacherResponse {
   status: string;
   comment?: string;
 }
