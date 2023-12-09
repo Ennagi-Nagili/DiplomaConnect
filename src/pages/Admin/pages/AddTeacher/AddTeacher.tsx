@@ -8,53 +8,71 @@ import ProfilePhotoBox from "./ProfilePhotoBox";
 import InputBox from "./InputBox";
 
 const AddTeacher: React.FC = () => {
-  // Use States
   return (
-    <>
-      <Typography variant="h1" sx={{ fontSize: 40, textAlign: "center" }}>
-        Add Teacher
-      </Typography>
-
-      <Card
+    // Container
+    <Box sx={{ position: "relative" }}>
+      {/* BACKGROUND IMAGE ON TOP OF PROFILE PAGE */}
+      <img
         style={{
-          maxWidth: "1000px",
-          minWidth: "366px",
-          margin: "auto",
+          objectFit: "cover",
+          height: 200,
+          width: "100%",
+          borderRadius: 10,
         }}
-      >
-        {/* Card header */}
-        <Box>
-          <Typography
-            variant="h6"
-            sx={{
-              margin: "8px",
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-            }}
-          >
-            <PersonIcon />
-            Basic Details
-          </Typography>
-        </Box>
+        // TODO: Change to image without watermark
+        src="/src/assets/profileBackground.jpg"
+      />
 
-        <CardContent
+      {/* Container for everyhing beside background image at the top */}
+      <Box sx={{ position: "relative", bottom: "120px" }}>
+        <Typography
+          variant="h1"
+          sx={{ color: "white", fontSize: 40, textAlign: "center" }}
+        >
+          Add Teacher
+        </Typography>
+
+        <Card
           style={{
-            display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "20px",
+            maxWidth: "1000px",
+            minWidth: "366px",
+            margin: "auto",
           }}
         >
-          {/* Box 1: Profile Photo and Upload Resume */}
-          <ProfilePhotoBox />
+          {/* Card header */}
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{
+                margin: "8px",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
+            >
+              <PersonIcon />
+              Basic Details
+            </Typography>
+          </Box>
 
-          {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
-          <InputBox />
-        </CardContent>
-      </Card>
-    </>
+          <CardContent
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: "20px",
+            }}
+          >
+            {/* Box 1: Profile Photo and Upload Resume */}
+            <ProfilePhotoBox />
+
+            {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
+            <InputBox />
+          </CardContent>
+        </Card>
+      </Box>
+    </Box>
   );
 };
 

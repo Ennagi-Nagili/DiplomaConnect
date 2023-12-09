@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -9,7 +9,6 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import SettingsIcon from "@mui/icons-material/Settings";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EditIcon from "@mui/icons-material/Edit";
 import { ListItemButton } from "@mui/material";
@@ -29,24 +28,38 @@ const ProfileButton: React.FC = () => {
 
   const handleEditProfileClick = () => {
     // Navigate to the edit profile page
-    navigate("/edit-profile");
-    handleClose();
-  };
-
-  const handleProfileSettingsClick = () => {
-    // Navigate to the profile settings page or handle other actions
-    navigate("/profile-settings");
+    navigate("/profile/edit-profile");
     handleClose();
   };
 
   const handleLogoutClick = () => {
     // Handle logout or other actions
     // For demonstration purposes, navigate to the home page ("/")
+    // TODO: This should navigate to Login page
     navigate("/");
     handleClose();
   };
 
   const open = Boolean(anchorEl);
+
+  type Item = {
+    onClick: () => void;
+    icon: ReactElement<any, any>;
+    primaryContent: string;
+  };
+
+  const items: Item[] = [
+    {
+      onClick: handleEditProfileClick,
+      icon: <EditIcon />,
+      primaryContent: "Edit Profile",
+    },
+    {
+      onClick: handleLogoutClick,
+      icon: <ExitToAppIcon />,
+      primaryContent: "Logout",
+    },
+  ];
 
   return (
     <div>
@@ -74,37 +87,24 @@ const ProfileButton: React.FC = () => {
             </ListItemAvatar>
             <ListItemText primary="John Doe" secondary="john.doe@example.com" />
           </ListItem>
+
           <Divider />
-          <ListItem
-            sx={{ alignItems: "center", cursor: "pointer" }}
-            onClick={handleEditProfileClick}
-          >
-            <ListItemButton>
-              <EditIcon />
-              <ListItemText primary="Edit Profile" sx={{ marginLeft: "8px" }} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            sx={{ alignItems: "center", cursor: "pointer" }}
-            onClick={handleProfileSettingsClick}
-          >
-            <ListItemButton>
-              <SettingsIcon />
-              <ListItemText
-                primary="Profile Settings"
-                sx={{ marginLeft: "8px" }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            sx={{ alignItems: "center", cursor: "pointer" }}
-            onClick={handleLogoutClick}
-          >
-            <ListItemButton>
-              <ExitToAppIcon />
-              <ListItemText primary="Logout" sx={{ marginLeft: "8px" }} />
-            </ListItemButton>
-          </ListItem>
+
+          {items.map((item, index) => (
+            <ListItem
+              sx={{ alignItems: "center", cursor: "pointer" }}
+              onClick={item.onClick}
+              key={index}
+            >
+              <ListItemButton>
+                {item.icon}
+                <ListItemText
+                  primary={item.primaryContent}
+                  sx={{ marginLeft: "8px" }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </Popover>
     </div>

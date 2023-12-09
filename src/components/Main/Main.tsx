@@ -3,6 +3,7 @@ import { StyledMain } from "./styled/StyledMain";
 import AddTeacher from "../../pages/Admin/pages/AddTeacher/AddTeacher";
 import Dashboard from "../../pages/Admin/pages/Dashboard/Dashboard";
 import Teachers from "../../pages/Admin/pages/Teachers/Teachers";
+import EditProfile from "../../pages/Admin/pages/EditProfile/EditProfile";
 
 type Page = {
   link: string;
@@ -48,9 +49,13 @@ export const Main = ({ open }: MainProps) => {
       <StyledMain open={open} sx={{ marginTop: "64px" }}>
         {/* TODO: If admin: */}
         <Routes>
+          {/* Dashboard, Teacher, Students, Add Teacher */}
           {AdminSidebarPages.map((page, index) => (
             <Route key={index} path={`${page.link}`} element={page.element} />
           ))}
+
+          {/* Edit Profile */}
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
 
         {/* TODO: If teacher: */}

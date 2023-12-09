@@ -3,7 +3,6 @@ import React from "react";
 import UploadAvatar from "./UploadAvatar";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-
 const ProfilePhotoBox = () => {
   const handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log("handleChooseFile function is called");

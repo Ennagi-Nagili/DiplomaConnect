@@ -55,7 +55,10 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen }) => {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
+            {/* TODO: This just needs to be rendered for teacher. Admin won't receive any notifications. */}
             <NotificationsButton />
+
+            {/* Profile Icon Button */}
             <ProfileButton />
           </Box>
         </Box>
