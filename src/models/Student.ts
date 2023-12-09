@@ -1,13 +1,13 @@
 export type Student = {
-    id: number,
-    name: String,
-    faculty: String,
-    major: String,
-    degree: String,
-    phone: String,
-    mail: String,
-    birth: String,
-    education: String,
-    success: String,
-    review: String
-}
+  id: number;
+  name: string;
+  faculty: string;
+  major: string;
+  degree: string;
+  phone: string;
+  mail: string;
+  birth: string;
+  education: string;
+  success: string;
+  review: string;
+};
