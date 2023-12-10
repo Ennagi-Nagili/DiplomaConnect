@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { AppBar } from '../components/AppBar';
-import { CustomizedTables } from '../components/CustomTable';
 import { Drawer } from '../components/Drawer';
 import { ExpandMore } from '@mui/icons-material';
-import { SecondaryListItems, MainListItems } from '../components/listItems';
+import { MainListItems } from '../components/listItems/mainListItems';
+import { SecondaryListItems } from '../components/listItems/secondaryListItems';
+import { TaskTable } from '../components/customTable/tables/TaskTable';
 import { useLocation } from 'react-router-dom';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -164,7 +165,7 @@ export const DetailsPage = () => {
               <Grid item xs={12}>
                 <div id="section-request">
                   <p className="main-head">Tapşırıqlar</p>
-                  <CustomizedTables type={'task'} />
+                  <TaskTable />
                 </div>
               </Grid>
             </Grid>

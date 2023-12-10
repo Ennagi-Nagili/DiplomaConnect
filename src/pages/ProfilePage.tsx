@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { AppBar } from '../components/AppBar';
-import { CustomizedTables } from '../components/CustomTable';
 import { Drawer } from '../components/Drawer';
 import { ExpandMore } from '@mui/icons-material';
-import { SecondaryListItems, MainListItems } from '../components/listItems';
+import { MainListItems } from '../components/listItems/mainListItems';
+import { SecondaryListItems } from '../components/listItems/secondaryListItems';
 import { SimpleDialog } from '../components/Dialog';
+import { StudentTable } from '../components/customTable/tables/StudentTable';
 import { Teacher } from '../models/Teacher';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -240,14 +241,14 @@ export const ProfilePage = () => {
               <Grid item xs={12}>
                 <div id="section-request">
                   <p className="main-head">Elmi rəhbərlik tələbləri</p>
-                  <CustomizedTables type={'request'} />
+                  <StudentTable type={'request'} />
                 </div>
               </Grid>
 
               <Grid item xs={12}>
                 <div id="section-students">
                   <p className="main-head">Mənim tələbələrim</p>
-                  <CustomizedTables type={'student'} />
+                  <StudentTable type={'student'} />
                 </div>
               </Grid>
             </Grid>
