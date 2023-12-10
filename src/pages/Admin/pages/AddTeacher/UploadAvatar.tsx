@@ -14,6 +14,7 @@ const UploadAvatar: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
+    
   };
 
   const handleClear = () => {

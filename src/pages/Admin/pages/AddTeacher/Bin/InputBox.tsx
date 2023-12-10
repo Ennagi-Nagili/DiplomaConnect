@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  Button,
+  // Button,
   IconButton,
   InputAdornment,
   TextField,
@@ -71,23 +71,23 @@ const InputBox = () => {
     setConfirmPasswordTouched(true);
   };
 
-  const handleSubmit = () => {
-    // Add validation logic
-    if (
-      firstName.trim() === "" ||
-      lastName.trim() === "" ||
-      !/^\S+@\S+\.\S+$/.test(email) ||
-      password.trim() === "" ||
-      confirmPassword !== password
-    ) {
-      // Validation failed
-      console.log("Validation failed. Please check the form fields.");
-      return;
-    }
+  // const handleSubmit = () => {
+  //   // Add validation logic
+  //   if (
+  //     firstName.trim() === "" ||
+  //     lastName.trim() === "" ||
+  //     !/^\S+@\S+\.\S+$/.test(email) ||
+  //     password.trim() === "" ||
+  //     confirmPassword !== password
+  //   ) {
+  //     // Validation failed
+  //     console.log("Validation failed. Please check the form fields.");
+  //     return;
+  //   }
 
-    // Validation passed, proceed with form submission logic
-    console.log("Form submitted successfully!");
-  };
+  //   // Validation passed, proceed with form submission logic
+  //   console.log("Form submitted successfully!");
+  // };
 
   type TextFieldAttributes = {
     label: string;
@@ -110,14 +110,14 @@ const InputBox = () => {
       value: firstName,
       onChange: handleFirstNameChange,
       error: firstNameError,
-      helperText: firstName ? "First Name is required" : " ",
+      helperText: firstNameError ? "First Name is required" : " ",
     },
     {
       label: "Last Name",
       value: lastName,
       onChange: handleLastNameChange,
       error: lastNameError,
-      helperText: lastName ? "Last Name is required" : " ",
+      helperText: lastNameError ? "Last Name is required" : " ",
     },
     {
       label: "Email Address",
@@ -125,7 +125,7 @@ const InputBox = () => {
       value: email,
       onChange: handleEmailChange,
       error: emailError,
-      helperText: email ? "Enter a valid email address" : " ",
+      helperText: emailError ? "Enter a valid email address" : " ",
     },
     {
       label: "Pasword",
@@ -175,49 +175,39 @@ const InputBox = () => {
       style={{
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
         minWidth: "330px",
-        width: "62.3%",
         maxWidth: "600px",
-        margin: "auto",
-        marginBottom: 0,
+        // margin: "auto",
+        // marginBottom: 0,
       }}
     >
       {/* Box for First Name and Last Name with wrap */}
-      <Box
-        style={{
-          minWidth: "330px",
-          // width: "70%",
-          maxWidth: "600px",
-          display: "flex",
-          flexWrap: "wrap",
-          columnGap: "20px",
-        }}
-      >
-        {/* First Name, Last Name, Email Address, Password, Confirm Password */}
-        {textFieldAttributes.map((item, index) => (
-          <TextField
-            label={item.label}
-            type={item.type}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            value={item.value}
-            onChange={item.onChange}
-            error={item.error}
-            helperText={item.helperText}
-            InputProps={item.InputProps}
-            key={index}
-          />
-        ))}
+      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {textFieldAttributes.map((item, index) => (
+        <TextField
+          sx={{width: "70%", margin: "0px", marginBottom: "6px"}}
+          label={item.label}
+          type={item.type}
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          required
+          value={item.value}
+          onChange={item.onChange}
+          error={item.error}
+          helperText={item.helperText}
+          InputProps={item.InputProps}
+          key={index}
+        />
+      ))}
 
-        {/* Submit Button */}
-        <Box sx={{ textAlign: "center", margin: "16px" }}>
+      {/* Submit Button */}
+      {/* <Box sx={{ textAlign: "center", margin: "16px" }}>
           <Button variant="contained" onClick={handleSubmit}>
             Submit
           </Button>
-        </Box>
-      </Box>
+        </Box> */}
     </Box>
   );
 };

@@ -2,12 +2,19 @@ import React from "react";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { Box } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
+import { Box, useMediaQuery } from "@mui/material";
 import ProfilePhotoBox from "./ProfilePhotoBox";
-import InputBox from "./InputBox";
+import BasicInfo from "./BasicInfo";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import AuthInfo from "./AuthInfo";
+import AddButton from "./AddButton";
+
+// TODO...
+const user: string = "teacher";
 
 const AddTeacher: React.FC = () => {
+  const isSmallScreen = useMediaQuery("(max-width: 720px)");
+
   return (
     // Container
     <Box sx={{ position: "relative" }}>
@@ -25,13 +32,6 @@ const AddTeacher: React.FC = () => {
 
       {/* Container for everyhing beside background image at the top */}
       <Box sx={{ position: "relative", bottom: "120px" }}>
-        <Typography
-          variant="h1"
-          sx={{ color: "white", fontSize: 40, textAlign: "center" }}
-        >
-          Add Teacher
-        </Typography>
-
         <Card
           style={{
             maxWidth: "1000px",
@@ -47,28 +47,69 @@ const AddTeacher: React.FC = () => {
                 margin: "8px",
                 display: "flex",
                 alignItems: "center",
-                gap: "4px",
+                gap: "6px",
               }}
             >
-              <PersonIcon />
-              Basic Details
+              <PersonAddIcon />
+              Add Teacher
             </Typography>
           </Box>
 
           <CardContent
             style={{
               display: "flex",
-              flexDirection: "row",
+              justifyContent: "center",
               flexWrap: "wrap",
-              alignItems: "center",
-              gap: "20px",
             }}
           >
             {/* Box 1: Profile Photo and Upload Resume */}
-            <ProfilePhotoBox />
+            {/* TODO: Make a button below avatar that onClick adds chosen file from file explorer,
+                and turns into "Clear" button when file is uploaded. */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <ProfilePhotoBox />
+              {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
+              {user === "student" && (
+                // Student specific information
+                <>
+                  <div>TODO: Group</div>
+                </>
+              )}
+              {user === "teacher" && (
+                <>
+                  <div>TODO: Department</div>
+                  <div>TODO: Subject</div>
+                </>
+              )}
+            </div>
 
             {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
-            <InputBox />
+
+            <div
+              style={{
+                width: isSmallScreen ? "80%" : "60%",
+                minWidth: "330px",
+              }}
+            >
+              {/* Every User needs to have these info */}
+              <BasicInfo />
+
+              {/* Specific Info */}
+              {user === "profileOwner" || user === "admin" ? <></> : <></>}
+
+              {/* AuthInfo */}
+              <AuthInfo />
+
+              {/* Add Teacher Button */}
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <AddButton />
+              </div>
+            </div>
           </CardContent>
         </Card>
       </Box>

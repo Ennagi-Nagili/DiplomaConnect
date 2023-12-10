@@ -1,19 +1,19 @@
-import { Box, Button } from "@mui/material";
-import React from "react";
+// import React from "react";
+import { Box } from "@mui/material";
 import UploadAvatar from "./UploadAvatar";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+// import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const ProfilePhotoBox = () => {
-  const handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleChooseFile function is called");
+  // const handleChooseFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log("handleChooseFile function is called");
 
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const selectedFile = files[0];
-      // Implement logic to handle the selected file
-      console.log("Selected file:", selectedFile);
-    }
-  };
+  //   const files = e.target.files;
+  //   if (files && files.length > 0) {
+  //     const selectedFile = files[0];
+  //     // Implement logic to handle the selected file
+  //     console.log("Selected file:", selectedFile);
+  //   }
+  // };
 
   return (
     <Box
@@ -37,7 +37,7 @@ const ProfilePhotoBox = () => {
       </Box>
 
       {/* Choose File */}
-      <input
+      {/* <input
         type="file"
         accept=".pdf"
         style={{ display: "none" }}
@@ -46,13 +46,15 @@ const ProfilePhotoBox = () => {
       />
       <label htmlFor="file-input">
         <Button
+          // This marginBottom is for BasicInfo component to be further apart from this button in AddTeacher page
+          sx={{ marginBottom: "16px" }}
           variant="contained"
           component="span"
           startIcon={<CloudUploadIcon />}
         >
           Upload Resume
         </Button>
-      </label>
+      </label> */}
     </Box>
   );
 };
