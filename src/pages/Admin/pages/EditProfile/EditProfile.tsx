@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Paper, Typography, useMediaQuery } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import QuickInfo from "./QuickInfo";
-import BasicInfo from "../AddTeacher/BasicInfo";
+import BasicInfo from "../AddTeacher/components/BasicInfo";
 
 const theme = createTheme();
 

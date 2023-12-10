@@ -1,10 +1,15 @@
 import { Box } from "@mui/material";
-import UploadAvatar from "../AddTeacher/UploadAvatar";
+import UploadAvatar from "../AddTeacher/components/UploadAvatar";
 
 const QuickInfo = () => {
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "458px" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "458px",
+      }}
     >
       {/* This box is for bakcgrounf image, profile picture, and basic info (Name, Email, Status) */}
       <img

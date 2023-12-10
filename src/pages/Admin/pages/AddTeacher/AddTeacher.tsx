@@ -3,11 +3,11 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Box, useMediaQuery } from "@mui/material";
-import BasicInfo from "./BasicInfo";
+import BasicInfo from "./components/BasicInfo";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import AuthInfo from "./AuthInfo";
-import AddButton from "./AddButton";
-import UploadAvatar from "./UploadAvatar";
+import AuthInfo from "./components/AuthInfo";
+import AddButton from "./components/AddButton";
+import UploadAvatar from "./components/UploadAvatar";
 
 // TODO...
 const user: string = "teacher";
