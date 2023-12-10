@@ -1,0 +1,30 @@
+body {
+    // background-color: rgb(22, 116, 116);
+    // background-image: url("../../assets/login.avif");
+    height: 100%;
+    
+    form {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        row-gap: 10px;
+    
+        width: 350px;
+        padding: 10px;
+        
+        border: 1px solid gray;
+        border-radius: 5px;
+    
+        background-color: white;
+    
+        h2 {
+            text-align: center;
+        }
+    
+        // labels are from FormInput component
+        label {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    }
+}
