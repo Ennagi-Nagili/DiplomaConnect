@@ -3,11 +3,11 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Box, useMediaQuery } from "@mui/material";
-import ProfilePhotoBox from "./ProfilePhotoBox";
 import BasicInfo from "./BasicInfo";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AuthInfo from "./AuthInfo";
 import AddButton from "./AddButton";
+import UploadAvatar from "./UploadAvatar";
 
 // TODO...
 const user: string = "teacher";
@@ -63,8 +63,6 @@ const AddTeacher: React.FC = () => {
             }}
           >
             {/* Box 1: Profile Photo and Upload Resume */}
-            {/* TODO: Make a button below avatar that onClick adds chosen file from file explorer,
-                and turns into "Clear" button when file is uploaded. */}
             <div
               style={{
                 display: "flex",
@@ -72,7 +70,7 @@ const AddTeacher: React.FC = () => {
                 alignItems: "center",
               }}
             >
-              <ProfilePhotoBox />
+              <UploadAvatar />
               {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
               {user === "student" && (
                 // Student specific information
