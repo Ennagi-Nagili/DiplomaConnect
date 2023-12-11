@@ -5,6 +5,19 @@ import SearchIcon from "@mui/icons-material/Search";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Autocomplete, createFilterOptions } from "@mui/material";
 
+// TODO: This is just an example with jsonplacholder.
+// Adapt the type after API is created.
+export type UserObject = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address?: object;
+  phone: string;
+  website: string;
+  company?: object;
+};
+
 const SearchBar: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isSmallScreen = useMediaQuery("(max-width: 750px)");
@@ -42,19 +55,6 @@ const SearchBar: React.FC = () => {
     trim: true,
   });
 
-  // TODO: This is just an example with jsonplacholder.
-  // Adapt the type after API is created.
-  type UserObject = {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    address?: object;
-    phone: string;
-    website: string;
-    company?: object;
-  };
-
   const [userNames, setUserNames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const SearchBar: React.FC = () => {
             disableClearable
             // TODO: Use data from real API instead of jsonplaceholder
             options={userNames}
-            style={{width: "30%", minWidth: "400px"}}
+            style={{ width: "30%", minWidth: "400px" }}
             filterOptions={filterOptions}
             renderInput={(params) => (
               <TextField

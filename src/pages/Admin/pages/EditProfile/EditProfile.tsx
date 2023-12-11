@@ -1,67 +1,103 @@
-import React from "react";
-import { Grid, Paper, Typography, useMediaQuery } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import QuickInfo from "./QuickInfo";
-import BasicInfo from "../AddTeacher/components/BasicInfo";
+import { Avatar, Paper, Stack, Typography } from "@mui/material";
+import { Teacher } from "../../../../models/models";
+import { useEffect, useState } from "react";
+import { UserObject } from "../../../../components/Header/SearchBar";
 
-const theme = createTheme();
+const user: Teacher = {
+  type: "teacher",
+  firstName: "",
+  lastName: "",
+  fatherName: "",
+  phoneNumber: "",
+  email: "",
+  password: "",
+  department: "---",
+  subject: "---",
+};
 
-const InformationBlock: React.FC<{
-  title: string;
-  content: React.ReactNode;
-}> = ({ title, content }) => {
+const ProfileView = () => {  
+  const [mockUser, setMockUser] = useState<Teacher>(user);
+
+  // Since this could be any random user, I'll fetch data from jsonplaceholder
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users/1")
+      .then((response) => response.json())
+      .then((json: UserObject) => {
+        const fetchedUser: Teacher = {
+          type: "teacher",
+          firstName: json.name,
+          lastName: json.name,
+          fatherName: json.name,
+          phoneNumber: json.phone,
+          email: json.email,
+          password: "qwerty",
+          department: "Algebra",
+          subject: "Ring Theory",
+        };
+        setMockUser(fetchedUser)
+      });
+  }, []);
+
   return (
-    <Paper elevation={3} style={{ padding: 10 }}>
-      <Typography variant="h6" gutterBottom>
-        {title}
-      </Typography>
-      {content}
-    </Paper>
+    <>
+      <Stack sx={{ position: "relative" }}>
+        {/* BACKGROUND IMAGE ON TOP OF PROFILE PAGE */}
+        <img
+          style={{
+            objectFit: "cover",
+            height: 200,
+            width: "100%",
+            borderRadius: 10,
+          }}
+          // TODO: Change to image without watermark
+          src="/src/assets/profileBackground.jpg"
+        />
+
+        <Paper
+          sx={{
+            position: "absolute",
+            top: "100px",
+            right: "2.5%",
+            width: "95%",
+          }}
+          elevation={3}
+        >
+          <Typography
+            variant="h1"
+            color={"info"}
+            fontSize={28}
+            sx={{ margin: "8px" }}
+          >
+            User Information
+          </Typography>
+
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <Avatar src={""} style={{ margin: 10, width: 200, height: 200 }} />
+
+            {/* All the user info will be displayed here */}
+            <div>
+              <h4>Name</h4>
+              <p>
+                {mockUser.firstName} {mockUser.lastName} {mockUser.fatherName}
+              </p>
+            </div>
+            <div>
+              <h4>Contact Info</h4>
+              <p>
+                {mockUser.email} {mockUser.phoneNumber}
+              </p>
+            </div>
+            <div>
+              <h4>Optional Info</h4>
+              <p>
+                {mockUser.department} {mockUser.subject}
+              </p>
+            </div>
+          </div>
+        </Paper>
+      </Stack>
+    </>
   );
 };
 
-const ResponsiveInformationGrid: React.FC = () => {
-  const isSmallScreen = useMediaQuery("(max-width: 792px)");
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Grid container spacing={2} justifyContent={"center"}>
-        {/* 1. Block One */}
-        <Grid
-          item
-          className="grid-item"
-          sx={{
-            minWidth: "380px",
-            width: isSmallScreen ? "80%" : "49%",
-            maxWidth: "700px",
-          }}
-        >
-          <InformationBlock title="" content={<QuickInfo />} />
-        </Grid>
-
-        {/* 2. First, Last, Father Names, Email, and Phone Number*/}
-        <Grid
-          item
-          sx={{
-            minWidth: "380px",
-            width: isSmallScreen ? "80%" : "49%",
-            maxWidth: "700px",
-            height: "578px",
-          }}
-        >
-          <InformationBlock
-            title="Basic Information"
-            content={
-              <>
-                <BasicInfo />
-                {/* <button>ADD TEACHER</button> */}
-              </>
-            }
-          />
-        </Grid>
-      </Grid>
-    </ThemeProvider>
-  );
-};
-
-export default ResponsiveInformationGrid;
+export default ProfileView;
