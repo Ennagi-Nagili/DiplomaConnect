@@ -8,9 +8,27 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import AuthInfo from "./components/AuthInfo";
 import AddButton from "./components/AddButton";
 import UploadAvatar from "./components/UploadAvatar";
+import SpecificInfo from "./components/SpecificInfo";
 
 // TODO...
 const user: string = "teacher";
+
+const departments = {
+  title: "Department",
+  itemList: [
+    "Analysis",
+    "Algebra and Geometry",
+    "Differential and Integral Equations",
+  ],
+};
+const subjects = {
+  title: "Subject",
+  itemList: ["Real Analysis", "Complex Analysis", "Group Theory"],
+};
+const groups = {
+  title: "Group",
+  itemList: ["R-11", "RM-23", "M-65"],
+};
 
 const AddTeacher: React.FC = () => {
   const isSmallScreen = useMediaQuery("(max-width: 720px)");
@@ -68,26 +86,31 @@ const AddTeacher: React.FC = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                marginBottom: "20px"
               }}
             >
               <UploadAvatar />
               {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
+              {/* Student or Teacher specific information */}
               {user === "student" && (
-                // Student specific information
-                <>
-                  <div>TODO: Group</div>
-                </>
+                <SpecificInfo title={groups.title} list={groups.itemList} />
               )}
+
               {user === "teacher" && (
                 <>
-                  <div>TODO: Department</div>
-                  <div>TODO: Subject</div>
+                  <SpecificInfo
+                    title={departments.title}
+                    list={departments.itemList}
+                  />
+                  <SpecificInfo
+                    title={subjects.title}
+                    list={subjects.itemList}
+                  />
                 </>
               )}
             </div>
-
+                
             {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
-
             <div
               style={{
                 width: isSmallScreen ? "80%" : "60%",
