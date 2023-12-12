@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Box, TextField } from "@mui/material";
+import { Teacher } from "../../../../../models/models";
+// import { generateNUsers } from "../../../../../models/generateMockUsers";
 
 // TODO: Only admin and user himself can edit
 const user = "admin";
@@ -17,12 +19,38 @@ export type TextFieldAttributes = {
 };
 
 const BasicInfo = () => {
+  // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
+  const mockTeacher: Teacher = {
+    id: 1,
+    type: "teacher",
+    profilePhoto: "",
+    firstName: "",
+    lastName: "",
+    fatherName: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    department: "",
+    subject: "",
+    students: [],
+  };
+
   // States
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [fatherName, setFatherName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [firstName, setFirstName] = useState(mockTeacher.firstName);
+  const [lastName, setLastName] = useState(mockTeacher.lastName);
+  const [fatherName, setFatherName] = useState(mockTeacher.fatherName);
+  const [email, setEmail] = useState(mockTeacher.email);
+  const [phone, setPhone] = useState(mockTeacher.phoneNumber);
+
+  // TODO: This should be implemented with Redux Toolkit
+  // const changedTeacher: Teacher = {
+  //   ...mockTeacher,
+  //   firstName: firstName,
+  //   lastName: lastName,
+  //   fatherName: fatherName,
+  //   email: email,
+  //   phoneNumber: phone,
+  // };
 
   //Corresponding Error States
   const [firstNameError, setFirstNameError] = useState(false);

@@ -4,9 +4,10 @@ import DataGridToolbar from "../../components/DataGridToolbar";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { IconButton } from "@mui/material";
 
-// Generating some mock teachers
-const teachers = generateNUsers({ type: "teacher", number: 27 });
+// Rows:
+const teachers = generateNUsers({ type: "teacher", number: 27 }); // Generating some mock teachers
 
+// Columns:
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
   {
