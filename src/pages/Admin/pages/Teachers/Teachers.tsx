@@ -1,8 +1,11 @@
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
-import { teachers } from "./mockTeachers";
+import { generateNUsers } from "../../../../models/generateMockUsers";
 import DataGridToolbar from "../../components/DataGridToolbar";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import { IconButton } from "@mui/material";
+
+// Generating some mock teachers
+const teachers = generateNUsers({ type: "teacher", number: 27 });
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },

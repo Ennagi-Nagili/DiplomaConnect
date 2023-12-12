@@ -1,6 +1,7 @@
 export interface User {
+  id: number,
   type: "admin" | "teacher" | "student";
-  profilePhoto?: File;
+  profilePhoto?: string; // url
   firstName: string;
   lastName: string;
   fatherName: string;
@@ -15,10 +16,12 @@ export interface Teacher extends User {
   // TODOL This should be just a limited set of departments
   department?: string;
   subject?: string;
+  students?: number[]; // id-s of students
 }
 
 export interface Student extends User {
   group: string;
+  teacher: number; // id of teacher
 }
 
 // Students sends cover letter to teacher to ask him to be his supervisor
