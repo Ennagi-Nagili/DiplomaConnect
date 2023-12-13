@@ -18,7 +18,7 @@ export type TextFieldAttributes = {
   };
 };
 
-const NameInfo = () => {
+const NameInputs = () => {
   // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
   const mockTeacher: Teacher = {
     id: 1,
@@ -131,4 +131,4 @@ const NameInfo = () => {
   );
 };
 
-export default NameInfo;
+export default NameInputs;

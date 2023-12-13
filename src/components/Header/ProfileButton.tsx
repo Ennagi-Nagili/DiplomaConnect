@@ -28,7 +28,7 @@ const ProfileButton: React.FC = () => {
 
   const handleEditProfileClick = () => {
     // Navigate to the edit profile page
-    navigate('/profile/edit-profile');
+    navigate('/admin/edit-profile');
     handleClose();
   };
 

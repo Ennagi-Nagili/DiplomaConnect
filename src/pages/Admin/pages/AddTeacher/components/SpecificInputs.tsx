@@ -9,7 +9,7 @@ type TeacherInfoProps = {
   list: string[];
 };
 
-const SpecificInfo = ({ title, list }: TeacherInfoProps) => {
+const SpecificInputs = ({ title, list }: TeacherInfoProps) => {
   const [input, setInput] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -33,4 +33,4 @@ const SpecificInfo = ({ title, list }: TeacherInfoProps) => {
   );
 };
 
-export default SpecificInfo;
+export default SpecificInputs;

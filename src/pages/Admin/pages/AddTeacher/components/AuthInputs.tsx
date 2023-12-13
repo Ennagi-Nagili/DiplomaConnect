@@ -1,5 +1,5 @@
 import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { TextFieldAttributes } from './NameInfo';
+import { TextFieldAttributes } from './NameInputs';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -7,7 +7,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 // TODO: Only admin and user himself can edit
 const user = 'admin';
 
-const AuthInfo = () => {
+const AuthInputs = () => {
   // Visible State
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
@@ -126,4 +126,4 @@ const AuthInfo = () => {
   );
 };
 
-export default AuthInfo;
+export default AuthInputs;

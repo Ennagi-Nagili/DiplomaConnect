@@ -1,13 +1,13 @@
 import { Box, TextField, Typography } from '@mui/material';
 import { Teacher } from '../../../../../models/models';
 import React, { useState } from 'react';
-import { TextFieldAttributes } from './NameInfo';
+import { TextFieldAttributes } from './NameInputs';
 // import { generateNUsers } from "../../../../../models/generateMockUsers";
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
 
-const ContactInfo = () => {
+const ContactInputs = () => {
   // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
   const mockTeacher: Teacher = {
     id: 1,
@@ -113,4 +113,4 @@ const ContactInfo = () => {
   );
 };
 
-export default ContactInfo;
+export default ContactInputs;
