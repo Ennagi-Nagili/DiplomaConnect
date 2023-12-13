@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { Box, TextField } from "@mui/material";
-import { Teacher } from "../../../../../models/models";
+import { Box, TextField } from '@mui/material';
+import { Teacher } from '../../../../../models/models';
+import React, { useState } from 'react';
 // import { generateNUsers } from "../../../../../models/generateMockUsers";
 
 // TODO: Only admin and user himself can edit
-const user = "admin";
+const user = 'admin';
 
 export type TextFieldAttributes = {
   label: string;
-  type?: "text" | "email" | "password";
+  type?: 'text' | 'email' | 'password';
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error: boolean;
@@ -18,20 +18,20 @@ export type TextFieldAttributes = {
   };
 };
 
-const BasicInfo = () => {
+const NameInfo = () => {
   // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
   const mockTeacher: Teacher = {
     id: 1,
-    type: "teacher",
-    profilePhoto: "",
-    firstName: "",
-    lastName: "",
-    fatherName: "",
-    email: "",
-    phoneNumber: "",
-    password: "",
-    department: "",
-    subject: "",
+    type: 'teacher',
+    profilePhoto: '',
+    firstName: '',
+    lastName: '',
+    fatherName: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    department: '',
+    subject: '',
     students: [],
   };
 
@@ -39,8 +39,6 @@ const BasicInfo = () => {
   const [firstName, setFirstName] = useState(mockTeacher.firstName);
   const [lastName, setLastName] = useState(mockTeacher.lastName);
   const [fatherName, setFatherName] = useState(mockTeacher.fatherName);
-  const [email, setEmail] = useState(mockTeacher.email);
-  const [phone, setPhone] = useState(mockTeacher.phoneNumber);
 
   // TODO: This should be implemented with Redux Toolkit
   // const changedTeacher: Teacher = {
@@ -56,90 +54,63 @@ const BasicInfo = () => {
   const [firstNameError, setFirstNameError] = useState(false);
   const [lastNameError, setLastNameError] = useState(false);
   const [fatherNameError, setFatherNameError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(e.target.value);
-    setFirstNameError(e.target.value.trim() === "");
+    setFirstNameError(e.target.value.trim() === '');
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLastName(e.target.value);
-    setLastNameError(e.target.value.trim() === "");
+    setLastNameError(e.target.value.trim() === '');
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFatherName(e.target.value);
-    setFatherNameError(e.target.value.trim() === "");
-  };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-    setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
-    setPhoneError(!/^\d+$/.test(e.target.value));
+    setFatherNameError(e.target.value.trim() === '');
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: "First Name",
+      label: 'First Name',
       value: firstName,
       onChange: handleFirstNameChange,
       error: firstNameError,
-      helperText: firstNameError ? "First Name is required" : " ",
+      helperText: firstNameError ? 'First Name is required' : ' ',
     },
     {
-      label: "Last Name",
+      label: 'Last Name',
       value: lastName,
       onChange: handleLastNameChange,
       error: lastNameError,
-      helperText: lastNameError ? "Last Name is required" : " ",
+      helperText: lastNameError ? 'Last Name is required' : ' ',
     },
     {
-      label: "FatherName",
+      label: 'FatherName',
       value: fatherName,
       onChange: handleFatherNameChange,
       error: fatherNameError,
-      helperText: fatherNameError ? "Father Name is required" : " ",
-    },
-    {
-      label: "Email Address",
-      type: "email",
-      value: email,
-      onChange: handleEmailChange,
-      error: emailError,
-      helperText: emailError ? "Enter a valid email address" : " ",
-    },
-    {
-      label: "Phone Number",
-      value: phone,
-      onChange: handlePhoneChange,
-      error: phoneError,
-      helperText: phoneError ? "Enter a valid phone number" : " ",
+      helperText: fatherNameError ? 'Father Name is required' : ' ',
     },
   ];
 
   return (
     <Box
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minWidth: "330px",
-        maxWidth: "600px",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minWidth: '330px',
+        // maxWidth: '600px',
       }}
     >
       {/* Box for First Name and Last Name with wrap */}
       {/* First Name, Last Name, Email Address, Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
         <TextField
-          disabled={user === "admin" ? false : true}
-          sx={{ width: "70%", margin: "0px", marginBottom: "6px" }}
+          disabled={user === 'admin' ? false : true}
+          sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
           label={item.label}
           type={item.type}
           variant="outlined"
@@ -160,4 +131,4 @@ const BasicInfo = () => {
   );
 };
 
-export default BasicInfo;
+export default NameInfo;

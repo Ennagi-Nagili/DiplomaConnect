@@ -1,21 +1,21 @@
 // JUST EXPERIMENTING... IGNORE THIS FILE.
 
-import React, { useEffect, useRef, useState } from "react";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import SearchIcon from "@mui/icons-material/Search";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { Autocomplete, Box, Drawer, createFilterOptions } from "@mui/material";
+import { Autocomplete, Box, Drawer, createFilterOptions } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import React, { useEffect, useRef, useState } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const SearchBar: React.FC = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const isSmallScreen = useMediaQuery("(max-width: 750px)");
+  const isSmallScreen = useMediaQuery('(max-width: 750px)');
 
   // This functionality is for mobile version
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const handleSearch = () => {
     // Implement your search logic here
-    console.log("Search clicked");
+    console.log('Search clicked');
     setIsSearchClicked(true);
   };
 
@@ -35,7 +35,7 @@ const SearchBar: React.FC = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // Remove focus when Escape key is pressed
-    if (e.key === "Escape" && inputRef.current) {
+    if (e.key === 'Escape' && inputRef.current) {
       inputRef.current.blur();
     }
   };
@@ -63,7 +63,7 @@ const SearchBar: React.FC = () => {
   const [userNames, setUserNames] = useState<string[]>([]);
 
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch('https://jsonplaceholder.typicode.com/users')
       .then((response) => response.json())
       .then((json: UserObject[]) => {
         const names = json.map((user) => user.name);
@@ -75,10 +75,10 @@ const SearchBar: React.FC = () => {
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: isSmallScreen ? "flex-end" : "center",
-        margin: "auto",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: isSmallScreen ? 'flex-end' : 'center',
+        margin: 'auto',
       }}
     >
       {/* TODO */}
@@ -94,7 +94,7 @@ const SearchBar: React.FC = () => {
             disableClearable
             // TODO: Use data from real API instead of jsonplaceholder
             options={userNames}
-            style={{ width: "30%", minWidth: "400px" }}
+            style={{ width: '30%', minWidth: '400px' }}
             filterOptions={filterOptions}
             renderInput={(params) => (
               <TextField
@@ -108,8 +108,8 @@ const SearchBar: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 InputProps={{
                   ...params.InputProps,
-                  style: { borderRadius: "25px" }, // Adjust the borderRadius as needed
-                  type: "search",
+                  style: { borderRadius: '25px' }, // Adjust the borderRadius as needed
+                  type: 'search',
                   startAdornment: (
                     <IconButton onClick={handleSearch} size="small">
                       <SearchIcon />
@@ -124,16 +124,12 @@ const SearchBar: React.FC = () => {
       )}
 
       {/* Top Drawer when search icon button in mobile is clicked */}
-      <Drawer
-        anchor={"top"}
-        open={isSearchClicked}
-        onClose={() => setIsSearchClicked(false)}
-      >
+      <Drawer anchor={'top'} open={isSearchClicked} onClose={() => setIsSearchClicked(false)}>
         <Box
           sx={{
-            backgroundColor: "white",
-            width: "100%",
-            height: "64px",
+            backgroundColor: 'white',
+            width: '100%',
+            height: '64px',
           }}
         >
           <Autocomplete
@@ -142,7 +138,7 @@ const SearchBar: React.FC = () => {
             disableClearable
             // TODO: Use data from real API instead of jsonplaceholder
             options={userNames}
-            style={{ width: "30%", minWidth: "400px", margin: "auto", marginTop: "9px" }}
+            style={{ width: '30%', minWidth: '400px', margin: 'auto', marginTop: '9px' }}
             filterOptions={filterOptions}
             renderInput={(params) => (
               <TextField
@@ -156,8 +152,8 @@ const SearchBar: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 InputProps={{
                   ...params.InputProps,
-                  style: { borderRadius: "25px" }, // Adjust the borderRadius as needed
-                  type: "search",
+                  style: { borderRadius: '25px' }, // Adjust the borderRadius as needed
+                  type: 'search',
                   startAdornment: (
                     <IconButton onClick={handleSearch} size="small">
                       <SearchIcon />

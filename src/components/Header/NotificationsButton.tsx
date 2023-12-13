@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import IconButton from "@mui/material/IconButton";
-import NotificationsIcon from "@mui/icons-material/Notifications";
-import Badge from "@mui/material/Badge";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import { ListItemButton } from "@mui/material";
+import { ListItemButton } from '@mui/material';
+import Badge from '@mui/material/Badge';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Popover from '@mui/material/Popover';
+import React, { useEffect, useState } from 'react';
+import Typography from '@mui/material/Typography';
 
 const NotificationsButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -28,9 +28,9 @@ const NotificationsButton: React.FC = () => {
 
   // Example notifications data
   const notifications = [
-    { id: 1, message: "New message from John Doe" },
-    { id: 2, message: "You have 3 new friend requests" },
-    { id: 3, message: "Appointment reminder: Meeting at 2 PM" },
+    { id: 1, message: 'New message from John Doe' },
+    { id: 2, message: 'You have 3 new friend requests' },
+    { id: 3, message: 'Appointment reminder: Meeting at 2 PM' },
     // ... add more notifications as needed
     // TODO: After user views the notifications, if new notifications come, it counts all of them
     // instead of showing number of only new notifications. Fix this.
@@ -55,13 +55,7 @@ const NotificationsButton: React.FC = () => {
   return (
     <div>
       <IconButton onClick={handleClick} size="small">
-        <Badge
-          badgeContent={
-            totalNotifications >= 100 ? "99+" : totalNotifications
-          }
-          color="error"
-          variant={showDot ? "dot" : "standard"}
-        >
+        <Badge badgeContent={totalNotifications >= 100 ? '99+' : totalNotifications} color="error" variant={showDot ? 'dot' : 'standard'}>
           <NotificationsIcon />
         </Badge>
       </IconButton>
@@ -71,15 +65,15 @@ const NotificationsButton: React.FC = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
-        <List sx={{ p: 2, minWidth: "250px" }}>
+        <List sx={{ p: 2, minWidth: '250px' }}>
           {notifications.map((notification) => (
             <ListItem key={notification.id}>
               <ListItemButton>
@@ -88,9 +82,7 @@ const NotificationsButton: React.FC = () => {
             </ListItem>
           ))}
         </List>
-        {notifications.length === 0 && (
-          <Typography sx={{ p: 2 }}>No new notifications</Typography>
-        )}
+        {notifications.length === 0 && <Typography sx={{ p: 2 }}>No new notifications</Typography>}
       </Popover>
     </div>
   );

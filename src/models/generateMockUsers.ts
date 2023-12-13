@@ -1,13 +1,11 @@
-import { Student, Teacher, User } from "./models";
+import { Student, Teacher, User } from './models';
 
 type GenerateNUsersProps = {
-  type: "teacher" | "student";
+  type: 'teacher' | 'student';
   number: number;
 };
 
-export const generateNUsers = (
-  props: GenerateNUsersProps
-): Teacher[] | Student[] => {
+export const generateNUsers = (props: GenerateNUsersProps): Teacher[] | Student[] => {
   const { type, number } = props;
 
   const users = [];
@@ -27,7 +25,7 @@ export const generateNUsers = (
     };
 
     // Specific User
-    if (type === "teacher") {
+    if (type === 'teacher') {
       const specificUser: Teacher = {
         ...user,
         department: `Department ${index}`,

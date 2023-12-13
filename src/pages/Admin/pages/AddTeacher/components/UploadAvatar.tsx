@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button } from '@mui/material';
+import React, { useState } from 'react';
 
 const UploadAvatar: React.FC = () => {
   const [preview, setPreview] = useState<string | null>(null);
@@ -21,35 +21,21 @@ const UploadAvatar: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
       {/* PROFILE PHOTO */}
-      <Avatar
-        src={preview ? preview : ""}
-        style={{ margin: 10, width: 200, height: 200 }}
-      />
+      <Avatar src={preview ? preview : ''} style={{ margin: 10, width: 200, height: 200 }} />
 
       {/* UPLOAD or CLEAR button under the PROFILE PHOTO */}
-      <input
-        accept=".png"
-        id="avatar-upload"
-        type="file"
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
+      <input accept=".png" id="avatar-upload" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
 
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
         {preview ? (
           <Button variant="outlined" onClick={handleClear} sx={{ width: 120 }}>
             Clear
           </Button>
         ) : (
           <label htmlFor="avatar-upload">
-            <Button
-              component="span"
-              variant="contained"
-              onClick={handleClear}
-              sx={{ width: 160 }}
-            >
+            <Button component="span" variant="contained" onClick={handleClear} sx={{ width: 160 }}>
               Upload Photo
             </Button>
           </label>

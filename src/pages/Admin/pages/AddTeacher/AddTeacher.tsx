@@ -1,47 +1,45 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { Box, useMediaQuery } from "@mui/material";
-import BasicInfo from "./components/BasicInfo";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import AuthInfo from "./components/AuthInfo";
-import AddButton from "./components/AddButton";
-import UploadAvatar from "./components/UploadAvatar";
-import SpecificInfo from "./components/SpecificInfo";
+import { Box, useMediaQuery } from '@mui/material';
+import AddButton from './components/AddButton';
+import NameInfo from './components/NameInfo';
+import ContactInfo from './components/ContactInfo';
+import AuthInfo from './components/AuthInfo';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import React from 'react';
+import SpecificInfo from './components/SpecificInfo';
+import Typography from '@mui/material/Typography';
+import UploadAvatar from './components/UploadAvatar';
 
 // TODO...
-const user: string = "teacher";
+const user: string = 'teacher';
 
 const departments = {
-  title: "Department",
-  itemList: [
-    "Analysis",
-    "Algebra and Geometry",
-    "Differential and Integral Equations",
-  ],
+  title: 'Department',
+  itemList: ['Analysis', 'Algebra and Geometry', 'Differential and Integral Equations'],
 };
 const subjects = {
-  title: "Subject",
-  itemList: ["Real Analysis", "Complex Analysis", "Group Theory"],
+  title: 'Subject',
+  itemList: ['Real Analysis', 'Complex Analysis', 'Group Theory'],
 };
 const groups = {
-  title: "Group",
-  itemList: ["R-11", "RM-23", "M-65"],
+  title: 'Group',
+  itemList: ['R-11', 'RM-23', 'M-65'],
 };
 
 const AddTeacher: React.FC = () => {
-  const isSmallScreen = useMediaQuery("(max-width: 720px)");
+  const isSmallScreen = useMediaQuery('(max-width: 805px)');
 
   return (
     // Container
-    <Box sx={{ position: "relative" }}>
+    <Box sx={{ position: 'relative' }}>
       {/* BACKGROUND IMAGE ON TOP OF PROFILE PAGE */}
       <img
+        alt=""
         style={{
-          objectFit: "cover",
+          objectFit: 'cover',
           height: 200,
-          width: "100%",
+          width: '100%',
           borderRadius: 10,
         }}
         // TODO: Change to image without watermark
@@ -49,12 +47,14 @@ const AddTeacher: React.FC = () => {
       />
 
       {/* Container for everyhing beside background image at the top */}
-      <Box sx={{ position: "relative", bottom: "120px" }}>
+      <Box sx={{ position: 'relative', bottom: '120px' }}>
         <Card
           style={{
-            maxWidth: "1000px",
-            minWidth: "366px",
-            margin: "auto",
+            maxWidth: '1000px',
+            minWidth: '366px',
+            margin: 'auto',
+            border: '2px solid #e9e9e9',
+            boxShadow: '0px 5px 10px 0px rgba(90, 90, 90, 0.5)',
           }}
         >
           {/* Card header */}
@@ -62,10 +62,10 @@ const AddTeacher: React.FC = () => {
             <Typography
               variant="h6"
               sx={{
-                margin: "8px",
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
+                margin: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
               }}
             >
               <PersonAddIcon />
@@ -75,63 +75,53 @@ const AddTeacher: React.FC = () => {
 
           <CardContent
             style={{
-              display: "flex",
-              justifyContent: "center",
-              flexWrap: "wrap",
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+              gap: '5px',
             }}
           >
             {/* Box 1: Profile Photo and Upload Resume */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginBottom: "20px"
-              }}
-            >
+            <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '360px' }}>
               <UploadAvatar />
+              <NameInfo />
+            </div>
+
+            {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
+            <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '360px' }}>
               {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
               {/* Student or Teacher specific information */}
-              {user === "student" && (
-                <SpecificInfo title={groups.title} list={groups.itemList} />
-              )}
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Typography variant="h3" sx={{ fontSize: 26, mb: '10px', textAlign: 'center' }}>
+                  {/* TODO: For student this should be "Student Information" */}
+                  Teacher Information
+                </Typography>
 
-              {user === "teacher" && (
-                <>
-                  <SpecificInfo
-                    title={departments.title}
-                    list={departments.itemList}
-                  />
-                  <SpecificInfo
-                    title={subjects.title}
-                    list={subjects.itemList}
-                  />
-                </>
-              )}
-            </div>
-                
-            {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
-            <div
-              style={{
-                width: isSmallScreen ? "80%" : "60%",
-                minWidth: "330px",
-              }}
-            >
+                {user === 'student' && <SpecificInfo title={groups.title} list={groups.itemList} />}
+
+                {user === 'teacher' && (
+                  <>
+                    <SpecificInfo title={departments.title} list={departments.itemList} />
+                    <SpecificInfo title={subjects.title} list={subjects.itemList} />
+                  </>
+                )}
+              </div>
+
               {/* Every User needs to have these info */}
-              <BasicInfo />
+              <ContactInfo />
 
               {/* Specific Info */}
-              {user === "profileOwner" || user === "admin" ? <></> : <></>}
+              {user === 'profileOwner' || user === 'admin' ? <></> : <></>}
 
               {/* AuthInfo */}
               <AuthInfo />
-
-              {/* Add Teacher Button */}
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <AddButton />
-              </div>
             </div>
           </CardContent>
+
+          {/* Add Teacher Button */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '18px' }}>
+            <AddButton />
+          </div>
         </Card>
       </Box>
     </Box>

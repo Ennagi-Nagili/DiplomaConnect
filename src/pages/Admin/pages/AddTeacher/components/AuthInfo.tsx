@@ -1,38 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { TextFieldAttributes } from "./BasicInfo";
+import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { TextFieldAttributes } from './NameInfo';
+import React, { useEffect, useState } from 'react';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 // TODO: Only admin and user himself can edit
-const user = "admin";
+const user = 'admin';
 
 const AuthInfo = () => {
   // Visible State
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
 
   // Field Touched state
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   // State
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   // Corresponding Error State
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    setPasswordError(passwordTouched && password.trim() === "");
+    setPasswordError(passwordTouched && password.trim() === '');
   }, [password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(
-      confirmPasswordTouched && confirmPassword !== password
-    );
+    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== password);
   }, [confirmPassword, password, confirmPasswordTouched]);
 
   const handleTogglePasswordVisibility = () => {
@@ -48,9 +45,7 @@ const AuthInfo = () => {
     setPasswordTouched(true);
   };
 
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value);
     setConfirmPasswordTouched(true);
   };
@@ -58,41 +53,32 @@ const AuthInfo = () => {
   // Password, Confirm Password
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: "Pasword",
-      type: isPasswordVisible ? "text" : "password",
+      label: 'Pasword',
+      type: isPasswordVisible ? 'text' : 'password',
       value: password,
       onChange: handlePasswordChange,
       error: passwordError,
-      helperText:
-        passwordTouched && password.trim() === ""
-          ? "Password is required"
-          : " ",
+      helperText: passwordTouched && password.trim() === '' ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
-            <IconButton onClick={handleTogglePasswordVisibility}>
-              {isPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-            </IconButton>
+            <IconButton onClick={handleTogglePasswordVisibility}>{isPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}</IconButton>
           </InputAdornment>
         ),
       },
     },
     {
-      label: "Confirm Password",
-      type: isConfirmPasswordVisible ? "text" : "password",
+      label: 'Confirm Password',
+      type: isConfirmPasswordVisible ? 'text' : 'password',
       value: confirmPassword,
       onChange: handleConfirmPasswordChange,
       error: confirmPasswordError,
-      helperText: confirmPasswordError ? "Passwords do not match" : " ",
+      helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
             <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
-              {isConfirmPasswordVisible ? (
-                <VisibilityIcon />
-              ) : (
-                <VisibilityOffIcon />
-              )}
+              {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
             </IconButton>
           </InputAdornment>
         ),
@@ -103,19 +89,23 @@ const AuthInfo = () => {
   return (
     <Box
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minWidth: "330px",
-        maxWidth: "600px",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minWidth: '330px',
+        // maxWidth: '600px',
       }}
     >
+      <Typography variant="h3" sx={{ fontSize: 26, mb: '10px' }}>
+        Authentication
+      </Typography>
+
       {/* Box for First Name and Last Name with wrap */}
       {/* First Name, Last Name, Email Address, Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
         <TextField
-          disabled={user === "admin" ? false : true}
-          sx={{ width: "70%", margin: "0px", marginBottom: "6px" }}
+          disabled={user === 'admin' ? false : true}
+          sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
           label={item.label}
           type={item.type}
           variant="outlined"

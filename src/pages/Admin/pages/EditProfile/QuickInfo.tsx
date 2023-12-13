@@ -1,35 +1,36 @@
-import { Box } from "@mui/material";
-import UploadAvatar from "../AddTeacher/components/UploadAvatar";
+import { Box } from '@mui/material';
+import UploadAvatar from '../AddTeacher/components/UploadAvatar';
 
 const QuickInfo = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "458px",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '458px',
       }}
     >
       {/* This box is for bakcgrounf image, profile picture, and basic info (Name, Email, Status) */}
       <img
+        alt=""
         src="/src/assets/profileBackground.jpg"
         style={{
-          height: "120px",
-          width: "100%",
-          objectFit: "cover",
+          height: '120px',
+          width: '100%',
+          objectFit: 'cover',
         }}
       />
 
       {/* This whole box is shifted up to match the level of bakcground image */}
       <Box
         style={{
-          position: "relative",
-          bottom: "100px",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          position: 'relative',
+          bottom: '100px',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <UploadAvatar />
