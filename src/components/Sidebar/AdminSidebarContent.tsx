@@ -48,7 +48,7 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
           title: 'Students',
           link: 'students',
           icon: <School />,
-          element: <Teachers />,
+          element: <AddTeacher />,
         },
       ],
     },

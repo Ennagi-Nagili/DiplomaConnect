@@ -7,15 +7,6 @@ const StudentListItem = (studentObject: { data: Student | Teacher }) => {
   const isSmallScreen = useMediaQuery('(max-width: 580px)');
   const student = studentObject.data;
   return (
-    // <div style={{ display: 'flex',flexWrap: 'wrap', columnGap: '8px', border: '1px solid #e9e9e9', borderRadius: '5px', margin: '4px', padding: '6px' }}>
-    //   <div style={{ width: '60px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-    //     {student.id}
-    //     <Avatar src=""></Avatar>
-    //   </div>
-    //   <div style={{ width: '50%', textAlign: 'center', textOverflow: 'ellipsis' }}>
-    //     {student.firstName} {student.lastName} {student.fatherName}
-    //   </div>
-    // </div>
     <div
       style={{
         display: 'grid',
