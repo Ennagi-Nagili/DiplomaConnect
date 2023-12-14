@@ -1,44 +1,20 @@
+import '../../style/ProfilePage.scss';
 import * as React from 'react';
-import { AppBar } from '../components/AppBar';
-import { Drawer } from '../components/Drawer';
-import { ExpandMore } from '@mui/icons-material';
-import { MainListItems } from '../components/listItems/mainListItems';
-import { SecondaryListItems } from '../components/listItems/secondaryListItems';
-import { SimpleDialog } from '../components/Dialog';
-import { StudentTable } from '../components/customTable/tables/StudentTable';
-import { Teacher } from '../models/Teacher';
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import Avatar from '@mui/material/Avatar';
-import Badge from '@mui/material/Badge';
+import { Header } from '../../components/Header/Header';
+import { Sidebar } from '../../components/Sidebar/Sidebar';
+import { SimpleDialog } from '../../components/Dialog';
+import { Teacher } from '../../models/Teacher';
 import Box from '@mui/material/Box';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import EditIcon from '@mui/icons-material/Edit';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 
 export const ProfilePage = () => {
   const [open, setOpen] = React.useState(true);
 
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
-
   const [dialog, setDialog] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
-
-  const handleClickOpen = () => {
-    setDialog(true);
-  };
 
   const handleClose = (value: string) => {
     setDialog(false);
@@ -65,17 +41,6 @@ export const ProfilePage = () => {
       }
     };
     input.click();
-  }
-
-  let display: string;
-  let display2: string;
-
-  if (open) {
-    display = 'block';
-    display2 = 'none';
-  } else {
-    display = 'none';
-    display2 = 'block';
   }
 
   const teacher: Teacher = {
@@ -112,76 +77,8 @@ export const ProfilePage = () => {
 
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar open={open}>
-          <Toolbar>
-            <IconButton edge="start" className="toggle" onClick={toggleDrawer} sx={{ ...(open && { display: 'none' }) }}>
-              <MenuIcon />
-            </IconButton>
-            <Typography className="logo_text">DiplomaConnect</Typography>
-
-            <IconButton className="notification_icon">
-              <Badge className="badge" badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar className="toolbar" sx={{ px: [1] }}>
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            <div className="nav-container">
-              <Grid container>
-                <Grid item xs={6} sx={{ display: display }}>
-                  <Avatar
-                    src={profile}
-                    className="avatar"
-                    onClick={() => {
-                      handleClickOpen();
-                    }}
-                  />
-                </Grid>
-
-                <Grid item xs={6} className="edit-container">
-                  <div>
-                    <EditIcon
-                      className="edit"
-                      sx={{ display: display }}
-                      onClick={() => {
-                        importImage();
-                      }}
-                    />
-                  </div>
-                </Grid>
-              </Grid>
-              <Accordion
-                elevation={0}
-                sx={{
-                  display: display,
-                  '&:before': {
-                    display: 'none',
-                  },
-                }}
-              >
-                <AccordionSummary expandIcon={<ExpandMore />} aria-controls="panel1a-content" id="panel1a-header">
-                  <Typography className="accordion-head">Personal Information</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <MainListItems profile={true} />
-                </AccordionDetails>
-              </Accordion>
-              <div style={{ display: display2 }}>
-                <MainListItems profile={true} />
-              </div>
-              <Divider sx={{ my: 1 }} />
-              <SecondaryListItems open={open} profile={true} />
-            </div>
-          </List>
-        </Drawer>
+        <Header open={open} setOpen={setOpen} display="none" />
+        <Sidebar open={open} setOpen={setOpen} admin={false} />
         <Box
           component="main"
           className="main"
@@ -190,7 +87,7 @@ export const ProfilePage = () => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container>
               <Grid item>
                 <div id="header">
@@ -235,20 +132,6 @@ export const ProfilePage = () => {
                   {teacher.books.map((item, index) => (
                     <p key={`book-${index}`}>{item}</p>
                   ))}
-                </div>
-              </Grid>
-
-              <Grid item xs={12}>
-                <div id="section-request">
-                  <p className="main-head">Elmi rəhbərlik tələbləri</p>
-                  <StudentTable type={'request'} />
-                </div>
-              </Grid>
-
-              <Grid item xs={12}>
-                <div id="section-students">
-                  <p className="main-head">Mənim tələbələrim</p>
-                  <StudentTable type={'student'} />
                 </div>
               </Grid>
             </Grid>

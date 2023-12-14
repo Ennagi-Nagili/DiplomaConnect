@@ -69,6 +69,7 @@ body {
 .details-container {
    line-height: 4;
    letter-spacing: 1px;
+   padding-top: 24px;
 }
 
 .foot {
@@ -120,4 +121,26 @@ body {
 .goBtn {
     background: none;
     border: none;
+}
+
+.task-container {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.answer {
+    padding: 16px;
+    border: 1px solid black;
+    display: inline-block;
+    margin-right: 32px;
+    font-size: 14px;
+}
+
+.table-container {
+    height: 100vh;
+    padding: 0 48px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
 }

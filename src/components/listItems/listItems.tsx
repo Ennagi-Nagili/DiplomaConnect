@@ -4,7 +4,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PeopleIcon from '@mui/icons-material/People';
 import React from 'react';
 
-export const SecondaryListItems = ({ open, profile }: { open: boolean; profile: boolean }) => {
+export const ListItems = ({ open, profile }: { open: boolean; profile: boolean }) => {
   let display: string;
   let hide = 'none';
   let btn = { icon: <AssignmentIcon />, text: 'Tasks' };
