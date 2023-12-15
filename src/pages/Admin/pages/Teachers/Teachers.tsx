@@ -1,46 +1,76 @@
 import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { generateNUsers } from '../../../../models/generateMockUsers';
 import DataGridToolbar from '../../components/DataGridToolbar';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useCallback, useMemo, useState } from 'react';
 import { Student, Teacher } from '../../../../models/models';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import './Teachers.scss';
+import { generateNUsers } from '../../../../models/generateMockUsers';
 
-// Rows:
-// Initial state of teachers
-const teachers: Teacher[] = generateNUsers({ type: 'teacher', number: 27 }); // Generating some mock teachers
-
-// Actions (will be used 'actions' column)
-type Row = (typeof teachers)[number];
+const userType = 'teacher';
+const number = 12;
 
 export default function DataTable() {
-  const navigate = useNavigate();
+  // Initial state data
+  // TODO:
+  // const [users, setUsers] = useState<Teacher[] | Student[]>([]);
+  // useEffect(() => {
+  //   const fetchUsersArray = async () => {
+  //     await fetch(`https://jsonplaceholder.typicode.com/users/${users}`)
+  //       .then((response) => response.json())
+  //       .then((json) => {
+  //         const fetchedUsersArray: Teacher[] | Student[] = json;
+  //         setUsers(fetchedUsersArray)
+  //         console.log('json USERS', json);
+  //       });
+  //   };
+  //   fetchUsersArray();
+  // }, []);
 
-  const [rows, setRows] = useState<Row[]>(teachers);
+  // Temporary initial state data
+  const users = generateNUsers({ type: userType, number: number });
+  console.log('users', users);
 
-  const openUserProfile = useCallback(
-    (user: Teacher | Student) => () => {
-      // setTimeout(() => {
-      //   setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-      // });
-      console.log(`Open user with id ${user.id}`);
-      navigate(`/teacher/${user.firstName.toLowerCase()}-${user.lastName.toLowerCase()}-id${user.id}`);
-    },
-    [],
-  );
+  type Row = (typeof users)[number];
+  const [rows, setRows] = useState<Row[]>(users);
 
   const deleteUser = useCallback(
     (user: Teacher | Student) => () => {
+      // TODO: Use real API when available
       console.log(`Delete user with id ${user.id}`);
+      fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`, {
+        method: 'DELETE',
+      });
       setTimeout(() => {
         setRows((prevRows) => prevRows.filter((row) => row.id !== user.id));
       });
     },
-    [],
+    [users, rows],
   );
 
   // Columns:
+  const teacherColumns: GridColDef<Row>[] = [
+    {
+      field: 'department',
+      headerName: 'Department',
+      width: 140,
+    },
+    {
+      field: 'subject',
+      headerName: 'Subject',
+      width: 140,
+    },
+  ];
+
+  const studentColumns: GridColDef<Row>[] = [
+    {
+      field: 'group',
+      headerName: 'Group',
+      width: 140,
+    },
+  ];
+
   const columns = useMemo<GridColDef<Row>[]>(
     () => [
       {
@@ -66,16 +96,8 @@ export default function DataTable() {
         width: 200,
         valueGetter: (params: GridValueGetterParams) => `${params.row.firstName || ''} ${params.row.lastName || ''}`,
       },
-      {
-        field: 'department',
-        headerName: 'Department',
-        width: 140,
-      },
-      {
-        field: 'subject',
-        headerName: 'Subject',
-        width: 140,
-      },
+      // Spread teacher or student specific column information
+      ...(userType === 'teacher' ? teacherColumns : studentColumns),
       {
         field: 'email',
         headerName: 'Email',
@@ -96,10 +118,14 @@ export default function DataTable() {
         cellClassName: 'actions',
         getActions: (params) => [
           // Redirect to user
-          <GridActionsCellItem icon={<OpenInNewIcon />} label="Redirect" onClick={openUserProfile(params.row)} />,
-
-          // Delete User
-          <GridActionsCellItem icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.row)} />,
+          <>
+            {/* // Redirect to user */}
+            <Link to={`/admin/teachers/${params.id}`}>
+              <GridActionsCellItem key="redirectToUser" icon={<OpenInNewIcon />} label="Redirect" />
+            </Link>
+            {/* // Delete User */}
+            <GridActionsCellItem key="deleteUser" icon={<DeleteIcon />} label="Delete" onClick={deleteUser(params.row)} />
+          </>,
         ],
       },
     ],
@@ -108,7 +134,7 @@ export default function DataTable() {
 
   return (
     <DataGrid
-      rows={rows} // tachers are initial state, rows are secondary
+      rows={rows} // teachers are initial state, rows are secondary
       columns={columns}
       initialState={{
         pagination: { paginationModel: { pageSize: 10 } },
@@ -121,10 +147,14 @@ export default function DataTable() {
       sx={{
         // height: '730px',
         // maxHeight: '1000px',
+        minWidth: '330px',
         width: '80%',
         maxWidth: '1000px',
         margin: 'auto',
       }}
+      autoHeight
+      // autoPageSize
+      getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 1 ? 'Mui-even' : 'Mui-odd')}
     />
   );
 }

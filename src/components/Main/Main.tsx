@@ -54,6 +54,9 @@ export const Main = ({ open }: MainProps) => {
             <Route key={index} path={`${page.link}`} element={page.element} />
           ))}
 
+          {/* Dynamic link for teachers */}
+          <Route path="/teachers/:userID" element={<EditProfile />} />
+
           {/* Edit Profile */}
           <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
