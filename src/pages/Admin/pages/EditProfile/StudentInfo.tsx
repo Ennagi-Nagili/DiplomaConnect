@@ -1,5 +1,5 @@
 import { Avatar, CardContent, IconButton, useMediaQuery } from '@mui/material';
-import { generateNUsers } from '../../../../models/generateMockUsers';
+import { generateNStudents } from '../../../../models/generateMockUsers';
 import { Student, Teacher } from '../../../../models/models';
 import LaunchIcon from '@mui/icons-material/Launch';
 
@@ -24,7 +24,7 @@ const StudentListItem = (studentObject: { data: Student | Teacher }) => {
         <Avatar src=""></Avatar>
       </div>
 
-      <div style={{ display: 'flex',flexWrap: 'wrap', columnGap: '20px' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '20px' }}>
         <div>
           {student.firstName} {student.lastName} {student.fatherName}
         </div>
@@ -41,7 +41,7 @@ const StudentListItem = (studentObject: { data: Student | Teacher }) => {
   );
 };
 
-const mockStudents = generateNUsers({ type: 'student', number: 10 });
+const mockStudents = generateNStudents({ number: 10 });
 
 const StudentInfo = () => {
   return (

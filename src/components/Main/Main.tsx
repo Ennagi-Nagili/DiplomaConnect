@@ -17,16 +17,20 @@ const AdminSidebarPages: Page[] = [
     element: <Dashboard />,
   },
   {
-    link: 'add-teacher',
-    element: <AddTeacher />,
-  },
-  {
     link: 'teachers',
     element: <Teachers />,
   },
   {
     link: 'students',
     element: <Teachers />,
+  },
+  {
+    link: 'add-teacher',
+    element: <AddTeacher />,
+  },
+  {
+    link: 'add-student',
+    element: <AddTeacher />,
   },
 ];
 

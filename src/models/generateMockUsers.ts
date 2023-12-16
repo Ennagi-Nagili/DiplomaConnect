@@ -1,20 +1,20 @@
-import { Student, Teacher, User } from './models';
+import { Student, Teacher } from './models';
 
 type GenerateNUsersProps = {
-  type: 'teacher' | 'student';
   number: number;
 };
 
-export const generateNUsers = (props: GenerateNUsersProps): Teacher[] | Student[] => {
-  const { type, number } = props;
+// TODO: Split this into two functions: generateNTeachers and generateNStudents
+export const generateNTeachers = (props: GenerateNUsersProps): Teacher[] => {
+  const { number } = props;
 
-  const users = [];
+  const teachers: Teacher[] = [];
 
   for (let index = 0; index < number; index++) {
     // General User
-    const user: User = {
+    const teacher: Teacher = {
       id: index,
-      type: `${type}`,
+      type: 'teacher',
       profilePhoto: `URL-${index}`,
       firstName: `First Name ${index}`,
       lastName: `Last Name ${index}`,
@@ -22,26 +22,35 @@ export const generateNUsers = (props: GenerateNUsersProps): Teacher[] | Student[
       phoneNumber: `Phone Number ${index}`,
       email: `Email ${index}`,
       password: `password ${index}`,
+      department: `Department ${index}`,
+      subject: `Subject ${index}`,
+      students: [index, index + 1, index + 2],
     };
-
-    // Specific User
-    if (type === 'teacher') {
-      const specificUser: Teacher = {
-        ...user,
-        department: `Department ${index}`,
-        subject: `Subject ${index}`,
-        students: [index, index + 1, index + 2],
-      };
-      users.push(specificUser);
-    } else {
-      const specificUser: Student = {
-        ...user,
-        group: `Group ${index}`,
-        teacher: index,
-      };
-      users.push(specificUser);
-    }
+    teachers.push(teacher);
   }
+  return teachers;
+};
+export const generateNStudents = (props: GenerateNUsersProps): Student[] => {
+  const { number } = props;
 
-  return users;
+  const students: Student[] = [];
+
+  for (let index = 0; index < number; index++) {
+    // General User
+    const student: Student = {
+      id: index,
+      type: 'teacher',
+      profilePhoto: `URL-${index}`,
+      firstName: `First Name ${index}`,
+      lastName: `Last Name ${index}`,
+      fatherName: `Father Name ${index}`,
+      phoneNumber: `Phone Number ${index}`,
+      email: `Email ${index}`,
+      password: `password ${index}`,
+      group: `Group ${index}`,
+      teacher: index,
+    };
+    students.push(student);
+  }
+  return students;
 };
