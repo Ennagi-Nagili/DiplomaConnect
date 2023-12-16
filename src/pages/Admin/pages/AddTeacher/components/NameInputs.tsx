@@ -1,7 +1,7 @@
 import { Box, TextField } from '@mui/material';
-import { Teacher } from '../../../../../models/models';
 import React, { useState } from 'react';
-// import { generateNUsers } from "../../../../../models/generateMockUsers";
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
@@ -19,36 +19,10 @@ export type TextFieldAttributes = {
 };
 
 const NameInputs = () => {
-  // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
-  const mockTeacher: Teacher = {
-    id: 1,
-    type: 'teacher',
-    profilePhoto: '',
-    firstName: '',
-    lastName: '',
-    fatherName: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
-    department: '',
-    subject: '',
-    students: [],
-  };
+  const dispatch = useAppDispatch();
 
-  // States
-  const [firstName, setFirstName] = useState(mockTeacher.firstName);
-  const [lastName, setLastName] = useState(mockTeacher.lastName);
-  const [fatherName, setFatherName] = useState(mockTeacher.fatherName);
-
-  // TODO: This should be implemented with Redux Toolkit
-  // const changedTeacher: Teacher = {
-  //   ...mockTeacher,
-  //   firstName: firstName,
-  //   lastName: lastName,
-  //   fatherName: fatherName,
-  //   email: email,
-  //   phoneNumber: phone,
-  // };
+  // Draft User
+  const placholderUser = useAppSelector(selectSelectedUser);
 
   //Corresponding Error States
   const [firstNameError, setFirstNameError] = useState(false);
@@ -56,17 +30,20 @@ const NameInputs = () => {
   const [fatherNameError, setFatherNameError] = useState(false);
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstName(e.target.value);
+    // setFirstName(e.target.value);
+    dispatch(setSelectedUser({ ...placholderUser, firstName: e.target.value }));
     setFirstNameError(e.target.value.trim() === '');
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLastName(e.target.value);
+    // setLastName(e.target.value);
+    dispatch(setSelectedUser({ ...placholderUser, lastName: e.target.value }));
     setLastNameError(e.target.value.trim() === '');
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFatherName(e.target.value);
+    // setFatherName(e.target.value);
+    dispatch(setSelectedUser({ ...placholderUser, fatherName: e.target.value }));
     setFatherNameError(e.target.value.trim() === '');
   };
 
@@ -74,21 +51,21 @@ const NameInputs = () => {
   const textFieldAttributes: TextFieldAttributes[] = [
     {
       label: 'First Name',
-      value: firstName,
+      value: placholderUser.firstName,
       onChange: handleFirstNameChange,
       error: firstNameError,
       helperText: firstNameError ? 'First Name is required' : ' ',
     },
     {
       label: 'Last Name',
-      value: lastName,
+      value: placholderUser.lastName,
       onChange: handleLastNameChange,
       error: lastNameError,
       helperText: lastNameError ? 'Last Name is required' : ' ',
     },
     {
       label: 'FatherName',
-      value: fatherName,
+      value: placholderUser.fatherName,
       onChange: handleFatherNameChange,
       error: fatherNameError,
       helperText: fatherNameError ? 'Father Name is required' : ' ',

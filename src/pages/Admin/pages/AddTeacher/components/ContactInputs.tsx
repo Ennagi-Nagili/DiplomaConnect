@@ -1,54 +1,29 @@
 import { Box, TextField, Typography } from '@mui/material';
-import { Teacher } from '../../../../../models/models';
 import React, { useState } from 'react';
 import { TextFieldAttributes } from './NameInputs';
-// import { generateNUsers } from "../../../../../models/generateMockUsers";
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
 
 const ContactInputs = () => {
-  // const mockTeacher: Teacher = generateNUsers({type: "teacher", number: 1})[0];
-  const mockTeacher: Teacher = {
-    id: 1,
-    type: 'teacher',
-    profilePhoto: '',
-    firstName: '',
-    lastName: '',
-    fatherName: '',
-    email: '',
-    phoneNumber: '',
-    password: '',
-    department: '',
-    subject: '',
-    students: [],
-  };
-
-  // States
-  const [email, setEmail] = useState(mockTeacher.email);
-  const [phone, setPhone] = useState(mockTeacher.phoneNumber);
-
-  // TODO: This should be implemented with Redux Toolkit
-  // const changedTeacher: Teacher = {
-  //   ...mockTeacher,
-  //   firstName: firstName,
-  //   lastName: lastName,
-  //   fatherName: fatherName,
-  //   email: email,
-  //   phoneNumber: phone,
-  // };
+  const dispatch = useAppDispatch();
+  const placeholderUser = useAppSelector(selectSelectedUser);
 
   //Corresponding Error States
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+    // setEmail(e.target.value);
+    dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
     setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(e.target.value);
+    // setPhone(e.target.value);
+    dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
     setPhoneError(!/^\d+$/.test(e.target.value));
   };
 
@@ -57,14 +32,14 @@ const ContactInputs = () => {
     {
       label: 'Email Address',
       type: 'email',
-      value: email,
+      value: placeholderUser.email,
       onChange: handleEmailChange,
       error: emailError,
       helperText: emailError ? 'Enter a valid email address' : ' ',
     },
     {
       label: 'Phone Number',
-      value: phone,
+      value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
       error: phoneError,
       helperText: phoneError ? 'Enter a valid phone number' : ' ',

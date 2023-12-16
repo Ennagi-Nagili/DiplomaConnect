@@ -39,7 +39,7 @@ export const generateNStudents = (props: GenerateNUsersProps): Student[] => {
     // General User
     const student: Student = {
       id: index,
-      type: 'teacher',
+      type: 'student',
       profilePhoto: `URL-${index}`,
       firstName: `First Name ${index}`,
       lastName: `Last Name ${index}`,

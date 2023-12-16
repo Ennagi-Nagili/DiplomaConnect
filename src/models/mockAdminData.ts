@@ -1,8 +1,20 @@
 import { generateNStudents, generateNTeachers } from './generateMockUsers';
-import { Student, Teacher } from './models';
+import { Student, Teacher, User } from './models';
+
+export const emptyUser: User = {
+  id: -1,
+  type: 'teacher',  // default
+  profilePhoto: '',
+  firstName: '',
+  lastName: '',
+  fatherName: '',
+  phoneNumber: '',
+  email: '',
+  password: '',
+}; 
 
 export const emptyTeacher: Teacher = {
-  id: 1,
+  id: -1,
   type: 'teacher',
   profilePhoto: '',
   firstName: '',
@@ -17,8 +29,8 @@ export const emptyTeacher: Teacher = {
 };
 
 export const emptyStudent: Student = {
-  id: 1,
-  type: 'teacher',
+  id: -1,
+  type: 'student',
   profilePhoto: '',
   firstName: '',
   lastName: '',
@@ -27,7 +39,7 @@ export const emptyStudent: Student = {
   email: '',
   password: '',
   group: '',
-  teacher: 1, // id of teacher
+  teacher: -1, // id of teacher
 };
 
 export const mockTeacher = generateNTeachers({ number: 1 })[0];

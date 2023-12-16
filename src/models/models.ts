@@ -20,8 +20,8 @@ export interface Teacher extends User {
 }
 
 export interface Student extends User {
-  group: string;
-  teacher: number; // id of teacher
+  group?: string;
+  teacher?: number; // id of teacher
 }
 
 // Students sends cover letter to teacher to ask him to be his supervisor

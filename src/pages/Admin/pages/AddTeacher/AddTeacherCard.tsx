@@ -7,12 +7,12 @@ import SpecificInputs from './components/SpecificInputs';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 import UploadAvatar from './components/UploadAvatar';
-
-// TODO...
-const user: string = 'student';
+import { useAppSelector } from '../../../../services/hooks';
+import {  selectPageMode, selectSelectedUser } from '../../../../services/reducers/users.slice';
 
 // Note: Each item in itemList should be an array of objects
 const departments = {
@@ -30,6 +30,18 @@ const groups = {
 
 const AddTeacherCard: React.FC = () => {
   const isSmallScreen = useMediaQuery('(max-width: 805px)');
+
+  // TODO: /edit-profile for currentUser (admin in my case), /teachers/id-3/edit-profile for teachers and students DataGrid OpenInNewView
+  // const currentUser = useAppSelector(selectCurrentUser);
+  const pageMode = useAppSelector(selectPageMode);
+  // console.log('ADD USER: PAGEMODE', pageMode);
+  const selectedUser = useAppSelector(selectSelectedUser);
+  console.log('ADD USER: SELECTED USER', selectedUser);
+  const userType = selectedUser.type;
+  // console.log('ADD USER: USER TYPE', userType);
+
+  // const userType = pathEnd === 'edit-profile' ? currentUser.type : pathEnd === 'add-teacher' ? 'teacher' : 'student';
+  // const userTypeCapitalized = pathEnd === 'edit-profile' ? currentUser.type : pathEnd === 'add-teacher' ? 'Teacher' : 'Student';
 
   return (
     <Card
@@ -53,8 +65,19 @@ const AddTeacherCard: React.FC = () => {
             gap: '6px',
           }}
         >
-          <PersonAddIcon />
-          Add Teacher
+          {pageMode === 'edit' && (
+            <>
+              <EditIcon />
+              Edit Profile
+            </>
+          )}
+          {pageMode === 'add' && (
+            <>
+              <PersonAddIcon />
+              {/* TODO: We should have capitalized userType */}
+              Add {userType}
+            </>
+          )}
         </Typography>
       </Box>
 
@@ -66,13 +89,14 @@ const AddTeacherCard: React.FC = () => {
           gap: '5px',
         }}
       >
-        {/* Box 1: Profile Photo and Upload Resume */}
+        {/* Box 1: Upload Avatar and Name Inputs */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '360px' }}>
+          {/* TODO: Ask master Anton to check upload avatar */}
           <UploadAvatar />
           <NameInputs />
         </div>
 
-        {/* Box 2: First Name, Last Name, Email, Password, Confirm Password */}
+        {/* Box 2: User Specific Inputs, Phone Number, Email, Password, Confirm Password */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '360px' }}>
           {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
           {/* Student or Teacher specific information */}
@@ -82,9 +106,9 @@ const AddTeacherCard: React.FC = () => {
               Teacher Information
             </Typography>
 
-            {user === 'student' && <SpecificInputs title={groups.title} list={groups.itemList} />}
+            {userType === 'student' && <SpecificInputs title={groups.title} list={groups.itemList} />}
 
-            {user === 'teacher' && (
+            {userType === 'teacher' && (
               <>
                 <SpecificInputs title={departments.title} list={departments.itemList} />
                 <SpecificInputs title={subjects.title} list={subjects.itemList} />
@@ -94,9 +118,6 @@ const AddTeacherCard: React.FC = () => {
 
           {/* Every User needs to have these info */}
           <ContactInputs />
-
-          {/* Specific Info */}
-          {user === 'profileOwner' || user === 'admin' ? <></> : <></>}
 
           {/* AuthInfo */}
           <AuthInputs />
