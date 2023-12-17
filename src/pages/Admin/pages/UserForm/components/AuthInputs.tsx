@@ -3,6 +3,8 @@ import { TextFieldAttributes } from './NameInputs';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
@@ -17,7 +19,9 @@ const AuthInputs = () => {
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   // State
-  const [password, setPassword] = useState('');
+  const dispatch = useAppDispatch();
+  const selectedUser = useAppSelector(selectSelectedUser);
+  // const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   // Corresponding Error State
@@ -25,12 +29,12 @@ const AuthInputs = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    setPasswordError(passwordTouched && password.trim() === '');
-  }, [password, passwordTouched]);
+    setPasswordError(passwordTouched && selectedUser.password.trim() === '');
+  }, [selectedUser.password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== password);
-  }, [confirmPassword, password, confirmPasswordTouched]);
+    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
+  }, [confirmPassword, selectedUser.password, confirmPasswordTouched]);
 
   const handleTogglePasswordVisibility = () => {
     setIsPasswordVisible((prev) => !prev);
@@ -41,7 +45,8 @@ const AuthInputs = () => {
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const password = e.target.value;
+    dispatch(setSelectedUser({ ...selectedUser, password: password }));
     setPasswordTouched(true);
   };
 
@@ -55,10 +60,10 @@ const AuthInputs = () => {
     {
       label: 'Pasword',
       type: isPasswordVisible ? 'text' : 'password',
-      value: password,
+      value: selectedUser.password,
       onChange: handlePasswordChange,
       error: passwordError,
-      helperText: passwordTouched && password.trim() === '' ? 'Password is required' : ' ',
+      helperText: passwordTouched && selectedUser.password.trim() === '' ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -67,24 +72,31 @@ const AuthInputs = () => {
         ),
       },
     },
-    {
-      label: 'Confirm Password',
-      type: isConfirmPasswordVisible ? 'text' : 'password',
-      value: confirmPassword,
-      onChange: handleConfirmPasswordChange,
-      error: confirmPasswordError,
-      helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
-      InputProps: {
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
-              {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      },
-    },
   ];
+
+  const confirmPasswordAttrs: TextFieldAttributes = {
+    label: 'Confirm Password',
+    type: isConfirmPasswordVisible ? 'text' : 'password',
+    value: confirmPassword,
+    onChange: handleConfirmPasswordChange,
+    error: confirmPasswordError,
+    helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
+    InputProps: {
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
+            {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    },
+  };
+
+  const pageMode = useAppSelector(selectPageMode);
+  // NOTE: Confirm Password will be only in 'add' mode for now. I'll change this if I have time at the end.
+  if (pageMode === 'add') {
+    textFieldAttributes.push(confirmPasswordAttrs);
+  }
 
   return (
     <Box

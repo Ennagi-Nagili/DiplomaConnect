@@ -1,7 +1,7 @@
 import { Box, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectProcessingErrors, selectSelectedUser, setProcessingErrors, setSelectedUser } from '../../../../../services/reducers/users.slice';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
@@ -21,30 +21,26 @@ export type TextFieldAttributes = {
 const NameInputs = () => {
   const dispatch = useAppDispatch();
 
-  // Draft User
+  // Note selected user was set either to empty placeholder or currentUser depending on the route in UserForm.tsx
   const placholderUser = useAppSelector(selectSelectedUser);
-
-  //Corresponding Error States
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [fatherNameError, setFatherNameError] = useState(false);
+  const processingErrors = useAppSelector(selectProcessingErrors);
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setFirstName(e.target.value);
     dispatch(setSelectedUser({ ...placholderUser, firstName: e.target.value }));
-    setFirstNameError(e.target.value.trim() === '');
+    processingErrors.firstNameError = e.target.value.trim() === '';
+    dispatch(setProcessingErrors(processingErrors));
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setLastName(e.target.value);
     dispatch(setSelectedUser({ ...placholderUser, lastName: e.target.value }));
-    setLastNameError(e.target.value.trim() === '');
+    processingErrors.lastNameError = e.target.value.trim() === '';
+    dispatch(setProcessingErrors(processingErrors));
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setFatherName(e.target.value);
     dispatch(setSelectedUser({ ...placholderUser, fatherName: e.target.value }));
-    setFatherNameError(e.target.value.trim() === '');
+    processingErrors.fatherNameError = e.target.value.trim() === '';
+    dispatch(setProcessingErrors(processingErrors));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -53,22 +49,22 @@ const NameInputs = () => {
       label: 'First Name',
       value: placholderUser.firstName,
       onChange: handleFirstNameChange,
-      error: firstNameError,
-      helperText: firstNameError ? 'First Name is required' : ' ',
+      error: processingErrors.firstNameError,
+      helperText: processingErrors.firstNameError ? 'First Name is required' : ' ',
     },
     {
       label: 'Last Name',
       value: placholderUser.lastName,
       onChange: handleLastNameChange,
-      error: lastNameError,
-      helperText: lastNameError ? 'Last Name is required' : ' ',
+      error: processingErrors.lastNameError,
+      helperText: processingErrors.lastNameError ? 'Last Name is required' : ' ',
     },
     {
       label: 'FatherName',
       value: placholderUser.fatherName,
       onChange: handleFatherNameChange,
-      error: fatherNameError,
-      helperText: fatherNameError ? 'Father Name is required' : ' ',
+      error: processingErrors.fatherNameError,
+      helperText: processingErrors.fatherNameError ? 'Father Name is required' : ' ',
     },
   ];
 

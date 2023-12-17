@@ -22,8 +22,8 @@ export const generateNTeachers = (props: GenerateNUsersProps): Teacher[] => {
       phoneNumber: `Phone Number ${index}`,
       email: `Email ${index}`,
       password: `password ${index}`,
-      department: `Department ${index}`,
-      subject: `Subject ${index}`,
+      department: `Analysis`,
+      subject: `Real Analysis`,
       students: [index, index + 1, index + 2],
     };
     teachers.push(teacher);
@@ -47,7 +47,7 @@ export const generateNStudents = (props: GenerateNUsersProps): Student[] => {
       phoneNumber: `Phone Number ${index}`,
       email: `Email ${index}`,
       password: `password ${index}`,
-      group: `Group ${index}`,
+      group: `R-11`,
       teacher: index,
     };
     students.push(student);

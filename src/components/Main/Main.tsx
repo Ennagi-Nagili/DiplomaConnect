@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
-import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import Profile from '../../pages/Admin/pages/Profile/Profile';
 import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
+import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
 
 type Page = {
   link: string;
@@ -26,11 +26,11 @@ const AdminSidebarPages: Page[] = [
   },
   {
     link: 'add-teacher',
-    element: <AddTeacher />,
+    element: <UserForm />,
   },
   {
     link: 'add-student',
-    element: <AddTeacher />,
+    element: <UserForm />,
   },
 ];
 
@@ -62,7 +62,7 @@ export const Main = ({ open }: MainProps) => {
           <Route path="/teachers/:userID" element={<Profile />} />
 
           {/* Edit Profile */}
-          <Route path="/edit-profile" element={<AddTeacher />} />
+          <Route path="/edit-profile" element={<UserForm />} />
         </Routes>
 
         {/* TODO: If teacher: */}

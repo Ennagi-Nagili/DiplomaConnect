@@ -1,14 +1,25 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Student, Teacher } from '../../models/models';
+import { Admin, Student, Teacher } from '../../models/models';
 import { RootState } from '../store';
-import { emptyStudent, mockTeacher } from '../../models/mockAdminData';
+import { emptyAdmin, emptyStudent, mockAdmin, mockTeacher } from '../../models/mockAdminData';
 
-type GeneralType = Teacher | Student;
+type GeneralType = Teacher | Student | Admin;
+
+interface IProcessingErrors {
+  firstNameError: boolean;
+  lastNameError: boolean;
+  fatherNameError: boolean;
+  emailError: boolean;
+  phoneNumberError: boolean;
+  passwordError: boolean;
+  currentPasswordError: boolean;
+}
 
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
   pageMode?: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
+  processingErrors: IProcessingErrors;
   teachers: {
     data: Teacher[];
     isSet: boolean;
@@ -21,10 +32,19 @@ interface IUsersState {
 
 const initialState: IUsersState = {
   // This should be set only in login page
-  currentUser: mockTeacher,
+  currentUser: mockTeacher, // TODO: change to emptyUser after development
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
-  selectedUser: emptyStudent,
+  selectedUser: emptyStudent, // TODO: change to emptyUser after development
+  processingErrors: {
+    firstNameError: false,
+    lastNameError: false,
+    fatherNameError: false,
+    emailError: false,
+    phoneNumberError: false,
+    passwordError: false,
+    currentPasswordError: false,
+  },
   pageMode: 'no-edit', // TODO: default
   teachers: {
     data: [],
@@ -48,8 +68,15 @@ const usersSlice = createSlice({
       const { userCategory } = action.payload;
       state[userCategory].isSet = true;
     },
+
+    // Add and edit modes are used in AddUser and EditUser pages, respectively. Other pages are no-edit.
+    // TODO: Maybe change name from no-edit to no-mode.
     setPageMode: (state: IUsersState, action: PayloadAction<'add' | 'edit' | 'no-edit'>) => {
       state.pageMode = action.payload;
+    },
+
+    setProcessingErrors: (state: IUsersState, action: PayloadAction<IProcessingErrors>) => {
+      state.processingErrors = action.payload;
     },
 
     // Set users array, current user, and selected user
@@ -70,6 +97,7 @@ const usersSlice = createSlice({
       const { userCategory, data } = action.payload;
       state[userCategory].data = [...state[userCategory].data, data];
     },
+
     // Removes user of selectedUserId from array
     deleteUser: (state: IUsersState, action: PayloadAction<{ userCategory: UserCategory; userId: number }>) => {
       const { userCategory, userId } = action.payload;
@@ -78,7 +106,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setPageMode, addUser, deleteUser } = usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setProcessingErrors, setPageMode, addUser, deleteUser } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -87,11 +115,8 @@ export const selectStudentsIsSet = (state: RootState) => state.users.students.is
 export const selectTeachers = (state: RootState) => state.users.teachers.data;
 export const selectStudents = (state: RootState) => state.users.students.data;
 
-// const selectCurrentUserCategory = (state: RootState) => state.users.currentUser.category;
-// const selectCurrentUserId = (state: RootState) => state.users.currentUser.id;
+export const selectPageMode = (state: RootState) => state.users.pageMode;
 
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
-
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
-
-export const selectPageMode = (state: RootState) => state.users.pageMode;
+export const selectProcessingErrors = (state: RootState) => state.users.processingErrors;

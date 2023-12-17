@@ -1,7 +1,7 @@
 import { Divider, List, ListSubheader } from '@mui/material';
 import { Person, School } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
+import AddTeacher from '../../pages/Admin/pages/UserForm/UserForm';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import ListItem from '@mui/material/ListItem';
