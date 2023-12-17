@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
+import { store } from '../../../pages/Teacher/DetailsPage/DetailsStore';
 import { studentData } from '../../../models/mockData';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -47,7 +48,8 @@ export const StudentTable = ({ type }: { type: string }) => {
   const navigate = useNavigate();
 
   function handleGo(id: number) {
-    navigate('/details', { state: { student: data[id] } });
+    store.dispatch({ type: 'details', payload: data[id] });
+    navigate('/details');
   }
 
   return (

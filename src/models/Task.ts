@@ -7,4 +7,7 @@ export type Task = {
   deadline: string;
   finished: boolean;
   date: string;
+  answer: string;
+  files: string[];
+  review: string;
 };

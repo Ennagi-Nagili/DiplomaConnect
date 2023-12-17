@@ -1,16 +1,16 @@
 import './App.scss';
 import './style/ProfilePage.scss';
-import { DetailsPage } from './pages/Teacher/DetailsPage';
+import { DetailsPage } from './pages/Teacher/DetailsPage/DetailsPage';
 import { ProfilePage } from './pages/Teacher/ProfilePage';
+import { RequestsPage } from './pages/Teacher/RequestsPage';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { TaskDetails } from './pages/Teacher/TaskDetails';
+import { StudentsPage } from './pages/Teacher/StudentsPage';
+import { TaskDetails } from './pages/Teacher/TaskDetailsPage/TaskDetails';
 import { useEffect, useState } from 'react';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
-import { RequestsPage } from './pages/Teacher/RequestsPage';
-import { StudentsPage } from './pages/Teacher/StudentsPage';
 
 function App() {
   const [login, setLogin] = useState<boolean>(true);

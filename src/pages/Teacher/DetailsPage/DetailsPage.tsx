@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Header } from '../../components/Header/Header';
-import { Sidebar } from '../../components/Sidebar/Sidebar';
-import { TaskTable } from '../../components/customTable/tables/TaskTable';
-import { useLocation } from 'react-router-dom';
+import { Header } from '../../../components/Header/Header';
+import { Sidebar } from '../../../components/Sidebar/Sidebar';
+import { TaskTable } from '../../../components/customTable/tables/TaskTable';
+import { store } from './DetailsStore';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,10 +10,8 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 
 export const DetailsPage = () => {
-  const [open, setOpen] = React.useState(true);
-
-  const { state } = useLocation();
-  const { student } = state;
+  const [open, setOpen] = React.useState(false);
+  const student = store.getState().value;
 
   return (
     <div>
@@ -39,15 +37,15 @@ export const DetailsPage = () => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container>
               <Grid item>
                 <div id="header">
-                  <p className="head">Profil məlumatları</p>
+                  <p className="head">Şagirdin məlumatları</p>
                 </div>
                 <div id="section-name">
-                  <p className="info-head">Ad & Soyad</p>
-                  <p>{student.name}</p>
+                  <p>Ad & Soyad</p>
+                  <p className="info-head">{student.name}</p>
                 </div>
                 <div id="section-phone">
                   <p className="info-head">Telefon nömrəsi</p>

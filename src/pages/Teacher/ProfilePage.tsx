@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 
 export const ProfilePage = () => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const [dialog, setDialog] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
