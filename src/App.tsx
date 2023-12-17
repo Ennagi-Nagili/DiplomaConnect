@@ -1,8 +1,10 @@
 import './App.css'
-import LogIn from './Login/Login'
+import { TaskPage } from './Task'
 function App() {
   return (
-    <LogIn />
+    <>
+      <TaskPage />
+    </>
   )
 }
 export default App
