@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAppSelector } from '../../services/hooks';
-import { selectStudents, selectTeachers } from '../../services/reducers/users.slice';
+import { selectStudentNames, selectStudents, selectTeacherNames, selectTeachers } from '../../services/reducers/users.slice';
 
 // TODO: This is just an example with jsonplacholder.
 // Adapt the type after API is created.
@@ -21,15 +21,16 @@ export type UserObject = {
 };
 
 const SearchBar: React.FC = () => {
-  const teacherNames = useAppSelector(selectTeachers).map(
-    (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
-  );
-  const studentNames = useAppSelector(selectStudents).map(
-    (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
-  );
-  // console.log('teacherNames', teacherNames);
+  // const teacherNames = useAppSelector(selectTeachers).map(
+  //   (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  // );
+  // const studentNames = useAppSelector(selectStudents).map(
+  //   (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  // );
+  const teacherNames = useAppSelector(selectTeacherNames);
+  const studentNames = useAppSelector(selectStudentNames);
+
   const userNames = teacherNames.concat(studentNames);
-  // console.log('userNames', userNames);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isSmallScreen = useMediaQuery('(max-width: 750px)');

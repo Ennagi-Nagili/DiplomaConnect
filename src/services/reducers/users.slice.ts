@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { Admin, Student, Teacher } from '../../models/models';
 import { RootState } from '../store';
 import { emptyUser, mockTeacher } from '../../models/mockAdminData';
@@ -120,3 +120,11 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
 export const selectProcessingErrors = (state: RootState) => state.users.processingErrors;
+
+// Select teacher and student names for search bar
+export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {
+  return teachers.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+});
+export const selectStudentNames = createSelector([selectStudents], (students): string[] => {
+  return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+});

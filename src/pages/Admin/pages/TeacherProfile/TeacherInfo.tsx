@@ -8,12 +8,11 @@ import { emptyTeacher } from '../../../../models/mockAdminData';
 
 export const TeacherInfo = () => {
   // const dispatch = useAppDispatch();
-  
-  
+
   let intermediateVar = useAppSelector(selectSelectedUser) as Teacher;
   console.log('typeof intermediateVar', typeof intermediateVar);
 
-  if (typeof intermediateVar === 'undefined') {
+  if (!intermediateVar) {
     intermediateVar = emptyTeacher;
   }
 
