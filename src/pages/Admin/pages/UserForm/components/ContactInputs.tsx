@@ -16,13 +16,11 @@ const ContactInputs = () => {
   const [phoneError, setPhoneError] = useState(false);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setEmail(e.target.value);
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
     setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // setPhone(e.target.value);
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
     setPhoneError(!/^\d+$/.test(e.target.value));
   };

@@ -27,20 +27,17 @@ const NameInputs = () => {
 
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placholderUser, firstName: e.target.value }));
-    processingErrors.firstNameError = e.target.value.trim() === '';
-    dispatch(setProcessingErrors(processingErrors));
+    dispatch(setProcessingErrors({ ...processingErrors, firstNameError: e.target.value.trim() === '' }));
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placholderUser, lastName: e.target.value }));
-    processingErrors.lastNameError = e.target.value.trim() === '';
-    dispatch(setProcessingErrors(processingErrors));
+    dispatch(setProcessingErrors({ ...processingErrors, lastNameError: e.target.value.trim() === '' }));
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placholderUser, fatherName: e.target.value }));
-    processingErrors.fatherNameError = e.target.value.trim() === '';
-    dispatch(setProcessingErrors(processingErrors));
+    dispatch(setProcessingErrors({ ...processingErrors, fatherNameError: e.target.value.trim() === '' }));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
