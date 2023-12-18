@@ -1,5 +1,4 @@
-import "./Home.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   // Note: Turaj's authentication code should be here. For now, I placed my own code.
@@ -15,7 +14,7 @@ const Home = () => {
         <Link to="/login">Already have an account?</Link>
       </div>
 
-      <button type="submit" onClick={() => navigate("/profile")}>
+      <button type="submit" onClick={() => navigate('/profile')}>
         Submit
       </button>
     </div>
