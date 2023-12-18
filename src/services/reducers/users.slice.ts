@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Admin, Student, Teacher } from '../../models/models';
 import { RootState } from '../store';
-import { emptyAdmin, emptyStudent, mockAdmin, mockTeacher } from '../../models/mockAdminData';
+import { emptyUser, mockTeacher } from '../../models/mockAdminData';
 
 type GeneralType = Teacher | Student | Admin;
 
@@ -35,7 +35,7 @@ const initialState: IUsersState = {
   currentUser: mockTeacher, // TODO: change to emptyUser after development
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
-  selectedUser: emptyStudent, // TODO: change to emptyUser after development
+  selectedUser: emptyUser, // TODO: change to emptyUser after development
   processingErrors: {
     firstNameError: false,
     lastNameError: false,

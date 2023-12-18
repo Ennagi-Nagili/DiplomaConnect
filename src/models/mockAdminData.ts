@@ -4,7 +4,7 @@ import { Admin, Student, Teacher, User } from './models';
 // Empty user, teacher, student, and admin
 export const emptyUser: User = {
   id: -1,
-  type: 'teacher',  // default
+  type: 'teacher', // default
   profilePhoto: '',
   firstName: '',
   lastName: '',
@@ -12,7 +12,7 @@ export const emptyUser: User = {
   phoneNumber: '',
   email: '',
   password: '',
-}; 
+};
 export const emptyTeacher: Teacher = {
   id: -1,
   type: 'teacher',

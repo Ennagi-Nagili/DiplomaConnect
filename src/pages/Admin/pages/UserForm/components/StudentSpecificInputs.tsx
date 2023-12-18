@@ -26,7 +26,13 @@ const StudentSpecificInputs = () => {
     <>
       <FormControl sx={{ width: '80%', textOverflow: 'ellipsis', marginBottom: '26px' }} size="small">
         <InputLabel id="select-small-label">{groups.title}</InputLabel>
-        <Select labelId="select-small-label" id="select-small" value={selectedUser.group} label={groups.title} onChange={handleGroupChange}>
+        <Select
+          labelId="select-small-label"
+          id="select-small"
+          value={selectedUser.group ? selectedUser.group : ''} // when selectedUser.department is undefined, nothing is chosen
+          label={groups.title}
+          onChange={handleGroupChange}
+        >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>

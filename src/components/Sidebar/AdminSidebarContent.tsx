@@ -10,7 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React from 'react';
-import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 
 type AdminSidebarContentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,14 +41,14 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
           title: 'Teachers',
           link: 'teachers',
           icon: <Person />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
         {
           id: 3,
           title: 'Students',
           link: 'students',
           icon: <School />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
       ],
     },

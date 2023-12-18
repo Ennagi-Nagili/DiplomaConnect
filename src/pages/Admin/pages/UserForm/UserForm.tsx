@@ -38,7 +38,6 @@ const UserForm: React.FC = () => {
         break;
       }
     }
-    // TODO: Regex that matches link like /teachers/id-3/edit-profile
   }, [window.location.pathname]);
 
   return (

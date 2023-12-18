@@ -1,10 +1,28 @@
 import { Box, useMediaQuery } from '@mui/material';
-import CardWrapper from './CardWrapper';
-import TeacherInfo from './TeacherInfo';
-import StudentInfo from './StudentInfo';
+import CardWrapper from './components/CardWrapper';
+import { TeacherInfo } from './TeacherInfo';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
+import { selectStudents, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
+import { StudentInfo } from './StudentInfo';
 
 export const TeacherProfile = () => {
+  const dispatch = useAppDispatch();
   const isSmallScreen = useMediaQuery('(max-width: 1100px)');
+
+  // TODO: When teacher comes from DataGrid, information appears, then disappears on refresh. To avoid this issue,
+  // instead of definind selected user on openInNewView icon, we can use useEffect here. Extract id of the user from
+  // url and setSelectedUser.
+
+  const teachers = useAppSelector(selectTeachers);
+  const students = useAppSelector(selectStudents);
+  useEffect(() => {
+    const pathArray = window.location.pathname.split('/'); // returns an array
+    const id = pathArray.pop() as string; // changes pathArray by removing and returning the last element
+    const userType = pathArray.pop(); // returns last element of the changed pathArray
+    const users = userType === 'teachers' ? teachers : students; // choosing users depending on type
+    dispatch(setSelectedUser(users.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
+  }, [teachers, students]);
 
   return (
     // Container
@@ -56,5 +74,3 @@ export const TeacherProfile = () => {
     </Box>
   );
 };
-
-// export default TeacherProfile;

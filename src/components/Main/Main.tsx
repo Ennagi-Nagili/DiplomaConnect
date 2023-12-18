@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
-import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
 import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
 import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 
 type Page = {
   link: string;
@@ -18,11 +18,11 @@ const AdminSidebarPages: Page[] = [
   },
   {
     link: 'teachers',
-    element: <Teachers />,
+    element: <UsersDataGrid />,
   },
   {
     link: 'students',
-    element: <Teachers />,
+    element: <UsersDataGrid />,
   },
   {
     link: 'add-teacher',

@@ -38,7 +38,7 @@ const TeacherSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.department}
+          value={selectedUser.department ? selectedUser.department : ''} // when selectedUser.department is undefined, nothing is chosen
           label={departments.title}
           onChange={handleDepartmentChange}
         >
@@ -55,7 +55,13 @@ const TeacherSpecificInputs = () => {
 
       <FormControl sx={{ width: '80%', textOverflow: 'ellipsis', marginBottom: '26px' }} size="small">
         <InputLabel id="select-small-label">{subjects.title}</InputLabel>
-        <Select labelId="select-small-label" id="select-small" value={selectedUser.subject} label={subjects.title} onChange={handleSubjectChange}>
+        <Select
+          labelId="select-small-label"
+          id="select-small"
+          value={selectedUser.subject ? selectedUser.subject : ''} // when selectedUser.department is undefined, nothing is chosen
+          label={subjects.title}
+          onChange={handleSubjectChange}
+        >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>

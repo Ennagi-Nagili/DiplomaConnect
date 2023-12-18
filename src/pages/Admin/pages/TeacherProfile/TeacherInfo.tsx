@@ -4,12 +4,21 @@ import { Teacher } from '../../../../models/models';
 import { useAppSelector } from '../../../../services/hooks';
 import { selectSelectedUser } from '../../../../services/reducers/users.slice';
 import { Link } from 'react-router-dom';
+import { emptyTeacher } from '../../../../models/mockAdminData';
 
-// TODO:
-const user: string = 'teacher';
+export const TeacherInfo = () => {
+  // const dispatch = useAppDispatch();
+  
+  
+  let intermediateVar = useAppSelector(selectSelectedUser) as Teacher;
+  console.log('typeof intermediateVar', typeof intermediateVar);
 
-const TeacherInfo = () => {
-  const selectedTeacher = useAppSelector(selectSelectedUser) as Teacher;
+  if (typeof intermediateVar === 'undefined') {
+    intermediateVar = emptyTeacher;
+  }
+
+  const selectedTeacher = intermediateVar;
+  console.log('selectedTeacher', selectedTeacher);
 
   // useEffect(() => {
   //   const fetchUserData = async () => {
@@ -69,9 +78,8 @@ const TeacherInfo = () => {
           {selectedTeacher.lastName} {selectedTeacher.firstName} {selectedTeacher.fatherName} oglu
         </Typography>
 
-        {/* User Specific */}
-        {user === 'student' && <Typography variant="body1">Group</Typography>}
-        {user === 'teacher' && (
+        {/* Teacher Specific */}
+        {selectedTeacher.department && selectedTeacher.subject && (
           <Typography variant="body1">
             {selectedTeacher.department}, {selectedTeacher.subject}
           </Typography>
@@ -93,5 +101,3 @@ const TeacherInfo = () => {
     </CardContent>
   );
 };
-
-export default TeacherInfo;
