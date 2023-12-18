@@ -12,8 +12,12 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
 import React, { ReactElement } from 'react';
+import { useAppSelector } from '../../services/hooks';
+import { selectCurrentUser } from '../../services/reducers/users.slice';
 
 const ProfileButton: React.FC = () => {
+  const currentUser = useAppSelector(selectCurrentUser);
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const navigate = useNavigate();
 
@@ -83,9 +87,9 @@ const ProfileButton: React.FC = () => {
         <List sx={{ p: 2, minWidth: '200px' }}>
           <ListItem>
             <ListItemAvatar>
-              <Avatar alt="Profile Photo" src="/path/to/profile-photo.jpg" />
+              <Avatar alt="Profile Photo" src={currentUser.profilePhoto} />
             </ListItemAvatar>
-            <ListItemText primary="John Doe" secondary="john.doe@example.com" />
+            <ListItemText primary={currentUser.firstName + currentUser.lastName} secondary={currentUser.email} />
           </ListItem>
 
           <Divider />

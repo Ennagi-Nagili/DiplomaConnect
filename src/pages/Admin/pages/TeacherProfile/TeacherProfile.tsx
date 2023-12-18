@@ -3,7 +3,7 @@ import CardWrapper from './CardWrapper';
 import TeacherInfo from './TeacherInfo';
 import StudentInfo from './StudentInfo';
 
-const Profile = () => {
+export const TeacherProfile = () => {
   const isSmallScreen = useMediaQuery('(max-width: 1100px)');
 
   return (
@@ -57,4 +57,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+// export default TeacherProfile;

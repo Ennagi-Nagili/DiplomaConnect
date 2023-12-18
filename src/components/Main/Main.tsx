@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
-import Profile from '../../pages/Admin/pages/Profile/Profile';
 import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
 import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
+import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
 
 type Page = {
   link: string;
@@ -59,10 +59,11 @@ export const Main = ({ open }: MainProps) => {
           ))}
 
           {/* Dynamic link for teachers */}
-          <Route path="/teachers/:userID" element={<Profile />} />
+          <Route path="/teachers/:id" element={<TeacherProfile />} />
 
           {/* Edit Profile */}
           <Route path="/edit-profile" element={<UserForm />} />
+          <Route path='/teachers/:id/edit' element={<UserForm />} />
         </Routes>
 
         {/* TODO: If teacher: */}

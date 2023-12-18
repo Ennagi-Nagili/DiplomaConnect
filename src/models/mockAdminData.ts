@@ -1,6 +1,7 @@
 import { generateNStudents, generateNTeachers } from './generateMockUsers';
 import { Admin, Student, Teacher, User } from './models';
 
+// Empty user, teacher, student, and admin
 export const emptyUser: User = {
   id: -1,
   type: 'teacher',  // default
@@ -12,7 +13,6 @@ export const emptyUser: User = {
   email: '',
   password: '',
 }; 
-
 export const emptyTeacher: Teacher = {
   id: -1,
   type: 'teacher',
@@ -27,7 +27,6 @@ export const emptyTeacher: Teacher = {
   subject: '',
   students: [],
 };
-
 export const emptyStudent: Student = {
   id: -1,
   type: 'student',
@@ -41,7 +40,6 @@ export const emptyStudent: Student = {
   group: '',
   teacher: -1, // id of teacher
 };
-
 export const emptyAdmin: Admin = {
   id: -1,
   type: 'admin',
@@ -54,10 +52,13 @@ export const emptyAdmin: Admin = {
   password: '',
 };
 
+// Mock teacher, student, and admin
+export const mockTeacher = generateNTeachers({ number: 1 })[0];
+export const mockStudent = generateNStudents({ number: 1 })[0];
 export const mockAdmin: Admin = {
   id: 1,
   type: 'admin',
-  profilePhoto: 'url',
+  profilePhoto: 'https://via.placeholder.com/600/92c952',
   firstName: 'John',
   lastName: 'Doe',
   fatherName: 'Sam',
@@ -65,6 +66,3 @@ export const mockAdmin: Admin = {
   email: 'email@gmail.com',
   password: 'qwerty',
 };
-
-export const mockTeacher = generateNTeachers({ number: 1 })[0];
-export const mockStudent = generateNStudents({ number: 1 })[0];

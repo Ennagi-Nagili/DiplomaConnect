@@ -7,7 +7,8 @@ import { Student, Teacher } from '../../../../models/models';
 import { Link } from 'react-router-dom';
 import './Teachers.scss';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { deleteUser, selectStudents, selectTeachers } from '../../../../services/reducers/users.slice';
+import { deleteUser, selectStudents, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
+import { Avatar } from '@mui/material';
 
 export default function DataTable() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,17 @@ export default function DataTable() {
   }, [pageMode]);
 
   const users = pageMode === 'teachers' ? teachers : students;
+
+  // TODO: It seems like I don't need this
+  const handleRedirectClick = useCallback(
+    (user: Teacher | Student) => () => {
+      const intermediateVar = users.filter((item) => item.id === user.id)[0];
+      dispatch(setSelectedUser(intermediateVar));
+      // console.log('intermediateVar', intermediateVar);
+      console.log(`Redirecting to user with id ${user.id}`);
+    },
+    [users],
+  );
 
   const deleteRow = useCallback(
     (user: Teacher | Student) => () => {
@@ -71,6 +83,10 @@ export default function DataTable() {
         sortable: false,
         headerAlign: 'center',
         align: 'center',
+        renderCell: (params) => {
+          console.log('rendering cell');
+          return <Avatar src={params.row.profilePhoto} style={{ height: '34px', width: '34px' }} />;
+        },
       },
       {
         field: 'id',
@@ -112,7 +128,7 @@ export default function DataTable() {
           <>
             {/* // Redirect to user */}
             <Link to={`/admin/teachers/${params.id}`}>
-              <GridActionsCellItem key="redirectToUser" icon={<OpenInNewIcon />} label="Redirect" />
+              <GridActionsCellItem key="redirectToUser" icon={<OpenInNewIcon />} label="Redirect" onClick={handleRedirectClick(params.row)} />
             </Link>
             {/* // Delete User */}
             <GridActionsCellItem key="deleteUser" icon={<DeleteIcon />} label="Delete" onClick={deleteRow(params.row)} />
@@ -120,7 +136,7 @@ export default function DataTable() {
         ],
       },
     ],
-    [deleteRow, pageMode],
+    [deleteRow, handleRedirectClick, pageMode],
   );
 
   return (
@@ -136,8 +152,6 @@ export default function DataTable() {
         toolbar: () => <DataGridToolbar />,
       }}
       sx={{
-        // height: '730px',
-        // maxHeight: '1000px',
         minWidth: '330px',
         width: '80%',
         maxWidth: '1000px',

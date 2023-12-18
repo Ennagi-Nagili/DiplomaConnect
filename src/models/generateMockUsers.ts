@@ -15,7 +15,7 @@ export const generateNTeachers = (props: GenerateNUsersProps): Teacher[] => {
     const teacher: Teacher = {
       id: index,
       type: 'teacher',
-      profilePhoto: `URL-${index}`,
+      profilePhoto: `https://via.placeholder.com/600/92c952`,
       firstName: `First Name ${index}`,
       lastName: `Last Name ${index}`,
       fatherName: `Father Name ${index}`,
@@ -40,7 +40,7 @@ export const generateNStudents = (props: GenerateNUsersProps): Student[] => {
     const student: Student = {
       id: index,
       type: 'student',
-      profilePhoto: `URL-${index}`,
+      profilePhoto: `https://via.placeholder.com/600/92c952`,
       firstName: `First Name ${index}`,
       lastName: `Last Name ${index}`,
       fatherName: `Father Name ${index}`,

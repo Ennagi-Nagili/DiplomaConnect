@@ -1,9 +1,11 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useAppSelector } from '../../services/hooks';
+import { selectStudents, selectTeachers } from '../../services/reducers/users.slice';
 
 // TODO: This is just an example with jsonplacholder.
 // Adapt the type after API is created.
@@ -19,6 +21,16 @@ export type UserObject = {
 };
 
 const SearchBar: React.FC = () => {
+  const teacherNames = useAppSelector(selectTeachers).map(
+    (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  );
+  const studentNames = useAppSelector(selectStudents).map(
+    (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  );
+  // console.log('teacherNames', teacherNames);
+  const userNames = teacherNames.concat(studentNames);
+  // console.log('userNames', userNames);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isSmallScreen = useMediaQuery('(max-width: 750px)');
 
@@ -55,17 +67,17 @@ const SearchBar: React.FC = () => {
     trim: true,
   });
 
-  const [userNames, setUserNames] = useState<string[]>([]);
+  // const [userNames, setUserNames] = useState<string[]>([]);
 
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((json: UserObject[]) => {
-        const names = json.map((user) => user.name);
-        // console.log(names);
-        setUserNames(names);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/users')
+  //     .then((response) => response.json())
+  //     .then((json: UserObject[]) => {
+  //       const names = json.map((user) => user.name);
+  //       // console.log(names);
+  //       setUserNames(names);
+  //     });
+  // }, []);
 
   return (
     <div

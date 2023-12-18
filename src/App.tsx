@@ -11,7 +11,7 @@ import Profile from './pages/Admin/Admin';
 import { useEffect } from 'react';
 import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
 import { useAppDispatch } from './services/hooks';
-import { setCurrentUser, setIsSet, setSelectedUser, setUsers } from './services/reducers/users.slice';
+import { setIsSet, setUsers } from './services/reducers/users.slice';
 
 function App() {
   const dispatch = useAppDispatch();

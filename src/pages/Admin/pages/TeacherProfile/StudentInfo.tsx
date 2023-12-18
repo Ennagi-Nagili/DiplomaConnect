@@ -21,7 +21,7 @@ const StudentListItem = (studentObject: { data: Student | Teacher }) => {
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {student.id}
-        <Avatar src=""></Avatar>
+        <Avatar src={student.profilePhoto}></Avatar>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', columnGap: '20px' }}>
