@@ -1,7 +1,8 @@
 import './Task.scss';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export const TaskPage = () => {
+  const ref = useRef<HTMLInputElement | null>();
   const [inputSets, setInputSets] = useState([
     [
       <input key={1} type="text" placeholder={'step1'} className="input" />,
@@ -31,7 +32,7 @@ export const TaskPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container task-container">
       <div className="header">
         <h1 className="diploma">DIPLOMA CONNECT</h1>
       </div>
@@ -42,15 +43,10 @@ export const TaskPage = () => {
         {inputSets.map((inputSet, setIndex) => (
           <div key={setIndex}>{inputSet.map((input) => input)}</div>
         ))}
-        <button
-          className="filebutton"
-          onClick={() => {
-            document.getElementById('getFile')?.click();
-          }}
-        >
-          Materials
-        </button>
-        <input type="file" multiple id="getFile" style={{ display: 'none' }} />
+        <label>
+          <button className="filebutton">Materials</button>
+          <input type="file" multiple style={{ display: 'none' }} />
+        </label>
         <div className="button-container">
           <button onClick={addInputSet} className="button">
             +
