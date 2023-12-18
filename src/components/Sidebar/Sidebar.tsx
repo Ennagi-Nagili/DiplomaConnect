@@ -1,8 +1,8 @@
-import React from "react";
-import { Drawer } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import AdminSidebarContent from "./AdminSidebarContent";
-import DrawerHeader from "./styled/DrawerHeader";
+import { Drawer } from '@mui/material';
+import AdminSidebarContent from './AdminSidebarContent';
+import Divider from '@mui/material/Divider';
+import DrawerHeader from './styled/DrawerHeader';
+import React from 'react';
 
 const drawerWidth = 240;
 
@@ -17,9 +17,9 @@ export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen }) => {
       sx={{
         width: drawerWidth,
         flexShrink: 0,
-        "& .MuiDrawer-paper": {
+        '& .MuiDrawer-paper': {
           width: drawerWidth,
-          boxSizing: "border-box",
+          boxSizing: 'border-box',
         },
       }}
       variant="temporary" // Change to temporary

@@ -1,5 +1,5 @@
 export interface User {
-  type: "admin" | "teacher" | "student";
+  type: 'admin' | 'teacher' | 'student';
   profilePhoto?: File;
   firstName: string;
   lastName: string;

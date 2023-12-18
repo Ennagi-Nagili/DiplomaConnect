@@ -1,17 +1,17 @@
-import React, { ReactElement } from "react";
-import { useNavigate } from "react-router-dom";
-import IconButton from "@mui/material/IconButton";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import Popover from "@mui/material/Popover";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import EditIcon from "@mui/icons-material/Edit";
-import { ListItemButton } from "@mui/material";
+import { ListItemButton } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import EditIcon from '@mui/icons-material/Edit';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import Popover from '@mui/material/Popover';
+import React, { ReactElement } from 'react';
 
 const ProfileButton: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -28,7 +28,7 @@ const ProfileButton: React.FC = () => {
 
   const handleEditProfileClick = () => {
     // Navigate to the edit profile page
-    navigate("/profile/edit-profile");
+    navigate('/profile/edit-profile');
     handleClose();
   };
 
@@ -36,7 +36,7 @@ const ProfileButton: React.FC = () => {
     // Handle logout or other actions
     // For demonstration purposes, navigate to the home page ("/")
     // TODO: This should navigate to Login page
-    navigate("/");
+    navigate('/');
     handleClose();
   };
 
@@ -52,12 +52,12 @@ const ProfileButton: React.FC = () => {
     {
       onClick: handleEditProfileClick,
       icon: <EditIcon />,
-      primaryContent: "Edit Profile",
+      primaryContent: 'Edit Profile',
     },
     {
       onClick: handleLogoutClick,
       icon: <ExitToAppIcon />,
-      primaryContent: "Logout",
+      primaryContent: 'Logout',
     },
   ];
 
@@ -72,15 +72,15 @@ const ProfileButton: React.FC = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
-        <List sx={{ p: 2, minWidth: "200px" }}>
+        <List sx={{ p: 2, minWidth: '200px' }}>
           <ListItem>
             <ListItemAvatar>
               <Avatar alt="Profile Photo" src="/path/to/profile-photo.jpg" />
@@ -91,17 +91,10 @@ const ProfileButton: React.FC = () => {
           <Divider />
 
           {items.map((item, index) => (
-            <ListItem
-              sx={{ alignItems: "center", cursor: "pointer" }}
-              onClick={item.onClick}
-              key={index}
-            >
+            <ListItem sx={{ alignItems: 'center', cursor: 'pointer' }} onClick={item.onClick} key={index}>
               <ListItemButton>
                 {item.icon}
-                <ListItemText
-                  primary={item.primaryContent}
-                  sx={{ marginLeft: "8px" }}
-                />
+                <ListItemText primary={item.primaryContent} sx={{ marginLeft: '8px' }} />
               </ListItemButton>
             </ListItem>
           ))}

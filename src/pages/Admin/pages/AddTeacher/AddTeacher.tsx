@@ -1,22 +1,23 @@
-import React from "react";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import { Box } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-import ProfilePhotoBox from "./ProfilePhotoBox";
-import InputBox from "./InputBox";
+import { Box } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import InputBox from './InputBox';
+import PersonIcon from '@mui/icons-material/Person';
+import ProfilePhotoBox from './ProfilePhotoBox';
+import React from 'react';
+import Typography from '@mui/material/Typography';
 
 const AddTeacher: React.FC = () => {
   return (
     // Container
-    <Box sx={{ position: "relative" }}>
+    <Box sx={{ position: 'relative' }}>
       {/* BACKGROUND IMAGE ON TOP OF PROFILE PAGE */}
       <img
+        alt=""
         style={{
-          objectFit: "cover",
+          objectFit: 'cover',
           height: 200,
-          width: "100%",
+          width: '100%',
           borderRadius: 10,
         }}
         // TODO: Change to image without watermark
@@ -24,19 +25,16 @@ const AddTeacher: React.FC = () => {
       />
 
       {/* Container for everyhing beside background image at the top */}
-      <Box sx={{ position: "relative", bottom: "120px" }}>
-        <Typography
-          variant="h1"
-          sx={{ color: "white", fontSize: 40, textAlign: "center" }}
-        >
+      <Box sx={{ position: 'relative', bottom: '120px' }}>
+        <Typography variant="h1" sx={{ color: 'white', fontSize: 40, textAlign: 'center' }}>
           Add Teacher
         </Typography>
 
         <Card
           style={{
-            maxWidth: "1000px",
-            minWidth: "366px",
-            margin: "auto",
+            maxWidth: '1000px',
+            minWidth: '366px',
+            margin: 'auto',
           }}
         >
           {/* Card header */}
@@ -44,10 +42,10 @@ const AddTeacher: React.FC = () => {
             <Typography
               variant="h6"
               sx={{
-                margin: "8px",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
+                margin: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
               }}
             >
               <PersonIcon />
@@ -57,11 +55,11 @@ const AddTeacher: React.FC = () => {
 
           <CardContent
             style={{
-              display: "flex",
-              flexDirection: "row",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: "20px",
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '20px',
             }}
           >
             {/* Box 1: Profile Photo and Upload Resume */}
