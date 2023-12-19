@@ -1,15 +1,24 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
+import { studentInitial } from '../../models/initials';
 
 // Define a type for the slice state
 interface IDetailState {
+  id: number;
   name: string;
+  faculty: string;
+  major: string;
+  degree: string;
+  phone: string;
+  mail: string;
+  birth: string;
+  education: string;
+  success: string;
+  review: string;
 }
 
 // Define the initial state using that type
-const initialState: IDetailState = {
-  name: '',
-};
+const initialState: IDetailState = studentInitial;
 
 export const detailsSlice = createSlice({
   name: 'detail',

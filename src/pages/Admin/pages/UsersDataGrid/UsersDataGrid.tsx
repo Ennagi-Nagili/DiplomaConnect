@@ -1,14 +1,14 @@
-import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import DataGridToolbar from '../../components/DataGridToolbar';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import { useCallback, useEffect, useMemo } from 'react';
-import { Student, Teacher } from '../../../../models/models';
-import { Link } from 'react-router-dom';
 import './UsersDataGrid.scss';
-import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { deleteUser, selectStudents, selectTeachers } from '../../../../services/reducers/users.slice';
 import { Avatar } from '@mui/material';
+import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
+import { Student, Teacher } from '../../../../models/models';
+import { deleteUser, selectStudents, selectTeachers } from '../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
+import { useCallback, useEffect, useMemo } from 'react';
+import DataGridToolbar from '../../components/DataGridToolbar';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export const UsersDataGrid = () => {
   const dispatch = useAppDispatch();
@@ -151,6 +151,6 @@ export const UsersDataGrid = () => {
       getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 1 ? 'Mui-even' : 'Mui-odd')}
     />
   );
-}
+};
 
 // export default UsersDataGrid;

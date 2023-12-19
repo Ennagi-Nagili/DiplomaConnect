@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Header } from '../../../components/Header/Header';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
 import { TaskTable } from '../../../components/customTable/tables/TaskTable';
-import { detailsStore } from '../../../services/store';
+import { store } from '../../../services/store';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 export const DetailsPage = () => {
   const [open, setOpen] = React.useState(false);
-  const student = detailsStore.getState().value;
+  const student = store.getState().detail;
 
   return (
     <div>
