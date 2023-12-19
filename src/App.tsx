@@ -12,6 +12,8 @@ import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
 import { useAppDispatch } from './services/hooks';
+import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
+import { setIsSet, setUsers } from './services/reducers/users.slice';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -64,39 +66,20 @@ function App() {
   }, []);
 
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="profile" element={<ProfilePage />} />
-        <Route path="admin*" element={<Profile />} />
-        <Route path="details" element={<DetailsPage />} />
-        <Route path="task" element={<TaskDetails />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="requests" element={<RequestsPage />} />
-        <Route path="students" element={<StudentsPage />} />
-        <Route path="/admin/*" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/admin/*" element={<Profile />} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="profile" element={<ProfilePage />} />
+      <Route path="/admin/*" element={<Profile />} />
+
+      <Route path="details" element={<DetailsPage />} />
+      <Route path="task" element={<TaskDetails />} />
+      <Route path="requests" element={<RequestsPage />} />
+      <Route path="students" element={<StudentsPage />} />
+
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 
 export default App;
-function generateNTeachers(arg0: { number: number; }) {
-  throw new Error('Function not implemented.');
-}
-
-function setUsers(arg0: { userCategory: string; data: any; }): any {
-  throw new Error('Function not implemented.');
-}
-
-function setIsSet(arg0: { userCategory: string; }): any {
-  throw new Error('Function not implemented.');
-}
-
-function generateNStudents(arg0: { number: number; }) {
-  throw new Error('Function not implemented.');
-}
-
