@@ -1,13 +1,15 @@
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import { EditDialog } from '../../../components/EditDialog';
 import { Task } from '../../../models/Task';
-import { taskStore } from '../../../store/store';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
+import { useAppSelector } from '../../../services/hooks';
+import { selectCount } from '../../../services/reducers/task.slice';
 
 export const TaskDetails = () => {
-  const [task, setTask] = React.useState(taskStore.getState().value);
+  const task = useAppSelector(selectCount);
+  const [tasks, setTasks] = React.useState(task);
 
   const [dialog, setDialog] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
@@ -21,35 +23,35 @@ export const TaskDetails = () => {
   };
 
   function handleDelete(index: number) {
-    if (task.steps.length > 1) {
+    if (tasks.steps.length > 1) {
       const steps: string[] = [];
       const stepDetails: string[] = [];
       const deadlines: string[] = [];
 
-      for (let i = 0; i < task.steps.length; i++) {
+      for (let i = 0; i < tasks.steps.length; i++) {
         if (i !== index) {
-          steps.push(task.steps[i]);
-          stepDetails.push(task.stepDetails[i]);
-          deadlines.push(task.deadlines[i]);
+          steps.push(tasks.steps[i]);
+          stepDetails.push(tasks.stepDetails[i]);
+          deadlines.push(tasks.deadlines[i]);
         }
       }
 
       const ts: Task = {
-        id: task.id,
-        head: task.head,
+        id: tasks.id,
+        head: tasks.head,
         steps: steps,
         stepDetails: stepDetails,
         deadlines: deadlines,
-        deadline: task.deadline,
-        finished: task.finished,
-        date: task.date,
-        answer: task.answer,
-        files: task.files,
-        review: task.review,
+        deadline: tasks.deadline,
+        finished: tasks.finished,
+        date: tasks.date,
+        answer: tasks.answer,
+        files: tasks.files,
+        review: tasks.review,
       };
 
-      if (ts !== task) {
-        setTask(ts);
+      if (ts !== tasks) {
+        setTasks(ts);
       }
     }
   }
@@ -63,47 +65,47 @@ export const TaskDetails = () => {
 
   function edit(item: string, value: string, index: number) {
     const ts: Task = {
-      id: task.id,
-      head: task.head,
-      steps: task.steps,
-      stepDetails: task.stepDetails,
-      deadlines: task.deadlines,
-      deadline: task.deadline,
-      finished: task.finished,
-      date: task.date,
-      answer: task.answer,
-      files: task.files,
-      review: task.review,
+      id: tasks.id,
+      head: tasks.head,
+      steps: tasks.steps,
+      stepDetails: tasks.stepDetails,
+      deadlines: tasks.deadlines,
+      deadline: tasks.deadline,
+      finished: tasks.finished,
+      date: tasks.date,
+      answer: tasks.answer,
+      files: tasks.files,
+      review: tasks.review,
     };
 
     switch (item) {
       case 'head': {
         ts.head = value;
-        setTask(ts);
+        setTasks(ts);
         break;
       }
 
       case 'steps': {
         ts.steps[index] = value;
-        setTask(ts);
+        setTasks(ts);
         break;
       }
 
       case 'stepDetails': {
         ts.stepDetails[index] = value;
-        setTask(ts);
+        setTasks(ts);
         break;
       }
 
       case 'deadlines': {
         ts.head = value;
-        setTask(ts);
+        setTasks(ts);
         break;
       }
 
       case 'deadline': {
         ts.deadline = value;
-        setTask(ts);
+        setTasks(ts);
         break;
       }
     }
@@ -113,14 +115,14 @@ export const TaskDetails = () => {
     <div className="min">
       <div>
         <div className="task-container">
-          <p className="head">{task.head}</p>
-          <button className="goBtn" onClick={() => handleEdit('head', index, task.head)} style={{ marginBottom: 28 }}>
+          <p className="head">{tasks.head}</p>
+          <button className="goBtn" onClick={() => handleEdit('head', index, tasks.head)} style={{ marginBottom: 28 }}>
             <EditIcon />
           </button>
         </div>
 
         <Stepper activeStep={0} alternativeLabel>
-          {task.steps.map((label: string) => (
+          {tasks.steps.map((label: string) => (
             <Step key={label}>
               <StepLabel>{label}</StepLabel>
             </Step>
@@ -128,11 +130,11 @@ export const TaskDetails = () => {
         </Stepper>
 
         <div className="details-container">
-          {task.stepDetails.map((item: string, index: number) => (
+          {tasks.stepDetails.map((item: string, index: number) => (
             <div key={`edu-${index}`}>
               <div className="task-container">
-                <p className="info-head">{task.steps[index]}</p>
-                <button className="goBtn" onClick={() => handleEdit('steps', index, task.steps[index])}>
+                <p className="info-head">{tasks.steps[index]}</p>
+                <button className="goBtn" onClick={() => handleEdit('steps', index, tasks.steps[index])}>
                   <EditIcon />
                 </button>
 
@@ -147,17 +149,17 @@ export const TaskDetails = () => {
                 </button>
               </div>
               <div className="task-container">
-                <p>{'Deadline: ' + task.deadlines[index]}</p>
-                <button className="goBtn" onClick={() => handleEdit('deadlines', index, task.deadlines[index])}>
+                <p>{'Deadline: ' + tasks.deadlines[index]}</p>
+                <button className="goBtn" onClick={() => handleEdit('deadlines', index, tasks.deadlines[index])}>
                   <EditIcon />
                 </button>
               </div>
 
               <p>Students answer</p>
-              <p className="answer">{task.answer}</p>
+              <p className="answer">{tasks.answer}</p>
 
               <p>Attached files</p>
-              {task.files.map((file: string) => (
+              {tasks.files.map((file: string) => (
                 <a href={file} key={index} className="file">
                   File
                 </a>
@@ -176,8 +178,8 @@ export const TaskDetails = () => {
           ))}
 
           <div className="task-container">
-            <p className="info-head">{'Task deadline: ' + task.deadline}</p>
-            <button className="goBtn" onClick={() => handleEdit('deadline', index, task.deadline)}>
+            <p className="info-head">{'Task deadline: ' + tasks.deadline}</p>
+            <button className="goBtn" onClick={() => handleEdit('deadline', index, tasks.deadline)}>
               <EditIcon />
             </button>
           </div>

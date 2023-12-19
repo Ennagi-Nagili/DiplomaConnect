@@ -18,7 +18,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import {taskInitial} from '../../../models/initials';
-import {taskReducer} from '../../../pages/Teacher/TaskDetailsPage/TaskReducer';
+import { useAppDispatch } from '../../../services/hooks';
 
 type TableHeader = {
   name: string;
@@ -26,6 +26,7 @@ type TableHeader = {
 };
 
 export const TaskTable = () => {
+  const dispatch = useAppDispatch();
   const heads: TableHeader[] = [
     { name: 'Başlıq', align: 'left' },
     { name: 'Başlama tarixi', align: 'right' },
@@ -38,13 +39,6 @@ export const TaskTable = () => {
   const navigate = useNavigate();
 
   function handleGo(id: number) {
-    const taskSlice = createSlice({
-      name: 'task',
-      initialState: taskInitial,
-      reducers: {
-        task: () => taskReducer;
-      },
-    });
     navigate('/task');
   }
 

@@ -1,7 +1,6 @@
 import { Button } from '@mui/material';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
-import { store } from '../../../pages/Teacher/DetailsPage/DetailsStore';
 import { studentData } from '../../../models/mockData';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -11,6 +10,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { useAppDispatch } from '../../../services/hooks';
 
 type TableHeader = {
   name: string;
@@ -46,9 +46,10 @@ export const StudentTable = ({ type }: { type: string }) => {
   }
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   function handleGo(id: number) {
-    store.dispatch({ type: 'details', payload: data[id] });
+    dispatch({ type: 'details', payload: data[id] });
     navigate('/details');
   }
 

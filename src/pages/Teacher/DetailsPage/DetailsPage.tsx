@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Header } from '../../../components/Header/Header';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
 import { TaskTable } from '../../../components/customTable/tables/TaskTable';
-import { detailsStore } from '../../../store/store';
+import { detailsStore } from '../../../services/store';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
