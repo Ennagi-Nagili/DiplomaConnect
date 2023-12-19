@@ -1,7 +1,7 @@
 import { Divider, List, ListSubheader } from '@mui/material';
 import { Person, School } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
+import AddTeacher from '../../pages/Admin/pages/UserForm/UserForm';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import ListItem from '@mui/material/ListItem';
@@ -10,6 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React from 'react';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
 
 type AdminSidebarContentProps = {
@@ -41,14 +42,14 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
           title: 'Teachers',
           link: 'teachers',
           icon: <Person />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
         {
           id: 3,
           title: 'Students',
           link: 'students',
           icon: <School />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
       ],
     },
@@ -59,6 +60,13 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
           id: 4,
           title: 'Add Teacher',
           link: 'add-teacher',
+          icon: <PersonAddIcon />,
+          element: <AddTeacher />,
+        },
+        {
+          id: 5,
+          title: 'Add Student',
+          link: 'add-student',
           icon: <PersonAddIcon />,
           element: <AddTeacher />,
         },
@@ -77,11 +85,11 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
                 key={index}
                 disablePadding
                 onClick={() => {
-                  navigate(`/profile/${listItem.link}`);
+                  navigate(`/admin/${listItem.link}`);
                   setOpen(false); // Close the drawer on item click
                 }}
               >
-                <ListItemButton selected={window.location.pathname === `/profile/${listItem.link}`}>
+                <ListItemButton selected={window.location.pathname === `/admin/${listItem.link}`}>
                   <ListItemIcon>{listItem.icon}</ListItemIcon>
                   <ListItemText primary={listItem.title} />
                 </ListItemButton>
