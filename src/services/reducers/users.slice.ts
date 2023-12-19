@@ -20,6 +20,7 @@ interface IUsersState {
   selectedUser: GeneralType;
   pageMode?: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
   processingErrors: IProcessingErrors;
+  isSaveButtonEnabled: boolean;
   teachers: {
     data: Teacher[];
     isSet: boolean;
@@ -40,6 +41,8 @@ export const noProcessingErrors = {
   confirmPasswordError: false,
 };
 
+// TODO:
+
 const initialState: IUsersState = {
   // This should be set only in login page
   currentUser: mockTeacher, // TODO: change to emptyUser after development
@@ -47,6 +50,7 @@ const initialState: IUsersState = {
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
   processingErrors: noProcessingErrors,
+  isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
   teachers: {
     data: [],
@@ -81,6 +85,10 @@ const usersSlice = createSlice({
       state.processingErrors = action.payload;
     },
 
+    setIsSaveButtonEnabled: (state: IUsersState, action: PayloadAction<boolean>) => {
+      state.isSaveButtonEnabled = action.payload;
+    },
+
     // Set users array, current user, and selected user
     // Note: selectedUserId should be changed to default once operation on selected user ends. Default is teacher of id 1
     setUsers: (state: IUsersState, action: PayloadAction<{ userCategory: UserCategory; data: Teacher[] | Student[] }>) => {
@@ -108,7 +116,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setProcessingErrors, setPageMode, addUser, deleteUser } = usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setProcessingErrors, setPageMode, addUser, deleteUser } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -130,3 +138,5 @@ export const selectTeacherNames = createSelector([selectTeachers], (teachers): s
 export const selectStudentNames = createSelector([selectStudents], (students): string[] => {
   return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
 });
+
+export const selectIsSaveButtonEnabled = (state: RootState) => state.users.isSaveButtonEnabled;

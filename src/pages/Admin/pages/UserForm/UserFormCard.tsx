@@ -23,8 +23,9 @@ const UserFormCard: React.FC = () => {
   const selectedUser = useAppSelector(selectSelectedUser);
   const userType = selectedUser.type;
   const capitalizedUserType = userType.slice(0, 1).toUpperCase() + userType.slice(1);
+  // console.log('ADD USER: SELECTED USER', selectedUser);
 
-  console.log('ADD USER: SELECTED USER', selectedUser);
+  console.log('USER FORM CARD PAGE IS RERENDERED')
 
   return (
     <Card

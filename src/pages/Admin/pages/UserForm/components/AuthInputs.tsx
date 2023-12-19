@@ -1,4 +1,4 @@
-import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
 import {
   selectPageMode,
@@ -11,9 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
-// TODO: Only admin and user himself can edit
-const user = 'admin';
+import InputTextField from './InputTextField';
 
 const AuthInputs = () => {
   const processingErrors = useAppSelector(selectProcessingErrors);
@@ -29,7 +27,7 @@ const AuthInputs = () => {
   // State
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
-  console.log('selectedUser', selectedUser)
+  // console.log('selectedUser', selectedUser);
   const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
@@ -124,24 +122,7 @@ const AuthInputs = () => {
       {/* Box for First Name and Last Name with wrap */}
       {/* First Name, Last Name, Email Address, Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
-        <TextField
-          disabled={user === 'admin' ? false : true}
-          sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
-          label={item.label}
-          type={item.type}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          required
-          // TODO: instead of "Murad", there should be user.ATTR, user data should be fetched when user enters the website
-          // Condition should be something like user.ATTR ? user.ATTR : item.value
-          value={item.value}
-          onChange={item.onChange}
-          error={item.error}
-          helperText={item.helperText}
-          InputProps={item.InputProps}
-          key={index}
-        />
+        <InputTextField item={item} key={item.label + index} />
       ))}
     </Box>
   );

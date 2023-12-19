@@ -1,10 +1,14 @@
-import { Box, TextField } from '@mui/material';
-import { selectProcessingErrors, selectSelectedUser, setProcessingErrors, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { Box } from '@mui/material';
+import {
+  selectProcessingErrors,
+  selectSelectedUser,
+  setIsSaveButtonEnabled,
+  setProcessingErrors,
+  setSelectedUser,
+} from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React from 'react';
-
-// TODO: Only admin and user himself can edit
-const user = 'admin';
+import InputTextField from './InputTextField';
 
 export type TextFieldAttributes = {
   label: string;
@@ -22,43 +26,51 @@ const NameInputs = () => {
   const dispatch = useAppDispatch();
 
   // Note selected user was set either to empty placeholder or currentUser depending on the route in UserForm.tsx
-  const placholderUser = useAppSelector(selectSelectedUser);
+  const placeholderUser = useAppSelector(selectSelectedUser);
   const processingErrors = useAppSelector(selectProcessingErrors);
+  // console.log('processingErrors', processingErrors);
 
+  // Maybe this 3 function can be merged into one with switch
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSelectedUser({ ...placholderUser, firstName: e.target.value }));
-    dispatch(setProcessingErrors({ ...processingErrors, firstNameError: e.target.value.trim() === '' }));
+    dispatch(setSelectedUser({ ...placeholderUser, firstName: e.target.value }));
+    // dispatch(setProcessingErrors({ ...processingErrors, firstNameError: e.target.value.trim() === '' }));
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSelectedUser({ ...placholderUser, lastName: e.target.value }));
+    dispatch(setSelectedUser({ ...placeholderUser, lastName: e.target.value }));
     dispatch(setProcessingErrors({ ...processingErrors, lastNameError: e.target.value.trim() === '' }));
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSelectedUser({ ...placholderUser, fatherName: e.target.value }));
+    dispatch(setSelectedUser({ ...placeholderUser, fatherName: e.target.value }));
     dispatch(setProcessingErrors({ ...processingErrors, fatherNameError: e.target.value.trim() === '' }));
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
       label: 'First Name',
-      value: placholderUser.firstName,
+      value: placeholderUser.firstName,
       onChange: handleFirstNameChange,
       error: processingErrors.firstNameError,
       helperText: processingErrors.firstNameError ? 'First Name is required' : ' ',
     },
     {
       label: 'Last Name',
-      value: placholderUser.lastName,
+      value: placeholderUser.lastName,
       onChange: handleLastNameChange,
       error: processingErrors.lastNameError,
       helperText: processingErrors.lastNameError ? 'Last Name is required' : ' ',
     },
     {
       label: 'FatherName',
-      value: placholderUser.fatherName,
+      value: placeholderUser.fatherName,
       onChange: handleFatherNameChange,
       error: processingErrors.fatherNameError,
       helperText: processingErrors.fatherNameError ? 'Father Name is required' : ' ',
@@ -72,30 +84,12 @@ const NameInputs = () => {
         flexDirection: 'column',
         alignItems: 'center',
         minWidth: '330px',
-        // maxWidth: '600px',
       }}
     >
       {/* Box for First Name and Last Name with wrap */}
       {/* First Name, Last Name, Email Address, Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
-        <TextField
-          disabled={user === 'admin' ? false : true}
-          sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
-          label={item.label}
-          type={item.type}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          required
-          // TODO: instead of "Murad", there should be user.ATTR, user data should be fetched when user enters the website
-          // Condition should be something like user.ATTR ? user.ATTR : item.value
-          value={item.value}
-          onChange={item.onChange}
-          error={item.error}
-          helperText={item.helperText}
-          InputProps={item.InputProps}
-          key={index}
-        />
+        <InputTextField item={item} key={item.label + index} />
       ))}
     </Box>
   );

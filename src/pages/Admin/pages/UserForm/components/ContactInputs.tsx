@@ -1,33 +1,40 @@
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import {
+  selectProcessingErrors,
+  selectSelectedUser,
+  setIsSaveButtonEnabled,
+  setProcessingErrors,
+  setSelectedUser,
+} from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React, { useEffect, useState } from 'react';
-
-// TODO: Only admin and user himself can edit
-const user = 'admin';
+import React, { useEffect } from 'react';
+import InputTextField from './InputTextField';
 
 const ContactInputs = () => {
   const dispatch = useAppDispatch();
   const placeholderUser = useAppSelector(selectSelectedUser);
+  const processingErrors = useAppSelector(selectProcessingErrors);
 
-  //Corresponding Error States
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-
-  useEffect(()=>{
-    setEmailError(false);
-    setPhoneError(false);
-  },[window.location.pathname])
+  useEffect(() => {
+    dispatch(setProcessingErrors({ ...processingErrors, emailError: false }));
+    dispatch(setProcessingErrors({ ...processingErrors, phoneNumberError: false }));
+  }, [window.location.pathname]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
-    setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
+    const intermediateVar = !/^\S+@\S+\.\S+$/.test(e.target.value);
+    dispatch(setProcessingErrors({ ...processingErrors, emailError: intermediateVar }));
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
-    setPhoneError(!/^\d+$/.test(e.target.value));
+    const intermediateVar = !/^\d+$/.test(e.target.value);
+    dispatch(setProcessingErrors({ ...processingErrors, phoneNumberError: intermediateVar }));
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -37,57 +44,37 @@ const ContactInputs = () => {
       type: 'email',
       value: placeholderUser.email,
       onChange: handleEmailChange,
-      error: emailError,
-      helperText: emailError ? 'Enter a valid email address' : ' ',
+      error: processingErrors.emailError,
+      helperText: processingErrors.emailError ? 'Enter a valid email address' : ' ',
     },
     {
       label: 'Phone Number',
       value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
-      error: phoneError,
-      helperText: phoneError ? 'Enter a valid phone number' : ' ',
+      error: processingErrors.phoneNumberError,
+      helperText: processingErrors.phoneNumberError ? 'Enter a valid phone number' : ' ',
     },
   ];
 
   return (
-    <>
-      <Box
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          minWidth: '330px',
-          // width: '80%',
-          // maxWidth: '600px',
-        }}
-      >
-        <Typography variant="h3" sx={{ fontSize: 26, mb: '10px' }}>
-          Contact Info
-        </Typography>
-        {/* Box for First Name and Last Name with wrap */}
-        {/* First Name, Last Name, Email Address, Password, Confirm Password */}
-        {textFieldAttributes.map((item, index) => (
-          <TextField
-            disabled={user === 'admin' ? false : true}
-            sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
-            label={item.label}
-            type={item.type}
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            required
-            // TODO: instead of "Murad", there should be user.ATTR, user data should be fetched when user enters the website
-            // Condition should be something like user.ATTR ? user.ATTR : item.value
-            value={item.value}
-            onChange={item.onChange}
-            error={item.error}
-            helperText={item.helperText}
-            InputProps={item.InputProps}
-            key={index}
-          />
-        ))}
-      </Box>
-    </>
+    <Box
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        minWidth: '330px',
+      }}
+    >
+      <Typography variant="h3" sx={{ fontSize: 26, mb: '10px' }}>
+        Contact Info
+      </Typography>
+
+      {/* Box for First Name and Last Name with wrap */}
+      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {textFieldAttributes.map((item, index) => (
+        <InputTextField item={item} key={item.label + index} />
+      ))}
+    </Box>
   );
 };
 
