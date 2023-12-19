@@ -3,10 +3,7 @@ import AdminSidebarContent from './AdminSidebarContent';
 import Divider from '@mui/material/Divider';
 import DrawerHeader from './styled/DrawerHeader';
 import React from 'react';
-<<<<<<< HEAD
 import TeacherSidebarContent from './TeacherSidebarContent';
-=======
->>>>>>> 4661718d05e2ea3e0a41dff28e68a6bf046e163f
 
 const drawerWidth = 240;
 

@@ -3,15 +3,9 @@ import { Box, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsButton from './NotificationsButton';
 import ProfileButton from './ProfileButton';
-<<<<<<< HEAD
-// import SearchBar from "./SearchBar";
-import { StyledHeader } from './styled/StyledHeader';
-import SearchBar from '../../pages/Admin/components/Temporary';
-=======
 import SearchBar from "./SearchBar";
 import { StyledHeader } from './styled/StyledHeader';
 // import SearchBar from '../../pages/Admin/components/Temporary';
->>>>>>> 4661718d05e2ea3e0a41dff28e68a6bf046e163f
 
 interface HeaderProps {
   open: boolean;
@@ -47,19 +41,11 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen, display }) => {
           </Typography>
 
           {/* SearchBar */}
-<<<<<<< HEAD
-          <Box sx={{ width: '100%', display: display }}>
-            <SearchBar />
-          </Box>
-
-          <Box sx={{ display: display, alignItems: 'center' }}>
-=======
           <Box sx={{ width: '100%' }}>
             <SearchBar />
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
->>>>>>> 4661718d05e2ea3e0a41dff28e68a6bf046e163f
             {/* TODO: This just needs to be rendered for teacher. Admin won't receive any notifications. */}
             <NotificationsButton />
 

@@ -9,13 +9,8 @@ export default function Admin() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-<<<<<<< HEAD
       <Header open={open} setOpen={setOpen} display="flex" />
       <Sidebar open={open} setOpen={setOpen} admin={true} />
-=======
-      <Header open={open} setOpen={setOpen} />
-      <Sidebar open={open} setOpen={setOpen} />
->>>>>>> 4661718d05e2ea3e0a41dff28e68a6bf046e163f
 
       {/* Only this section changes depending on the route */}
       <Main open={open} />
