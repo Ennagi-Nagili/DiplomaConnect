@@ -41,11 +41,11 @@ export const Header: React.FC<HeaderProps> = ({ open, setOpen, display }) => {
           </Typography>
 
           {/* SearchBar */}
-          <Box sx={{ width: '100%' }}>
+          <Box sx={{ width: '100%', display: display }}>
             <SearchBar />
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: display, alignItems: 'center' }}>
             {/* TODO: This just needs to be rendered for teacher. Admin won't receive any notifications. */}
             <NotificationsButton />
 

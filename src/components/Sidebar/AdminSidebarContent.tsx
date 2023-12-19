@@ -53,7 +53,7 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
       ],
     },
     {
-      subheader: 'Add User',
+      subheader: 'AddTeacher',
       content: [
         {
           id: 4,

@@ -77,6 +77,7 @@ function App() {
         <Route path="students" element={<StudentsPage />} />
         <Route path="/admin/*" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/admin/*" element={<Profile />} />
       </Routes>
     </>
   );
