@@ -1,11 +1,11 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
+import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
+import { useAppSelector } from '../../services/hooks';
 import IconButton from '@mui/material/IconButton';
 import React, { useRef } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useAppSelector } from '../../services/hooks';
-import { selectStudentNames, selectStudents, selectTeacherNames, selectTeachers } from '../../services/reducers/users.slice';
 
 // TODO: This is just an example with jsonplacholder.
 // Adapt the type after API is created.

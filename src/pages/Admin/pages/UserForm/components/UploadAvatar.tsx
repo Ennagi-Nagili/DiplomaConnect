@@ -1,7 +1,7 @@
 import { Avatar, Button } from '@mui/material';
-import React, { useRef, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import React, { useRef, useState } from 'react';
 
 const UploadAvatar: React.FC = () => {
   const dispatch = useAppDispatch();

@@ -1,19 +1,19 @@
-import React from 'react';
+import { Box, useMediaQuery } from '@mui/material';
 import { selectPageMode, selectSelectedUser } from '../../../../services/reducers/users.slice';
 import { useAppSelector } from '../../../../services/hooks';
-import { Box, useMediaQuery } from '@mui/material';
+import AuthInputs from './components/AuthInputs';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import EditIcon from '@mui/icons-material/Edit';
-import UploadAvatar from './components/UploadAvatar';
-import NameInputs from './components/NameInputs';
 import ContactInputs from './components/ContactInputs';
-import AuthInputs from './components/AuthInputs';
-import TeacherSpecificInputs from './components/TeacherSpecificInputs';
-import StudentSpecificInputs from './components/StudentSpecificInputs';
+import EditIcon from '@mui/icons-material/Edit';
+import NameInputs from './components/NameInputs';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import React from 'react';
 import SaveButton from './components/SaveButton';
+import StudentSpecificInputs from './components/StudentSpecificInputs';
+import TeacherSpecificInputs from './components/TeacherSpecificInputs';
+import Typography from '@mui/material/Typography';
+import UploadAvatar from './components/UploadAvatar';
 
 const UserFormCard: React.FC = () => {
   const isSmallScreen = useMediaQuery('(max-width: 805px)');

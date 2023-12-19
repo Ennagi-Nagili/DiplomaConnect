@@ -1,19 +1,27 @@
 import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
+import {
+  selectPageMode,
+  selectProcessingErrors,
+  selectSelectedUser,
+  setProcessingErrors,
+  setSelectedUser,
+} from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
 
 const AuthInputs = () => {
+  const processingErrors = useAppSelector(selectProcessingErrors);
+  // console.log('processingErrors', processingErrors);
+
   // Visible State
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
-
   // Field Touched state
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
@@ -21,19 +29,20 @@ const AuthInputs = () => {
   // State
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
-  // const [password, setPassword] = useState('');
+  console.log('selectedUser', selectedUser)
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Corresponding Error State
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
+  useEffect(() => {
+    setIsPasswordVisible(false);
+    setIsConfirmPasswordVisible(false);
+    setPasswordTouched(false);
+    setConfirmPasswordTouched(false);
+    setConfirmPassword('');
+  }, [window.location.pathname]);
 
   useEffect(() => {
-    setPasswordError(passwordTouched && selectedUser.password.trim() === '');
-  }, [selectedUser.password, passwordTouched]);
-
-  useEffect(() => {
-    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
+    dispatch(setProcessingErrors({ ...processingErrors, confirmPasswordError: confirmPasswordTouched && confirmPassword !== selectedUser.password }));
+    // setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
   }, [confirmPassword, selectedUser.password, confirmPasswordTouched]);
 
   const handleTogglePasswordVisibility = () => {
@@ -62,7 +71,7 @@ const AuthInputs = () => {
       type: isPasswordVisible ? 'text' : 'password',
       value: selectedUser.password,
       onChange: handlePasswordChange,
-      error: passwordError,
+      error: passwordTouched && selectedUser.password.trim() === '',
       helperText: passwordTouched && selectedUser.password.trim() === '' ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
@@ -79,8 +88,8 @@ const AuthInputs = () => {
     type: isConfirmPasswordVisible ? 'text' : 'password',
     value: confirmPassword,
     onChange: handleConfirmPasswordChange,
-    error: confirmPasswordError,
-    helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
+    error: processingErrors.confirmPasswordError,
+    helperText: processingErrors.confirmPasswordError ? 'Passwords do not match' : ' ',
     InputProps: {
       endAdornment: (
         <InputAdornment position="end">

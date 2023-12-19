@@ -1,5 +1,5 @@
-import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { Admin, Student, Teacher } from '../../models/models';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { emptyUser, mockTeacher } from '../../models/mockAdminData';
 
@@ -12,7 +12,7 @@ interface IProcessingErrors {
   emailError: boolean;
   phoneNumberError: boolean;
   passwordError: boolean;
-  currentPasswordError: boolean;
+  confirmPasswordError: boolean;
 }
 
 interface IUsersState {
@@ -30,21 +30,23 @@ interface IUsersState {
   };
 }
 
+export const noProcessingErrors = {
+  firstNameError: false,
+  lastNameError: false,
+  fatherNameError: false,
+  emailError: false,
+  phoneNumberError: false,
+  passwordError: false,
+  confirmPasswordError: false,
+};
+
 const initialState: IUsersState = {
   // This should be set only in login page
   currentUser: mockTeacher, // TODO: change to emptyUser after development
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
-  processingErrors: {
-    firstNameError: false,
-    lastNameError: false,
-    fatherNameError: false,
-    emailError: false,
-    phoneNumberError: false,
-    passwordError: false,
-    currentPasswordError: false,
-  },
+  processingErrors: noProcessingErrors,
   pageMode: 'no-edit', // TODO: default
   teachers: {
     data: [],

@@ -1,7 +1,7 @@
 import { Box, TextField } from '@mui/material';
-import React from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import { selectProcessingErrors, selectSelectedUser, setProcessingErrors, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import React from 'react';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';

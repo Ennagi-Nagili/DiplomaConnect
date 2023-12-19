@@ -1,9 +1,9 @@
 import { addUser, selectPageMode, selectSelectedUser } from '../../../../../services/reducers/users.slice';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import { Button } from '@mui/material';
+import { mockTeacher } from '../../../../../models/mockAdminData';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
-import { mockTeacher } from '../../../../../models/mockAdminData';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {

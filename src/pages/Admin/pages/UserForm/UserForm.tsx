@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { selectCurrentUser, setPageMode, setSelectedUser } from '../../../../services/reducers/users.slice';
 import { emptyStudent, emptyTeacher } from '../../../../models/mockAdminData';
+import { noProcessingErrors, selectCurrentUser, setPageMode, setProcessingErrors, setSelectedUser } from '../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
+import React, { useEffect } from 'react';
 import UserFormCard from './UserFormCard';
 
 const UserForm: React.FC = () => {
@@ -14,6 +14,8 @@ const UserForm: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
+    dispatch(setProcessingErrors(noProcessingErrors));
+
     // Setting selectedUser and pageMode
     switch (pathEnd) {
       case 'edit-profile': {

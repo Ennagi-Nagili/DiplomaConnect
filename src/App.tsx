@@ -4,14 +4,14 @@ import { DetailsPage } from './pages/DetailsPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { Route, Routes } from 'react-router-dom';
 import { TaskDetails } from './pages/TaskDetails';
-import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
-import NotFound from './pages/NotFound/NotFound';
-import Profile from './pages/Admin/Admin';
 import { useEffect } from 'react';
 import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
 import { useAppDispatch } from './services/hooks';
 import { setIsSet, setUsers } from './services/reducers/users.slice';
+import Home from './pages/Home/Home';
+import Login from './pages/Login/Login';
+import NotFound from './pages/NotFound/NotFound';
+import Profile from './pages/Admin/Admin';
 
 function App() {
   const dispatch = useAppDispatch();

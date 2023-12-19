@@ -1,8 +1,8 @@
 import { Box, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
 import { TextFieldAttributes } from './NameInputs';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import React, { useEffect, useState } from 'react';
 
 // TODO: Only admin and user himself can edit
 const user = 'admin';
@@ -14,6 +14,11 @@ const ContactInputs = () => {
   //Corresponding Error States
   const [emailError, setEmailError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+
+  useEffect(()=>{
+    setEmailError(false);
+    setPhoneError(false);
+  },[window.location.pathname])
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
