@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Header } from '../../../components/Header/Header';
 import { Sidebar } from '../../../components/Sidebar/Sidebar';
 import { TaskTable } from '../../../components/customTable/tables/TaskTable';
-import { store } from './DetailsStore';
+import { detailsStore } from '../../../store/store';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,7 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 export const DetailsPage = () => {
   const [open, setOpen] = React.useState(false);
-  const student = store.getState().value;
+  const student = detailsStore.getState().value;
 
   return (
     <div>
@@ -44,8 +44,8 @@ export const DetailsPage = () => {
                   <p className="head">Şagirdin məlumatları</p>
                 </div>
                 <div id="section-name">
-                  <p>Ad & Soyad</p>
-                  <p className="info-head">{student.name}</p>
+                  <p className="info-head">Ad & Soyad</p>
+                  <p>{student.name}</p>
                 </div>
                 <div id="section-phone">
                   <p className="info-head">Telefon nömrəsi</p>

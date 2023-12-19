@@ -2,7 +2,7 @@ import { Fab } from '@mui/material';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
 import { Task } from '../../../models/Task';
-import { store } from '../../../pages/Teacher/TaskDetailsPage/TaskStore';
+import { createSlice } from '@reduxjs/toolkit';
 import { taskData } from '../../../models/mockData';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
@@ -17,6 +17,8 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import {taskInitial} from '../../../models/initials';
+import {taskReducer} from '../../../pages/Teacher/TaskDetailsPage/TaskReducer';
 
 type TableHeader = {
   name: string;
@@ -36,7 +38,13 @@ export const TaskTable = () => {
   const navigate = useNavigate();
 
   function handleGo(id: number) {
-    store.dispatch({ type: 'task', payload: data[id] });
+    const taskSlice = createSlice({
+      name: 'task',
+      initialState: taskInitial,
+      reducers: {
+        task: () => taskReducer;
+      },
+    });
     navigate('/task');
   }
 

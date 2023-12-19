@@ -1,13 +1,13 @@
 import { Button, Step, StepLabel, Stepper } from '@mui/material';
 import { EditDialog } from '../../../components/EditDialog';
 import { Task } from '../../../models/Task';
-import { store } from './TaskStore';
+import { taskStore } from '../../../store/store';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 
 export const TaskDetails = () => {
-  const [task, setTask] = React.useState(store.getState().value);
+  const [task, setTask] = React.useState(taskStore.getState().value);
 
   const [dialog, setDialog] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');

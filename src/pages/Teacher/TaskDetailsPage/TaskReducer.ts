@@ -1,28 +1,16 @@
 import { Task } from '../../../models/Task';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 
-const initial: Task = {
-  id: 0,
-  head: '',
-  steps: [],
-  stepDetails: [],
-  deadline: '',
-  deadlines: [],
-  finished: false,
-  date: '',
-  answer: '',
-  files: [''],
-  review: '',
-};
-
-const initialState = { value: initial };
-
-export function taskReducer(state = initialState, action: { type: string; payload: Task }) {
-  if (action.type === 'task') {
-    return {
-      ...state,
-      value: action.payload,
-    };
-  }
-
-  return state;
+interface TaskState {
+  value: Task;
 }
+
+const details = createAction<Task>('task/details');
+
+const initialState = { value: initial } as TaskState;
+
+export const taskReducer = createReducer(initialState, (builder) => {
+  builder.addCase(details, (state, action) => {
+    state.value = action.payload;
+  });
+});

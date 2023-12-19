@@ -1,28 +1,16 @@
 import { Student } from '../../../models/Student';
+import { createAction, createReducer } from '@reduxjs/toolkit';
 
-const initial: Student = {
-  id: 0,
-  name: '',
-  faculty: '',
-  major: '',
-  degree: '',
-  phone: '',
-  mail: '',
-  birth: '',
-  education: '',
-  review: '',
-  success: '',
-};
-
-const initialState = { value: initial };
-
-export function detailsReducer(state = initialState, action: { type: string; payload: Student }) {
-  if (action.type === 'details') {
-    return {
-      ...state,
-      value: action.payload,
-    };
-  }
-
-  return state;
+interface DetailsState {
+  value: Student;
 }
+
+const details = createAction<Student>('student/details');
+
+const initialState = { value: initial } as DetailsState;
+
+export const detailsReducer = createReducer(initialState, (builder) => {
+  builder.addCase(details, (state, action) => {
+    state.value = action.payload;
+  });
+});
