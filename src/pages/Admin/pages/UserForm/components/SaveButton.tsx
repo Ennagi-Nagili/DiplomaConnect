@@ -8,23 +8,39 @@ import {
   setSelectedUser,
 } from '../../../../../services/reducers/users.slice';
 import { Button } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { emptyStudent, emptyTeacher, mockTeacher } from '../../../../../models/mockAdminData';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
-import { useEffect } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
+  const dispatch = useAppDispatch();
+
   const currentUser = useAppSelector(selectCurrentUser);
   const selectedUser = useAppSelector(selectSelectedUser);
   const pageMode = useAppSelector(selectPageMode);
   const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
 
-  const dispatch = useAppDispatch();
+  // RELATED TO DIALOG
+  const [open, setOpen] = useState(false);
 
-  const handleAddClick = () => {
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleAgreeClick = () => {
+    handleClose();
+
     dispatch(setIsSaveButtonEnabled(false));
     if (pageMode === 'add') {
       userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
@@ -67,19 +83,34 @@ const SaveButton = () => {
   }, [selectedUser]);
 
   return (
-    <Button variant="contained" onClick={handleAddClick} disabled={!isSaveButtonEnabled}>
-      {pageMode === 'add' ? (
-        <>
-          <AddIcon />
-          Add {selectedUser.type}
-        </>
-      ) : (
-        <>
-          <SaveIcon />
-          Save Changes
-        </>
-      )}
-    </Button>
+    <>
+      <Button variant="contained" onClick={handleClickOpen} disabled={!isSaveButtonEnabled}>
+        {pageMode === 'add' ? (
+          <>
+            <AddIcon /> Add {selectedUser.type}
+          </>
+        ) : (
+          <>
+            <SaveIcon /> Save Changes
+          </>
+        )}
+      </Button>
+
+      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">{`Do you really want to ${pageMode} ${selectedUser.type}?`}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {selectedUser.firstName} {selectedUser.lastName} will be {pageMode}ed as {selectedUser.type}.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleAgreeClick} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 };
 
