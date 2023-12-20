@@ -5,21 +5,10 @@ import { emptyUser, mockTeacher } from '../../models/mockAdminData';
 
 type GeneralType = Teacher | Student | Admin;
 
-interface IProcessingErrors {
-  firstNameError: boolean;
-  lastNameError: boolean;
-  fatherNameError: boolean;
-  emailError: boolean;
-  phoneNumberError: boolean;
-  passwordError: boolean;
-  confirmPasswordError: boolean;
-}
-
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
-  pageMode?: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
-  processingErrors: IProcessingErrors;
+  pageMode: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
   isSaveButtonEnabled: boolean;
   teachers: {
     data: Teacher[];
@@ -31,25 +20,12 @@ interface IUsersState {
   };
 }
 
-export const noProcessingErrors = {
-  firstNameError: false,
-  lastNameError: false,
-  fatherNameError: false,
-  emailError: false,
-  phoneNumberError: false,
-  passwordError: false,
-  confirmPasswordError: false,
-};
-
-// TODO:
-
 const initialState: IUsersState = {
   // This should be set only in login page
   currentUser: mockTeacher, // TODO: change to emptyUser after development
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
-  processingErrors: noProcessingErrors,
   isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
   teachers: {
@@ -79,10 +55,6 @@ const usersSlice = createSlice({
     // TODO: Maybe change name from no-edit to no-mode.
     setPageMode: (state: IUsersState, action: PayloadAction<'add' | 'edit' | 'no-edit'>) => {
       state.pageMode = action.payload;
-    },
-
-    setProcessingErrors: (state: IUsersState, action: PayloadAction<IProcessingErrors>) => {
-      state.processingErrors = action.payload;
     },
 
     setIsSaveButtonEnabled: (state: IUsersState, action: PayloadAction<boolean>) => {
@@ -116,7 +88,8 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setProcessingErrors, setPageMode, addUser, deleteUser } = usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
+  usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -129,7 +102,6 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
-export const selectProcessingErrors = (state: RootState) => state.users.processingErrors;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {

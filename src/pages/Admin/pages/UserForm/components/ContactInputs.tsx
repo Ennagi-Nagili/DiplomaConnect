@@ -1,40 +1,31 @@
 import { Box, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import {
-  selectProcessingErrors,
-  selectSelectedUser,
-  setIsSaveButtonEnabled,
-  setProcessingErrors,
-  setSelectedUser,
-} from '../../../../../services/reducers/users.slice';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
 
 const ContactInputs = () => {
   const dispatch = useAppDispatch();
   const placeholderUser = useAppSelector(selectSelectedUser);
-  const processingErrors = useAppSelector(selectProcessingErrors);
+
+  //Corresponding Error States
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
 
   useEffect(() => {
-    dispatch(setProcessingErrors({ ...processingErrors, emailError: false }));
-    dispatch(setProcessingErrors({ ...processingErrors, phoneNumberError: false }));
+    setEmailError(false);
+    setPhoneError(false);
   }, [window.location.pathname]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
-    const intermediateVar = !/^\S+@\S+\.\S+$/.test(e.target.value);
-    dispatch(setProcessingErrors({ ...processingErrors, emailError: intermediateVar }));
-
-    dispatch(setIsSaveButtonEnabled(true));
+    setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
-    const intermediateVar = !/^\d+$/.test(e.target.value);
-    dispatch(setProcessingErrors({ ...processingErrors, phoneNumberError: intermediateVar }));
-
-    dispatch(setIsSaveButtonEnabled(true));
+    setPhoneError(!/^\d+$/.test(e.target.value));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -44,15 +35,15 @@ const ContactInputs = () => {
       type: 'email',
       value: placeholderUser.email,
       onChange: handleEmailChange,
-      error: processingErrors.emailError,
-      helperText: processingErrors.emailError ? 'Enter a valid email address' : ' ',
+      error: emailError,
+      helperText: emailError ? 'Enter a valid email address' : ' ',
     },
     {
       label: 'Phone Number',
       value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
-      error: processingErrors.phoneNumberError,
-      helperText: processingErrors.phoneNumberError ? 'Enter a valid phone number' : ' ',
+      error: phoneError,
+      helperText: phoneError ? 'Enter a valid phone number' : ' ',
     },
   ];
 

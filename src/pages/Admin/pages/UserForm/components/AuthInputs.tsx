@@ -1,12 +1,6 @@
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import {
-  selectPageMode,
-  selectProcessingErrors,
-  selectSelectedUser,
-  setProcessingErrors,
-  setSelectedUser,
-} from '../../../../../services/reducers/users.slice';
+import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -14,42 +8,51 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputTextField from './InputTextField';
 
 const AuthInputs = () => {
-  const processingErrors = useAppSelector(selectProcessingErrors);
-  // console.log('processingErrors', processingErrors);
+  const dispatch = useAppDispatch();
+  const selectedUser = useAppSelector(selectSelectedUser);
+
+  useEffect(() => {
+    // isVisible
+    setIsPasswordVisible(false);
+    setIsConfirmPasswordVisible(false);
+    // isTouched
+    setPasswordTouched(false);
+    setConfirmPasswordTouched(false);
+    // state
+    setConfirmPassword('');
+    // error state
+    setPasswordError(false);
+    setConfirmPasswordError(false);
+  }, [window.location.pathname]);
 
   // Visible State
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+  const handleToggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible((prev) => !prev);
+  };
+
   // Field Touched state
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   // State
-  const dispatch = useAppDispatch();
-  const selectedUser = useAppSelector(selectSelectedUser);
-  // console.log('selectedUser', selectedUser);
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  useEffect(() => {
-    setIsPasswordVisible(false);
-    setIsConfirmPasswordVisible(false);
-    setPasswordTouched(false);
-    setConfirmPasswordTouched(false);
-    setConfirmPassword('');
-  }, [window.location.pathname]);
+  // Corresponding Error State
+  const [passwordError, setPasswordError] = useState(false);
+  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    dispatch(setProcessingErrors({ ...processingErrors, confirmPasswordError: confirmPasswordTouched && confirmPassword !== selectedUser.password }));
-    // setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
-  }, [confirmPassword, selectedUser.password, confirmPasswordTouched]);
+    setPasswordError(passwordTouched && selectedUser.password.trim() === '');
+  }, [selectedUser.password, passwordTouched]);
 
-  const handleTogglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
-
-  const handleToggleConfirmPasswordVisibility = () => {
-    setIsConfirmPasswordVisible((prev) => !prev);
-  };
+  useEffect(() => {
+    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
+  }, [selectedUser.password, confirmPassword, confirmPasswordTouched]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
@@ -69,8 +72,8 @@ const AuthInputs = () => {
       type: isPasswordVisible ? 'text' : 'password',
       value: selectedUser.password,
       onChange: handlePasswordChange,
-      error: passwordTouched && selectedUser.password.trim() === '',
-      helperText: passwordTouched && selectedUser.password.trim() === '' ? 'Password is required' : ' ',
+      error: passwordError,
+      helperText: passwordError ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -86,8 +89,8 @@ const AuthInputs = () => {
     type: isConfirmPasswordVisible ? 'text' : 'password',
     value: confirmPassword,
     onChange: handleConfirmPasswordChange,
-    error: processingErrors.confirmPasswordError,
-    helperText: processingErrors.confirmPasswordError ? 'Passwords do not match' : ' ',
+    error: confirmPasswordError,
+    helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
     InputProps: {
       endAdornment: (
         <InputAdornment position="end">

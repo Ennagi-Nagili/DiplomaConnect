@@ -1,13 +1,7 @@
 import { Box } from '@mui/material';
-import {
-  selectProcessingErrors,
-  selectSelectedUser,
-  setIsSaveButtonEnabled,
-  setProcessingErrors,
-  setSelectedUser,
-} from '../../../../../services/reducers/users.slice';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
 
 export type TextFieldAttributes = {
@@ -27,29 +21,32 @@ const NameInputs = () => {
 
   // Note selected user was set either to empty placeholder or currentUser depending on the route in UserForm.tsx
   const placeholderUser = useAppSelector(selectSelectedUser);
-  const processingErrors = useAppSelector(selectProcessingErrors);
-  // console.log('processingErrors', processingErrors);
+
+  //Corresponding Error States
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [fatherNameError, setFatherNameError] = useState(false);
+
+  useEffect(() => {
+    setFirstNameError(false);
+    setLastNameError(false);
+    setFatherNameError(false);
+  }, [window.location.pathname]);
 
   // Maybe this 3 function can be merged into one with switch
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, firstName: e.target.value }));
-    // dispatch(setProcessingErrors({ ...processingErrors, firstNameError: e.target.value.trim() === '' }));
-
-    dispatch(setIsSaveButtonEnabled(true));
+    setFirstNameError(e.target.value.trim() === '');
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, lastName: e.target.value }));
-    dispatch(setProcessingErrors({ ...processingErrors, lastNameError: e.target.value.trim() === '' }));
-
-    dispatch(setIsSaveButtonEnabled(true));
+    setLastNameError(e.target.value.trim() === '');
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, fatherName: e.target.value }));
-    dispatch(setProcessingErrors({ ...processingErrors, fatherNameError: e.target.value.trim() === '' }));
-
-    dispatch(setIsSaveButtonEnabled(true));
+    setFatherNameError(e.target.value.trim() === '');
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -58,22 +55,22 @@ const NameInputs = () => {
       label: 'First Name',
       value: placeholderUser.firstName,
       onChange: handleFirstNameChange,
-      error: processingErrors.firstNameError,
-      helperText: processingErrors.firstNameError ? 'First Name is required' : ' ',
+      error: firstNameError,
+      helperText: firstNameError ? 'First Name is required' : ' ',
     },
     {
       label: 'Last Name',
       value: placeholderUser.lastName,
       onChange: handleLastNameChange,
-      error: processingErrors.lastNameError,
-      helperText: processingErrors.lastNameError ? 'Last Name is required' : ' ',
+      error: lastNameError,
+      helperText: lastNameError ? 'Last Name is required' : ' ',
     },
     {
       label: 'FatherName',
       value: placeholderUser.fatherName,
       onChange: handleFatherNameChange,
-      error: processingErrors.fatherNameError,
-      helperText: processingErrors.fatherNameError ? 'Father Name is required' : ' ',
+      error: fatherNameError,
+      helperText: fatherNameError ? 'Father Name is required' : ' ',
     },
   ];
 

@@ -1,6 +1,4 @@
 import { Box, useMediaQuery } from '@mui/material';
-import { selectPageMode, selectSelectedUser } from '../../../../services/reducers/users.slice';
-import { useAppSelector } from '../../../../services/hooks';
 import AuthInputs from './components/AuthInputs';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -18,14 +16,19 @@ import UploadAvatar from './components/UploadAvatar';
 const UserFormCard: React.FC = () => {
   const isSmallScreen = useMediaQuery('(max-width: 805px)');
 
-  // TODO: /edit-profile for currentUser (admin in my case), /teachers/id-3/edit-profile for teachers and students DataGrid OpenInNewView
-  const pageMode = useAppSelector(selectPageMode);
-  const selectedUser = useAppSelector(selectSelectedUser);
-  const userType = selectedUser.type;
+  const path = window.location.pathname;
+  console.log('path', path);
+  // All the possible path-s:
+  // 1. /admin/add-teacher
+  // 2. /admin/add-student
+  // 3. /admin/edit-profile
+  // 4. /teachers/:id/edit
+  // 5. /students/:id/edit
+  const pageMode = path?.includes('add') ? 'add' : 'edit';
+  const userType = path?.includes('teacher') ? 'teacher' : path?.includes('student') ? 'student' : 'admin';
   const capitalizedUserType = userType.slice(0, 1).toUpperCase() + userType.slice(1);
-  // console.log('ADD USER: SELECTED USER', selectedUser);
 
-  console.log('USER FORM CARD PAGE IS RERENDERED')
+  console.log('USER FORM CARD PAGE IS RERENDERED');
 
   return (
     <Card

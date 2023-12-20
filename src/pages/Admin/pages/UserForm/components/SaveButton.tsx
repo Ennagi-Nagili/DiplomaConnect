@@ -2,20 +2,19 @@ import {
   addUser,
   selectIsSaveButtonEnabled,
   selectPageMode,
-  selectProcessingErrors,
   selectSelectedUser,
-  setProcessingErrors,
+  setIsSaveButtonEnabled,
+  setSelectedUser,
 } from '../../../../../services/reducers/users.slice';
 import { Button } from '@mui/material';
-import { mockTeacher } from '../../../../../models/mockAdminData';
+import { emptyStudent, emptyTeacher, mockTeacher } from '../../../../../models/mockAdminData';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
+import { useEffect } from 'react';
 
 // TODO:
 // 1. /teachers/:id/edit page doesn't work on refresh
-// 2. Save button doesn't properly work when inputs are invalid. To overcome the issue. Set processingErrors to true by default,
-//    and whenever condition is met, make it false.
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
@@ -23,20 +22,10 @@ const SaveButton = () => {
   const pageMode = useAppSelector(selectPageMode);
   const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
 
-  const processingErrors = useAppSelector(selectProcessingErrors);
-
   const dispatch = useAppDispatch();
 
   const handleAddClick = () => {
-    const isEverythingValid = checkInputs();
-
-    if (isEverythingValid) {
-      console.log(JSON.stringify(selectedUser));
-    } else {
-      console.log('processingErrors', processingErrors);
-      console.log('FILL ALL THE REQUIRED FIELDS');
-    }
-
+    userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
     if (pageMode === 'add') {
       // TODO:
       dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
@@ -44,39 +33,24 @@ const SaveButton = () => {
     } else {
       console.log('Edit User Icon Button is clicked');
     }
+    console.log(JSON.stringify(selectedUser));
   };
 
   const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled); // default is false
 
-  // Redo all the validations again:
-  const checkInputs = () => {
-    // VALIDATIONS:
+  useEffect(() => {
+    // validations
     const firstNameError = selectedUser.firstName === '';
     const lastNameError = selectedUser.lastName === '';
     const fatherNameError = selectedUser.fatherName.trim() === '';
     const emailError = !/^\S+@\S+\.\S+$/.test(selectedUser.email);
     const phoneNumberError = !/^\d+$/.test(selectedUser.phoneNumber);
+    const passwordError = selectedUser.password === '';
 
-    // MAIN
-    dispatch(
-      setProcessingErrors({
-        ...processingErrors,
-        firstNameError: firstNameError,
-        lastNameError: lastNameError,
-        fatherNameError: fatherNameError,
-        emailError: emailError,
-        phoneNumberError: phoneNumberError,
-      }),
-    );
-
-    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError];
-    console.log(
-      'ERRORS ARRAY',
-      errorsArray.every((item) => item === false),
-    );
-    const isEverythingValid = errorsArray.every((item) => item === false);
-    return isEverythingValid;
-  };
+    // If no error, enable save button
+    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError];
+    errorsArray.every((item) => item === false) ? dispatch(setIsSaveButtonEnabled(true)) : dispatch(setIsSaveButtonEnabled(false));
+  }, [selectedUser]);
 
   return (
     <Button variant="contained" onClick={handleAddClick} disabled={!isSaveButtonEnabled}>
