@@ -1,5 +1,6 @@
 import {
   addUser,
+  selectCurrentUser,
   selectIsSaveButtonEnabled,
   selectPageMode,
   selectSelectedUser,
@@ -12,9 +13,11 @@ import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
+  const currentUser = useAppSelector(selectCurrentUser);
   const selectedUser = useAppSelector(selectSelectedUser);
   const pageMode = useAppSelector(selectPageMode);
   const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
@@ -22,19 +25,31 @@ const SaveButton = () => {
   const dispatch = useAppDispatch();
 
   const handleAddClick = () => {
-    userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
+    dispatch(setIsSaveButtonEnabled(false));
     if (pageMode === 'add') {
+      userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
       // TODO:
       dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
       console.log('Add User Icon Button is clicked');
     } else {
       console.log('Edit User Icon Button is clicked');
+
+      // TODO: Connect to API
+      // axios
+      //   .post('https://194.87.210.5:7001/Student', {
+      //     fullName: `${selectedUser.firstName} ${selectedUser.lastName} ${selectedUser.fatherName}`,
+      //     groupNumber: 'selectedUser.group',
+      //     email: selectedUser.email,
+      //     password: selectedUser.password,
+      //     phoneNumber: selectedUser.phoneNumber,
+      //   })
+      //   .then((res) => console.log('res', res));
     }
     console.log(JSON.stringify(selectedUser));
   };
 
   const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled); // default is false
-  
+
   useEffect(() => {
     // validations
     const firstNameError = selectedUser.firstName === '';
@@ -47,6 +62,8 @@ const SaveButton = () => {
     // If no error, enable save button
     const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError];
     errorsArray.every((item) => item === false) ? dispatch(setIsSaveButtonEnabled(true)) : dispatch(setIsSaveButtonEnabled(false));
+
+    JSON.stringify(selectedUser) === JSON.stringify(currentUser) && dispatch(setIsSaveButtonEnabled(false));
   }, [selectedUser]);
 
   return (

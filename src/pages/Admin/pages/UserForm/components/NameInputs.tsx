@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { selectSelectedUser, setIsSaveButtonEnabled, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
@@ -36,19 +36,16 @@ const NameInputs = () => {
   // Maybe this 3 function can be merged into one with switch
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, firstName: e.target.value }));
-    dispatch(setIsSaveButtonEnabled(true));
     setFirstNameError(e.target.value.trim() === '');
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, lastName: e.target.value }));
-
     setLastNameError(e.target.value.trim() === '');
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, fatherName: e.target.value }));
-    dispatch(setIsSaveButtonEnabled(true));
     setFatherNameError(e.target.value.trim() === '');
   };
 

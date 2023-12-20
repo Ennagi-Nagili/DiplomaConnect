@@ -1,6 +1,6 @@
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectPageMode, selectSelectedUser, setIsSaveButtonEnabled, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -57,13 +57,11 @@ const AuthInputs = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
     dispatch(setSelectedUser({ ...selectedUser, password: password }));
-    dispatch(setIsSaveButtonEnabled(true));
     setPasswordTouched(true);
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(e.target.value);
-    dispatch(setIsSaveButtonEnabled(true));
     setConfirmPasswordTouched(true);
   };
 
