@@ -88,8 +88,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
-  usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;

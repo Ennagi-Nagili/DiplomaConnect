@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectSelectedUser, setIsSaveButtonEnabled, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
@@ -20,11 +20,13 @@ const ContactInputs = () => {
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
+    dispatch(setIsSaveButtonEnabled(true));
     setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
+    dispatch(setIsSaveButtonEnabled(true));
     setPhoneError(!/^\d+$/.test(e.target.value));
   };
 

@@ -13,9 +13,6 @@ import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import { useEffect } from 'react';
 
-// TODO:
-// 1. /teachers/:id/edit page doesn't work on refresh
-
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
   const selectedUser = useAppSelector(selectSelectedUser);
@@ -37,7 +34,7 @@ const SaveButton = () => {
   };
 
   const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled); // default is false
-
+  
   useEffect(() => {
     // validations
     const firstNameError = selectedUser.firstName === '';
