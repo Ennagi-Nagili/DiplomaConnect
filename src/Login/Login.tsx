@@ -131,7 +131,7 @@ export default function LogIn() {
                 sx={{ mt: 3, mb: 2 }}
                 onClick={() => {
                   if (password !== "" && mail !== "") {
-                    // Add any specific logic on button click
+                   
                   }
                 }}
               >
