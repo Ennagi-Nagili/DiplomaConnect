@@ -1,36 +1,51 @@
 import * as React from 'react';
 import Logo from '/src/assets/diplomalogo.png';
-import './Login.scss'
-import { FormControl, Button, CssBaseline, TextField, FormControlLabel,Checkbox,Link,Paper,Box,Grid,Typography,createTheme, ThemeProvider  } from '@mui/material';
-function Copyright(props: any) {
+import './Login.scss';
+import {
+  FormControl,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
+
+interface FormData {
+  get: (name: string) => string | null;
+}
+
+function Copyright() {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit">
-        Turac
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
+      <Link color="inherit">Turac</Link> {new Date().getFullYear()}.
     </Typography>
   );
 }
-// TODO remove, this demo shouldn't need to reset the theme.
+
 const defaultTheme = createTheme();
 
 export default function LogIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(event.currentTarget) as FormData;
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
   };
 
-  const [red1, setRed1] = React.useState("block")
-  const [red2, setRed2] = React.useState("block")
-  const [mail, setMail] = React.useState("");
-  const [password, setPassword] = React.useState("")
+  const [wrong_email, setwrong_email] = React.useState("block");
+  const [wrong_password, setwrong_password] = React.useState("block");
+  const [mail, setMail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -51,7 +66,6 @@ export default function LogIn() {
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-
           <Box
             sx={{
               my: 8,
@@ -61,18 +75,15 @@ export default function LogIn() {
               alignItems: 'center',
             }}
           >
-            <img src={Logo}
-              height={100}
-              width={190}
-            />
+            <img src={Logo} height={100} width={190} alt="Logo" />
             <Typography component="h1" variant="h5">
               Log In
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
-              <FormControl required={true} fullWidth={true} >
+              <FormControl required fullWidth>
                 <TextField
                   margin="normal"
-                  required={true}
+                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -80,42 +91,35 @@ export default function LogIn() {
                   autoComplete="email"
                   autoFocus
                   onChange={(e) => {
-                    setMail(e.target.value)
-                    if(e.target.value != "") {
-                      setRed1("none")
-                    } else {
-                      setRed1("block")
-                    }
+                    setMail(e.target.value);
+                    setwrong_email(e.target.value ? "none" : "block");
                   }}
                   value={mail}
                 />
-                 <Typography className='redp' sx={{display: red1}}>
-              *Please write your E-mail
-            </Typography>
-
+                <Typography className='redp' sx={{ display: wrong_email }}>
+                  *Please write your E-mail
+                </Typography>
               </FormControl>
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={(e) => {
-                  setPassword(e.target.value)
-                  if(e.target.value != "") {
-                    setRed2("none")
-                  } else {
-                    setRed2("block")
-                  }
-                }}
-                value={password}
-              />
-              <Typography  className="redp" sx={{display: red2}}>
-              *Please write your password
-            </Typography>
+              <FormControl required fullWidth>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setwrong_password(e.target.value ? "none" : "block");
+                  }}
+                  value={password}
+                />
+                <Typography className="redp" sx={{ display: wrong_password }}>
+                  *Please write your password
+                </Typography>
+              </FormControl>
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
@@ -126,13 +130,14 @@ export default function LogIn() {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 onClick={() => {
-                  if(password != null && mail != "") {
+                  if (password !== "" && mail !== "") {
+                    // Add any specific logic on button click
                   }
                 }}
               >
                 Log In
               </Button>
-              <Copyright sx={{ mt: 5 }} />
+              <Copyright />
             </Box>
           </Box>
         </Grid>
