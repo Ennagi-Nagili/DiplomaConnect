@@ -1,44 +1,75 @@
 import { Box } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { selectCurrentUser, setPageMode, setSelectedUser } from '../../../../services/reducers/users.slice';
 import { emptyStudent, emptyTeacher } from '../../../../models/mockAdminData';
+import {
+  selectCurrentUser,
+  selectStudents,
+  selectTeachers,
+  setIsSaveButtonEnabled,
+  setPageMode,
+  setSelectedUser,
+} from '../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
+import React, { useEffect } from 'react';
 import UserFormCard from './UserFormCard';
+import { useNavigate } from 'react-router-dom';
 
 const UserForm: React.FC = () => {
+  console.log('USER FORM PAGE IS RENDERED');
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const pathEnd = window.location.pathname.split('/').pop();
+  const path = window.location.pathname;
+  const pathEnd = path.split('/').pop();
   console.log('pathEnd', pathEnd);
 
   const currentUser = useAppSelector(selectCurrentUser);
+  const teachers = useAppSelector(selectTeachers);
+  const students = useAppSelector(selectStudents);
 
   useEffect(() => {
+    console.log('USER FORM USE EFFECT');
+    dispatch(setIsSaveButtonEnabled(false));
+
     // Setting selectedUser and pageMode
-    switch (pathEnd) {
-      case 'edit-profile': {
+    switch (true) {
+      case pathEnd === 'edit-profile': {
         dispatch(setPageMode('edit'));
         // TODO: selectedUser is currentUser
         dispatch(setSelectedUser(currentUser));
         console.log('PAGE MODE: EDIT PROFILE');
         break;
       }
-      case 'add-teacher': {
+      case pathEnd === 'add-teacher': {
         dispatch(setPageMode('add'));
         // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyTeacher)); // TODO: id needs to dynamically change
         console.log('PAGE MODE: ADD TEACHER');
         break;
       }
-      case 'add-student': {
+      case pathEnd === 'add-student': {
         dispatch(setPageMode('add'));
         // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyStudent)); // TODO: id needs to dynamically change
         console.log('PAGE MODE: ADD STUDENT');
         break;
       }
+      // At first, teachers and students are not set.
+      case /\/teachers\/\d+\/edit$/.test(path): {
+        console.log('PAGE MODE: EDIT SOME TEACHER');
+        const id = path.split('/')[3];
+        const selectedUser = teachers?.filter((item) => item.id === +id)[0];
+        selectedUser ? dispatch(setSelectedUser(selectedUser)) : dispatch(setSelectedUser(emptyTeacher));
+        break;
+      }
+      case /\/students\/\d+\/edit$/.test(path): {
+        console.log('PAGE MODE: EDIT SOME STUDENT');
+        break;
+      }
+      default:
+        navigate('/');
     }
-  }, [window.location.pathname]);
+  }, [window.location.pathname, teachers, students]);
+  console.log('window.location.pathname', window.location.pathname);
 
   return (
     // Container

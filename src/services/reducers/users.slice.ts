@@ -1,25 +1,15 @@
-import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { Admin, Student, Teacher } from '../../models/models';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { emptyUser, mockTeacher } from '../../models/mockAdminData';
 
 type GeneralType = Teacher | Student | Admin;
 
-interface IProcessingErrors {
-  firstNameError: boolean;
-  lastNameError: boolean;
-  fatherNameError: boolean;
-  emailError: boolean;
-  phoneNumberError: boolean;
-  passwordError: boolean;
-  currentPasswordError: boolean;
-}
-
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
-  pageMode?: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
-  processingErrors: IProcessingErrors;
+  pageMode: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
+  isSaveButtonEnabled: boolean;
   teachers: {
     data: Teacher[];
     isSet: boolean;
@@ -36,15 +26,7 @@ const initialState: IUsersState = {
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
-  processingErrors: {
-    firstNameError: false,
-    lastNameError: false,
-    fatherNameError: false,
-    emailError: false,
-    phoneNumberError: false,
-    passwordError: false,
-    currentPasswordError: false,
-  },
+  isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
   teachers: {
     data: [],
@@ -75,8 +57,8 @@ const usersSlice = createSlice({
       state.pageMode = action.payload;
     },
 
-    setProcessingErrors: (state: IUsersState, action: PayloadAction<IProcessingErrors>) => {
-      state.processingErrors = action.payload;
+    setIsSaveButtonEnabled: (state: IUsersState, action: PayloadAction<boolean>) => {
+      state.isSaveButtonEnabled = action.payload;
     },
 
     // Set users array, current user, and selected user
@@ -106,7 +88,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setProcessingErrors, setPageMode, addUser, deleteUser } = usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -119,7 +101,6 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
-export const selectProcessingErrors = (state: RootState) => state.users.processingErrors;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {
@@ -128,3 +109,5 @@ export const selectTeacherNames = createSelector([selectTeachers], (teachers): s
 export const selectStudentNames = createSelector([selectStudents], (students): string[] => {
   return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
 });
+
+export const selectIsSaveButtonEnabled = (state: RootState) => state.users.isSaveButtonEnabled;

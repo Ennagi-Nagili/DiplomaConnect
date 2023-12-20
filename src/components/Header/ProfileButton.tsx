@@ -67,8 +67,12 @@ const ProfileButton: React.FC = () => {
 
   return (
     <div>
-      <IconButton onClick={handleClick} size="small">
-        <AccountCircleIcon />
+      <IconButton onClick={handleClick} size="small" sx={{ height: '34px', width: '34px' }}>
+        {currentUser.profilePhoto ? (
+          <Avatar src={currentUser.profilePhoto} sx={{ height: '20px', width: '20px', border: '1px solid #6f6f6f' }} />
+        ) : (
+          <AccountCircleIcon />
+        )}
       </IconButton>
 
       <Popover

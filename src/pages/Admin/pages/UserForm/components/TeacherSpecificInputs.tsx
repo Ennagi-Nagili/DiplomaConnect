@@ -1,10 +1,10 @@
+import { Teacher } from '../../../../../models/models';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
-import { Teacher } from '../../../../../models/models';
 
 // TODO: This info needs to come from backend
 // Note: Each item in itemList should be an array of objects
