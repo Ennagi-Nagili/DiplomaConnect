@@ -2,8 +2,8 @@ import { Fab } from '@mui/material';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
 import { Task } from '../../../models/Task';
-import { createSlice } from '@reduxjs/toolkit';
 import { taskData } from '../../../models/mockData';
+import { useAppDispatch } from '../../../services/hooks';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -17,8 +17,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import {taskInitial} from '../../../models/initials';
-import { useAppDispatch } from '../../../services/hooks';
 
 type TableHeader = {
   name: string;
@@ -49,7 +47,7 @@ export const TaskTable = () => {
         dt.push(data[i]);
       }
     }
-    setData(dt);
+    setData(data.filter((item) => item.id !== id));
   }
 
   function getFinish(finish: boolean) {
