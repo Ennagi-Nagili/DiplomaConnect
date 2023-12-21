@@ -5,7 +5,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsButton from './NotificationsButton';
 import ProfileButton from './ProfileButton';
 import SearchBar from './SearchBar';
-// import SearchBar from '../../pages/Admin/components/Temporary';
 
 interface HeaderProps {
   open: boolean;

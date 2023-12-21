@@ -4,6 +4,7 @@ import {
   selectCurrentUser,
   selectIsSaveButtonEnabled,
   selectStudents,
+  selectTeacherIds,
   selectTeachers,
   setIsSaveButtonEnabled,
   setPageMode,
@@ -25,6 +26,7 @@ const UserForm = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
+  const teacherIds = useAppSelector(selectTeacherIds);
 
   const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled);
   // TODO: Add 'Your saves will not be changed' alert dialog.
@@ -67,9 +69,14 @@ const UserForm = () => {
       }
       // At first, teachers and students are not set.
       case /\/teachers\/\d+\/edit$/.test(path): {
+        // If user with requested id doesn't exits
         const id = path.split('/')[3];
-        const selectedUser = teachers?.filter((item) => item.id === +id)[0];
-        selectedUser ? dispatch(setSelectedUser(selectedUser)) : dispatch(setSelectedUser(emptyTeacher));
+        if (teachers.length !== 0 && teacherIds.includes(+id)) {
+          dispatch(setSelectedUser(teachers.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
+        } else if (teachers.length !== 0 && !teacherIds.includes(+id)) {
+          console.log(`User with id ${id} is not found.`);
+          navigate('/notFound');
+        }
         break;
       }
       case /\/students\/\d+\/edit$/.test(path): {
