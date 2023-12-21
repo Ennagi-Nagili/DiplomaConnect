@@ -6,14 +6,13 @@ import ContactInputs from './components/ContactInputs';
 import EditIcon from '@mui/icons-material/Edit';
 import NameInputs from './components/NameInputs';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import React from 'react';
 import SaveButton from './components/SaveButton';
 import StudentSpecificInputs from './components/StudentSpecificInputs';
 import TeacherSpecificInputs from './components/TeacherSpecificInputs';
 import Typography from '@mui/material/Typography';
 import UploadAvatar from './components/UploadAvatar';
 
-const UserFormCard: React.FC = () => {
+const UserFormCard = () => {
   const isSmallScreen = useMediaQuery('(max-width: 805px)');
   // console.log('USER FORM CARD PAGE IS RERENDERED');
 
@@ -27,7 +26,6 @@ const UserFormCard: React.FC = () => {
   const pageMode = path?.includes('add') ? 'add' : 'edit';
   const userType = path?.includes('teacher') ? 'teacher' : path?.includes('student') ? 'student' : 'admin';
   const capitalizedUserType = userType.slice(0, 1).toUpperCase() + userType.slice(1);
-
 
   return (
     <Card
@@ -99,7 +97,7 @@ const UserFormCard: React.FC = () => {
           <ContactInputs />
 
           {/* AuthInfo */}
-          <AuthInputs />
+          {pageMode === 'add' && <AuthInputs />}
         </div>
       </CardContent>
 

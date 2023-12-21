@@ -1,6 +1,6 @@
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -82,31 +82,24 @@ const AuthInputs = () => {
         ),
       },
     },
-  ];
-
-  const confirmPasswordAttrs: TextFieldAttributes = {
-    label: 'Confirm Password',
-    type: isConfirmPasswordVisible ? 'text' : 'password',
-    value: confirmPassword,
-    onChange: handleConfirmPasswordChange,
-    error: confirmPasswordError,
-    helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
-    InputProps: {
-      endAdornment: (
-        <InputAdornment position="end">
-          <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
-            {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-          </IconButton>
-        </InputAdornment>
-      ),
+    {
+      label: 'Confirm Password',
+      type: isConfirmPasswordVisible ? 'text' : 'password',
+      value: confirmPassword,
+      onChange: handleConfirmPasswordChange,
+      error: confirmPasswordError,
+      helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
+      InputProps: {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
+              {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      },
     },
-  };
-
-  const pageMode = useAppSelector(selectPageMode);
-  // NOTE: Confirm Password will be only in 'add' mode for now. I'll change this if I have time at the end.
-  if (pageMode === 'add') {
-    textFieldAttributes.push(confirmPasswordAttrs);
-  }
+  ];
 
   return (
     <Box
