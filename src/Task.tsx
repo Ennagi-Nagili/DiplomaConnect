@@ -32,7 +32,7 @@ export const TaskPage = () => {
   };
 
   return (
-    <div className="container task-container">
+    <div className="task-page-container container task-container">
       <div className="header">
         <h1 className="diploma">DIPLOMA CONNECT</h1>
       </div>

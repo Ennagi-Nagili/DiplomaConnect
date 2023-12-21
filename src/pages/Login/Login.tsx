@@ -90,7 +90,7 @@ export default function LogIn() {
                     setMail(e.target.value);
                     setWrong_Email(e.target.value ? 'none' : 'block');
                   }}
-                  value={mail}
+                  // value={mail}
                 />
                 <Typography className="redp" sx={{ display: Wrong_Email }}>
                   *Please write your E-mail
@@ -109,7 +109,7 @@ export default function LogIn() {
                   setPassword(e.target.value);
                   setWrong_Password(e.target.value ? 'none' : 'block');
                 }}
-                value={password}
+                // value={password}
               />
               <Typography className="redp" sx={{ display: Wrong_Password }}>
                 *Please write your password
