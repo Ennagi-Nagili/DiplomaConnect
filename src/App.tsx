@@ -12,6 +12,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
+import { TaskPage } from './Task';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -68,6 +69,13 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="/profile/*" element={<Profile />} />
+        <Route path="details" element={<DetailsPage />} />
+        <Route path="task" element={<TaskDetails />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path='task-page' element={<TaskPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin/*" element={<Profile />} />
         <Route path="*" element={<NotFound />} />
 
@@ -76,6 +84,7 @@ function App() {
         <Route path="details" element={<DetailsPage />} />
         <Route path="task" element={<TaskDetails />} />
       </Routes>
+      {/*<TaskPage /> */}
     </>
   );
 }
