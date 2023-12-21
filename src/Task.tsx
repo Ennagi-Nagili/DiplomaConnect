@@ -35,25 +35,26 @@ export const TaskPage = () => {
     <div className="task-page-container container task-container">
       <div className="header">
         <h1 className="diploma">DIPLOMA CONNECT</h1>
-      </div>
-      <div className="inputs">
-        {staticInput.map((input) => (
-          <input key={input.id} type="text" placeholder={input.placeholder} className="input" />
-        ))}
-        {inputSets.map((inputSet, setIndex) => (
-          <div key={setIndex}>{inputSet.map((input) => input)}</div>
-        ))}
-        <label>
-          <button className="filebutton">Materials</button>
-          <input type="file" multiple style={{ display: 'none' }} />
-        </label>
-        <div className="button-container">
-          <button onClick={addInputSet} className="button">
-            +
-          </button>
-          <button className="submit-button" onClick={handleSubmit}>
-            Submit
-          </button>
+        
+        <div className="inputs">
+          {staticInput.map((input) => (
+            <input key={input.id} type="text" placeholder={input.placeholder} className="input" />
+          ))}
+          {inputSets.map((inputSet, setIndex) => (
+            <div key={setIndex}>{inputSet.map((input) => input)}</div>
+          ))}
+          <label>
+            <button className="filebutton">Materials</button>
+            <input type="file" multiple style={{ display: 'none' }} />
+          </label>
+          <div className="button-container">
+            <button onClick={addInputSet} className="button">
+              +
+            </button>
+            <button className="submit-button" onClick={handleSubmit}>
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </div>

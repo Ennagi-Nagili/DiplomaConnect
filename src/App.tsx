@@ -25,8 +25,9 @@ function App() {
         <Route path="details" element={<DetailsPage />} />
         <Route path="task" element={<TaskDetails />} />
         <Route path="*" element={<NotFound />} />
+        <Route path='task-page' element={<TaskPage />} />
       </Routes>
-      {/* <TaskPage /> */}
+      {/*<TaskPage /> */}
     </>
   );
 }
