@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import './Home.scss';
-=======
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 import { Link, useNavigate } from 'react-router-dom';
 
 const Home = () => {

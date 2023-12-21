@@ -1,16 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
-<<<<<<< HEAD
-import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
-import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
-import EditProfile from '../../pages/Admin/pages/EditProfile/EditProfile';
-import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
-=======
 import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
 import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 type Page = {
   link: string;
@@ -24,18 +17,6 @@ const AdminSidebarPages: Page[] = [
     element: <Dashboard />,
   },
   {
-<<<<<<< HEAD
-    link: 'add-teacher',
-    element: <AddTeacher />,
-  },
-  {
-    link: 'teachers',
-    element: <Teachers />,
-  },
-  {
-    link: 'students',
-    element: <Teachers />,
-=======
     link: 'teachers',
     element: <UsersDataGrid />,
   },
@@ -50,7 +31,6 @@ const AdminSidebarPages: Page[] = [
   {
     link: 'add-student',
     element: <UserForm />,
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
   },
 ];
 

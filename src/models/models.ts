@@ -1,12 +1,7 @@
 export interface User {
-<<<<<<< HEAD
-  type: 'admin' | 'teacher' | 'student';
-  profilePhoto?: File;
-=======
   id: number;
   type: 'admin' | 'teacher' | 'student';
   profilePhoto?: string; // url
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
   firstName: string;
   lastName: string;
   fatherName: string;

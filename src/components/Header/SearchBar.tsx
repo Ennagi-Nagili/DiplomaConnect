@@ -1,11 +1,4 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
-<<<<<<< HEAD
-import IconButton from '@mui/material/IconButton';
-import React, { useEffect, useRef, useState } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
-import useMediaQuery from '@mui/material/useMediaQuery';
-=======
 import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
 import { useAppSelector } from '../../services/hooks';
 import IconButton from '@mui/material/IconButton';
@@ -26,7 +19,6 @@ export type UserObject = {
   website: string;
   company?: object;
 };
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 const SearchBar: React.FC = () => {
   // const teacherNames = useAppSelector(selectTeachers).map(
@@ -78,19 +70,6 @@ const SearchBar: React.FC = () => {
 
   // const [userNames, setUserNames] = useState<string[]>([]);
 
-<<<<<<< HEAD
-  const [userNames, setUserNames] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then((response) => response.json())
-      .then((json: UserObject[]) => {
-        const names = json.map((user) => user.name);
-        // console.log(names);
-        setUserNames(names);
-      });
-  }, []);
-=======
   // useEffect(() => {
   //   fetch('https://jsonplaceholder.typicode.com/users')
   //     .then((response) => response.json())
@@ -100,7 +79,6 @@ const SearchBar: React.FC = () => {
   //       setUserNames(names);
   //     });
   // }, []);
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
   return (
     <div

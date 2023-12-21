@@ -12,11 +12,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
 import React, { ReactElement } from 'react';
-<<<<<<< HEAD
-=======
 import { useAppSelector } from '../../services/hooks';
 import { selectCurrentUser } from '../../services/reducers/users.slice';
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 const ProfileButton: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -35,11 +32,7 @@ const ProfileButton: React.FC = () => {
 
   const handleEditProfileClick = () => {
     // Navigate to the edit profile page
-<<<<<<< HEAD
-    navigate('/profile/edit-profile');
-=======
     navigate('/admin/edit-profile');
->>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
     handleClose();
   };
 
