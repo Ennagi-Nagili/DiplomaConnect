@@ -1,7 +1,7 @@
 import { Avatar, Button } from '@mui/material';
-import React, { useRef, useState } from 'react';
+import { selectSelectedUser, setIsSaveButtonEnabled, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import React, { useEffect, useRef, useState } from 'react';
 
 const UploadAvatar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -9,6 +9,11 @@ const UploadAvatar: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+  // Note:
+  useEffect(() => {
+    selectedUser.profilePhoto ? setPreview(selectedUser.profilePhoto) : setPreview(null);
+  }, [selectedUser]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -20,6 +25,8 @@ const UploadAvatar: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
+    
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   const handleClear = () => {
@@ -31,6 +38,8 @@ const UploadAvatar: React.FC = () => {
     }
     // Clear the preview
     setPreview(null);
+
+    dispatch(setIsSaveButtonEnabled(true));
   };
 
   return (

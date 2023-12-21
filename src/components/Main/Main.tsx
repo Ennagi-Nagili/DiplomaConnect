@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
-import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
-import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
 import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
 import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
+import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
+import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
 
 type Page = {
   link: string;
@@ -63,7 +63,7 @@ export const Main = ({ open }: MainProps) => {
 
           {/* Edit Profile */}
           <Route path="/edit-profile" element={<UserForm />} />
-          <Route path='/teachers/:id/edit' element={<UserForm />} />
+          <Route path="/teachers/:id/edit" element={<UserForm />} />
         </Routes>
 
         {/* TODO: If teacher: */}

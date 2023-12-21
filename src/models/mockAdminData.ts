@@ -1,5 +1,5 @@
-import { generateNStudents, generateNTeachers } from './generateMockUsers';
 import { Admin, Student, Teacher, User } from './models';
+import { generateNStudents, generateNTeachers } from './generateMockUsers';
 
 // Empty user, teacher, student, and admin
 export const emptyUser: User = {

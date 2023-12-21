@@ -1,6 +1,6 @@
 export interface User {
   id: number;
-  type: | 'teacher' | 'student';
+  type: 'admin' | 'teacher' | 'student';
   profilePhoto?: string; // url
   firstName: string;
   lastName: string;

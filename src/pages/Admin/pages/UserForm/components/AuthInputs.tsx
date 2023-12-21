@@ -1,27 +1,45 @@
-import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
+import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
-
-// TODO: Only admin and user himself can edit
-const user = 'admin';
+import InputTextField from './InputTextField';
 
 const AuthInputs = () => {
+  const dispatch = useAppDispatch();
+  const selectedUser = useAppSelector(selectSelectedUser);
+
+  useEffect(() => {
+    // isVisible
+    setIsPasswordVisible(false);
+    setIsConfirmPasswordVisible(false);
+    // isTouched
+    setPasswordTouched(false);
+    setConfirmPasswordTouched(false);
+    // state
+    setConfirmPassword('');
+    // error state
+    setPasswordError(false);
+    setConfirmPasswordError(false);
+  }, [window.location.pathname]);
+
   // Visible State
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+  const handleToggleConfirmPasswordVisibility = () => {
+    setIsConfirmPasswordVisible((prev) => !prev);
+  };
 
   // Field Touched state
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
   // State
-  const dispatch = useAppDispatch();
-  const selectedUser = useAppSelector(selectSelectedUser);
-  // const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   // Corresponding Error State
@@ -34,15 +52,7 @@ const AuthInputs = () => {
 
   useEffect(() => {
     setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
-  }, [confirmPassword, selectedUser.password, confirmPasswordTouched]);
-
-  const handleTogglePasswordVisibility = () => {
-    setIsPasswordVisible((prev) => !prev);
-  };
-
-  const handleToggleConfirmPasswordVisibility = () => {
-    setIsConfirmPasswordVisible((prev) => !prev);
-  };
+  }, [selectedUser.password, confirmPassword, confirmPasswordTouched]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
@@ -63,7 +73,7 @@ const AuthInputs = () => {
       value: selectedUser.password,
       onChange: handlePasswordChange,
       error: passwordError,
-      helperText: passwordTouched && selectedUser.password.trim() === '' ? 'Password is required' : ' ',
+      helperText: passwordError ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -115,24 +125,7 @@ const AuthInputs = () => {
       {/* Box for First Name and Last Name with wrap */}
       {/* First Name, Last Name, Email Address, Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
-        <TextField
-          disabled={user === 'admin' ? false : true}
-          sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
-          label={item.label}
-          type={item.type}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          required
-          // TODO: instead of "Murad", there should be user.ATTR, user data should be fetched when user enters the website
-          // Condition should be something like user.ATTR ? user.ATTR : item.value
-          value={item.value}
-          onChange={item.onChange}
-          error={item.error}
-          helperText={item.helperText}
-          InputProps={item.InputProps}
-          key={index}
-        />
+        <InputTextField item={item} key={item.label + index} />
       ))}
     </Box>
   );

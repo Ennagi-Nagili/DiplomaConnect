@@ -1,10 +1,10 @@
 import { Box, useMediaQuery } from '@mui/material';
-import CardWrapper from './components/CardWrapper';
-import { TeacherInfo } from './TeacherInfo';
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { selectStudents, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
 import { StudentInfo } from './StudentInfo';
+import { selectStudents, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
+import { TeacherInfo } from './TeacherInfo';
+import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
+import { useEffect } from 'react';
+import CardWrapper from './components/CardWrapper';
 
 export const TeacherProfile = () => {
   const dispatch = useAppDispatch();

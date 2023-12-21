@@ -1,11 +1,11 @@
 import './UsersDataGrid.scss';
 import { Avatar } from '@mui/material';
-import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
+import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Student, Teacher } from '../../../../models/models';
 import { deleteUser, selectStudents, selectTeachers } from '../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import DataGridToolbar from '../../components/DataGridToolbar';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -13,20 +13,9 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 export const UsersDataGrid = () => {
   const dispatch = useAppDispatch();
   const pageMode = window.location.pathname.split('/').pop() as 'teachers' | 'students'; // pop() method removes the last element of the array and returns it
-  console.log(pageMode);
 
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
-
-  useEffect(() => {
-    if (pageMode === 'teachers') {
-      const users = teachers;
-      console.log('users', users);
-    } else if (pageMode === 'students') {
-      const users = students;
-      console.log('users', users);
-    }
-  }, [pageMode]);
 
   const users = pageMode === 'teachers' ? teachers : students;
 

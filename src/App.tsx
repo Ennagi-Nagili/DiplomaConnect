@@ -1,19 +1,17 @@
 import './App.scss';
 import './style/ProfilePage.scss';
-import { DetailsPage } from './pages/Teacher/DetailsPage/DetailsPage';
-import { ProfilePage } from './pages/Teacher/ProfilePage';
-import { RequestsPage } from './pages/Teacher/RequestsPage';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { StudentsPage } from './pages/Teacher/StudentsPage';
-import { TaskDetails } from './pages/Teacher/TaskDetailsPage/TaskDetails';
-import { useEffect, useState } from 'react';
+import { DetailsPage } from './pages/DetailsPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { Route, Routes } from 'react-router-dom';
+import { TaskDetails } from './pages/TaskDetails';
+import { useEffect } from 'react';
+import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
+import { setIsSet, setUsers } from './services/reducers/users.slice';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
-import { useAppDispatch } from './services/hooks';
-import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
-import { setIsSet, setUsers } from './services/reducers/users.slice';
+import { TaskPage } from './Task';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -66,19 +64,27 @@ function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="profile" element={<ProfilePage />} />
-      <Route path="/admin/*" element={<Profile />} />
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="/profile/*" element={<Profile />} />
+        <Route path="details" element={<DetailsPage />} />
+        <Route path="task" element={<TaskDetails />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path='task-page' element={<TaskPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin/*" element={<Profile />} />
+        <Route path="*" element={<NotFound />} />
 
-      <Route path="details" element={<DetailsPage />} />
-      <Route path="task" element={<TaskDetails />} />
-      <Route path="requests" element={<RequestsPage />} />
-      <Route path="students" element={<StudentsPage />} />
-
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        {/* Details and tasks should be extensions of /profile route */}
+        <Route path="profile" element={<ProfilePage />} />
+        <Route path="details" element={<DetailsPage />} />
+        <Route path="task" element={<TaskDetails />} />
+      </Routes>
+      {/*<TaskPage /> */}
+    </>
   );
 }
 
