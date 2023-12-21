@@ -7,9 +7,9 @@ import { TaskDetails } from './pages/TaskDetails';
 import { TaskPage } from './Task';
 import { useEffect, useState } from 'react';
 import Home from './pages/Home/Home';
-import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
+import LogIn from './pages/Login/Login';
 
 function App() {
   const [login, setLogin] = useState<boolean>(true);
@@ -19,7 +19,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="/profile/*" element={<Profile />} />
         <Route path="details" element={<DetailsPage />} />
