@@ -15,6 +15,7 @@ import {
   createTheme,
 } from '@mui/material';
 import Logo from '/src/assets/diplomalogo.png';
+import { red } from '@mui/material/colors';
 
 interface FormData {
   get: (name: string) => string | null;
@@ -92,7 +93,10 @@ export default function LogIn() {
                   }}
                   // value={mail}
                 />
-                <Typography className="redp" sx={{ display: Wrong_Email }}>
+                <Typography className="redp" sx={{
+                  display: Wrong_Email,
+                  color:'red' 
+                  }}>
                   *Please write your E-mail
                 </Typography>
               </FormControl>
@@ -111,7 +115,9 @@ export default function LogIn() {
                 }}
                 // value={password}
               />
-              <Typography className="redp" sx={{ display: Wrong_Password }}>
+              <Typography className="redp" sx={{ 
+              display: Wrong_Password,
+              color:'red'}}>
                 *Please write your password
               </Typography>
               <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />

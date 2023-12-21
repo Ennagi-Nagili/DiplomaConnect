@@ -35,7 +35,7 @@ export const TaskPage = () => {
     <div className="task-page-container container task-container">
       <div className="header">
         <h1 className="diploma">DIPLOMA CONNECT</h1>
-        
+
         <div className="inputs">
           {staticInput.map((input) => (
             <input key={input.id} type="text" placeholder={input.placeholder} className="input" />
@@ -44,8 +44,14 @@ export const TaskPage = () => {
             <div key={setIndex}>{inputSet.map((input) => input)}</div>
           ))}
           <label>
-            <button className="filebutton">Materials</button>
-            <input type="file" multiple style={{ display: 'none' }} />
+            <button
+              className="filebutton"
+              onClick={() => {
+                document.getElementById('inp')?.click();
+            }}>
+              Materials
+            </button>
+            <input type="file" id="inp" multiple style={{ display: 'none' }} />
           </label>
           <div className="button-container">
             <button onClick={addInputSet} className="button">

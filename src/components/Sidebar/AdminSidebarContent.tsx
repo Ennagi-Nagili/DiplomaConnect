@@ -1,7 +1,11 @@
 import { Divider, List, ListSubheader } from '@mui/material';
 import { Person, School } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
+=======
+import AddTeacher from '../../pages/Admin/pages/UserForm/UserForm';
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 import BarChartIcon from '@mui/icons-material/BarChart';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +14,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React from 'react';
+<<<<<<< HEAD
 import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
+=======
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 type AdminSidebarContentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,24 +49,38 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
           title: 'Teachers',
           link: 'teachers',
           icon: <Person />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
         {
           id: 3,
           title: 'Students',
           link: 'students',
           icon: <School />,
-          element: <Teachers />,
+          element: <UsersDataGrid />,
         },
       ],
     },
     {
+<<<<<<< HEAD
       subheader: 'AddTeacher',
+=======
+      subheader: 'Add User',
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
       content: [
         {
           id: 4,
           title: 'Add Teacher',
           link: 'add-teacher',
+<<<<<<< HEAD
+=======
+          icon: <PersonAddIcon />,
+          element: <AddTeacher />,
+        },
+        {
+          id: 5,
+          title: 'Add Student',
+          link: 'add-student',
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
           icon: <PersonAddIcon />,
           element: <AddTeacher />,
         },
@@ -77,11 +99,15 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
                 key={index}
                 disablePadding
                 onClick={() => {
-                  navigate(`/profile/${listItem.link}`);
+                  navigate(`/admin/${listItem.link}`);
                   setOpen(false); // Close the drawer on item click
                 }}
               >
+<<<<<<< HEAD
                 <ListItemButton selected={window.location.pathname === `/profile/${listItem.link}`}>
+=======
+                <ListItemButton selected={window.location.pathname === `/admin/${listItem.link}`}>
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
                   <ListItemIcon>{listItem.icon}</ListItemIcon>
                   <ListItemText primary={listItem.title} />
                 </ListItemButton>

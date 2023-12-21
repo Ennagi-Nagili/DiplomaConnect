@@ -1,9 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
+<<<<<<< HEAD
 import AddTeacher from '../../pages/Admin/pages/AddTeacher/AddTeacher';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import EditProfile from '../../pages/Admin/pages/EditProfile/EditProfile';
 import Teachers from '../../pages/Admin/pages/Teachers/Teachers';
+=======
+import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
+import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
+import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 type Page = {
   link: string;
@@ -17,6 +24,7 @@ const AdminSidebarPages: Page[] = [
     element: <Dashboard />,
   },
   {
+<<<<<<< HEAD
     link: 'add-teacher',
     element: <AddTeacher />,
   },
@@ -27,6 +35,22 @@ const AdminSidebarPages: Page[] = [
   {
     link: 'students',
     element: <Teachers />,
+=======
+    link: 'teachers',
+    element: <UsersDataGrid />,
+  },
+  {
+    link: 'students',
+    element: <UsersDataGrid />,
+  },
+  {
+    link: 'add-teacher',
+    element: <UserForm />,
+  },
+  {
+    link: 'add-student',
+    element: <UserForm />,
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
   },
 ];
 
@@ -54,8 +78,12 @@ export const Main = ({ open }: MainProps) => {
             <Route key={index} path={`${page.link}`} element={page.element} />
           ))}
 
+          {/* Dynamic link for teachers */}
+          <Route path="/teachers/:id" element={<TeacherProfile />} />
+
           {/* Edit Profile */}
-          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/edit-profile" element={<UserForm />} />
+          <Route path="/teachers/:id/edit" element={<UserForm />} />
         </Routes>
 
         {/* TODO: If teacher: */}

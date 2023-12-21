@@ -1,11 +1,45 @@
 import { Autocomplete, createFilterOptions } from '@mui/material';
+<<<<<<< HEAD
 import IconButton from '@mui/material/IconButton';
 import React, { useEffect, useRef, useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
+=======
+import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
+import { useAppSelector } from '../../services/hooks';
+import IconButton from '@mui/material/IconButton';
+import React, { useRef } from 'react';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+// TODO: This is just an example with jsonplacholder.
+// Adapt the type after API is created.
+export type UserObject = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address?: object;
+  phone: string;
+  website: string;
+  company?: object;
+};
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 const SearchBar: React.FC = () => {
+  // const teacherNames = useAppSelector(selectTeachers).map(
+  //   (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  // );
+  // const studentNames = useAppSelector(selectStudents).map(
+  //   (item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`,
+  // );
+  const teacherNames = useAppSelector(selectTeacherNames);
+  const studentNames = useAppSelector(selectStudentNames);
+
+  const userNames = teacherNames.concat(studentNames);
+
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isSmallScreen = useMediaQuery('(max-width: 750px)');
 
@@ -42,19 +76,9 @@ const SearchBar: React.FC = () => {
     trim: true,
   });
 
-  // TODO: This is just an example with jsonplacholder.
-  // Adapt the type after API is created.
-  type UserObject = {
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    address?: object;
-    phone: string;
-    website: string;
-    company?: object;
-  };
+  // const [userNames, setUserNames] = useState<string[]>([]);
 
+<<<<<<< HEAD
   const [userNames, setUserNames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -66,6 +90,17 @@ const SearchBar: React.FC = () => {
         setUserNames(names);
       });
   }, []);
+=======
+  // useEffect(() => {
+  //   fetch('https://jsonplaceholder.typicode.com/users')
+  //     .then((response) => response.json())
+  //     .then((json: UserObject[]) => {
+  //       const names = json.map((user) => user.name);
+  //       // console.log(names);
+  //       setUserNames(names);
+  //     });
+  // }, []);
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
   return (
     <div

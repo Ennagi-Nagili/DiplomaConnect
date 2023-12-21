@@ -1,11 +1,20 @@
 import * as React from 'react';
 import { Box, IconButton, Link, Toolbar, Typography } from '@mui/material';
+<<<<<<< HEAD
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsButton from './NotificationsButton';
 import ProfileButton from './ProfileButton';
 // import SearchBar from "./SearchBar";
 import { StyledHeader } from './styled/StyledHeader';
 import SearchBar from '../../pages/Admin/components/Temporary';
+=======
+import { StyledHeader } from './styled/StyledHeader';
+import MenuIcon from '@mui/icons-material/Menu';
+import NotificationsButton from './NotificationsButton';
+import ProfileButton from './ProfileButton';
+import SearchBar from './SearchBar';
+// import SearchBar from '../../pages/Admin/components/Temporary';
+>>>>>>> 093d7cd82eab7f04a45b1b5cfd224a935c8720ad
 
 interface HeaderProps {
   open: boolean;
