@@ -51,7 +51,7 @@ function App() {
     dispatch(setIsSet({ userCategory: 'teachers' }));
 
     // Set students
-    const students = generateNStudents({ number: 12 });
+    const students = generateNStudents({ number: 40 });
     console.log('students', students);
     dispatch(setUsers({ userCategory: 'students', data: students }));
     dispatch(setIsSet({ userCategory: 'students' }));

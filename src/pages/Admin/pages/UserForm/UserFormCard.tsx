@@ -15,9 +15,9 @@ import UploadAvatar from './components/UploadAvatar';
 
 const UserFormCard: React.FC = () => {
   const isSmallScreen = useMediaQuery('(max-width: 805px)');
+  // console.log('USER FORM CARD PAGE IS RERENDERED');
 
   const path = window.location.pathname;
-  console.log('path', path);
   // All the possible path-s:
   // 1. /admin/add-teacher
   // 2. /admin/add-student
@@ -28,7 +28,6 @@ const UserFormCard: React.FC = () => {
   const userType = path?.includes('teacher') ? 'teacher' : path?.includes('student') ? 'student' : 'admin';
   const capitalizedUserType = userType.slice(0, 1).toUpperCase() + userType.slice(1);
 
-  console.log('USER FORM CARD PAGE IS RERENDERED');
 
   return (
     <Card
@@ -61,7 +60,6 @@ const UserFormCard: React.FC = () => {
           {pageMode === 'add' && (
             <>
               <PersonAddIcon />
-              {/* TODO: We should have capitalized userType */}
               Add {capitalizedUserType}
             </>
           )}
@@ -78,19 +76,16 @@ const UserFormCard: React.FC = () => {
       >
         {/* Box 1: Upload Avatar and Name Inputs */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '330px' }}>
-          {/* TODO: Ask master Anton to check upload avatar */}
           <UploadAvatar />
           <NameInputs />
         </div>
 
         {/* Box 2: User Specific Inputs, Phone Number, Email, Password, Confirm Password */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '330px' }}>
-          {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
           {/* Student or Teacher specific information */}
           {capitalizedUserType !== 'Admin' && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography variant="h3" sx={{ fontSize: 26, mb: '10px', textAlign: 'center' }}>
-                {/* TODO: For student this should be "Student Information" */}
                 {capitalizedUserType} Information
               </Typography>
 

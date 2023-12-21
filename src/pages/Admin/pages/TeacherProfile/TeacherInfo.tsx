@@ -19,35 +19,6 @@ export const TeacherInfo = () => {
   const selectedTeacher = intermediateVar;
   console.log('selectedTeacher', selectedTeacher);
 
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     await fetch(`https://jsonplaceholder.typicode.com/users/${userID}`)
-  //       .then((response) => response.json())
-  //       .then((json: UserObject) => {
-  //         const fetchedUser: Teacher = {
-  //           id: 1,
-  //           type: 'teacher',
-  //           firstName: json.name,
-  //           lastName: json.name,
-  //           fatherName: json.name,
-  //           phoneNumber: json.phone,
-  //           email: json.email,
-  //           password: 'qwerty',
-  //           department: 'Algebra',
-  //           subject: 'Ring Theory',
-  //         };
-  //         setTeacher(fetchedUser);
-  //       });
-  //   };
-  //   fetchUserData();
-  // }, []);
-
-  const handleEditButton = () => {
-    // TODO
-    // Note: We don't need to change selected user.
-    console.log('Edit Button Clicked');
-  };
-
   return (
     <CardContent
       style={{
@@ -91,7 +62,7 @@ export const TeacherInfo = () => {
       {/* Edit Profile Button */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '18px' }}>
         <Link to="edit">
-          <Button variant="contained" onClick={handleEditButton}>
+          <Button variant="contained">
             <EditIcon />
             Edit Profile
           </Button>

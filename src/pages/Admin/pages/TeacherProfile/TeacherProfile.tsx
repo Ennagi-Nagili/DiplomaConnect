@@ -1,27 +1,37 @@
 import { Box, useMediaQuery } from '@mui/material';
 import { StudentInfo } from './StudentInfo';
-import { selectStudents, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
+import { selectStudentIds, selectStudents, selectTeacherIds, selectTeachers, setSelectedUser } from '../../../../services/reducers/users.slice';
 import { TeacherInfo } from './TeacherInfo';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
 import { useEffect } from 'react';
 import CardWrapper from './components/CardWrapper';
+import { useNavigate } from 'react-router-dom';
 
 export const TeacherProfile = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isSmallScreen = useMediaQuery('(max-width: 1100px)');
-
-  // TODO: When teacher comes from DataGrid, information appears, then disappears on refresh. To avoid this issue,
-  // instead of definind selected user on openInNewView icon, we can use useEffect here. Extract id of the user from
-  // url and setSelectedUser.
 
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
+
+  const teacherIds = useAppSelector(selectTeacherIds);
+  const studentIds = useAppSelector(selectStudentIds);
+
+  // TODO: Write useEffect with empty dependency array that feches teacher with id extracted from url. If successful, assign selectedUser to that, otherwise, navigate to not-found page
+  // navigate('/notFound') - even though such route doesn't exist, '*' path will catch this route
   useEffect(() => {
     const pathArray = window.location.pathname.split('/'); // returns an array
     const id = pathArray.pop() as string; // changes pathArray by removing and returning the last element
     const userType = pathArray.pop(); // returns last element of the changed pathArray
     const users = userType === 'teachers' ? teachers : students; // choosing users depending on type
-    dispatch(setSelectedUser(users.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
+    const userIds = userType === 'teachers' ? teacherIds : studentIds;
+    if (users.length !== 0 && userIds.includes(+id)) {
+      dispatch(setSelectedUser(users.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
+    } else if (users.length !== 0 && !userIds.includes(+id)) {
+      console.log(`User with id ${id} is not found.`);
+      navigate('/notFound');
+    }
   }, [teachers, students]);
 
   return (

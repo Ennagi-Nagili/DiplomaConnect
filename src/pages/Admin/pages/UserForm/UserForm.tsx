@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { emptyStudent, emptyTeacher } from '../../../../models/mockAdminData';
 import {
   selectCurrentUser,
+  selectIsSaveButtonEnabled,
   selectStudents,
   selectTeachers,
   setIsSaveButtonEnabled,
@@ -9,22 +10,39 @@ import {
   setSelectedUser,
 } from '../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import UserFormCard from './UserFormCard';
 import { useNavigate } from 'react-router-dom';
 
-const UserForm: React.FC = () => {
+const UserForm = () => {
   console.log('USER FORM PAGE IS RENDERED');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const path = window.location.pathname;
   const pathEnd = path.split('/').pop();
-  console.log('pathEnd', pathEnd);
 
   const currentUser = useAppSelector(selectCurrentUser);
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
+
+  const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled);
+  // TODO: Add 'Your saves will not be changed' alert dialog.
+  // NOTE: INDEPENDENT OF isSaveButtonEnabled, IF ANYTHING CHANGES, WE NEED TO ALERT. -- maybe leave tbis functionality for now...
+  useEffect(() => {
+    if (!isSaveButtonEnabled) return;
+    // window.onbeforeunload = function () {
+    //   return console.log('Do you want to leave?');
+    // };
+    function handleOnBeforeUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      return (event.returnValue = '');
+    }
+    window.addEventListener('beforeunload', handleOnBeforeUnload, { capture: true });
+    return () => {
+      window.removeEventListener('beforeunload', handleOnBeforeUnload, { capture: true });
+    };
+  }, [isSaveButtonEnabled, window.location.pathname]);
 
   useEffect(() => {
     console.log('USER FORM USE EFFECT');
@@ -34,34 +52,28 @@ const UserForm: React.FC = () => {
     switch (true) {
       case pathEnd === 'edit-profile': {
         dispatch(setPageMode('edit'));
-        // TODO: selectedUser is currentUser
         dispatch(setSelectedUser(currentUser));
-        console.log('PAGE MODE: EDIT PROFILE');
         break;
       }
       case pathEnd === 'add-teacher': {
         dispatch(setPageMode('add'));
-        // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyTeacher)); // TODO: id needs to dynamically change
-        console.log('PAGE MODE: ADD TEACHER');
         break;
       }
       case pathEnd === 'add-student': {
         dispatch(setPageMode('add'));
-        // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyStudent)); // TODO: id needs to dynamically change
-        console.log('PAGE MODE: ADD STUDENT');
         break;
       }
       // At first, teachers and students are not set.
       case /\/teachers\/\d+\/edit$/.test(path): {
-        console.log('PAGE MODE: EDIT SOME TEACHER');
         const id = path.split('/')[3];
         const selectedUser = teachers?.filter((item) => item.id === +id)[0];
         selectedUser ? dispatch(setSelectedUser(selectedUser)) : dispatch(setSelectedUser(emptyTeacher));
         break;
       }
       case /\/students\/\d+\/edit$/.test(path): {
+        // TODO
         console.log('PAGE MODE: EDIT SOME STUDENT');
         break;
       }
@@ -69,7 +81,6 @@ const UserForm: React.FC = () => {
         navigate('/');
     }
   }, [window.location.pathname, teachers, students]);
-  console.log('window.location.pathname', window.location.pathname);
 
   return (
     // Container

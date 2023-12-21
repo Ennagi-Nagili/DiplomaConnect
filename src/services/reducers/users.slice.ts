@@ -110,4 +110,12 @@ export const selectStudentNames = createSelector([selectStudents], (students): s
   return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
 });
 
+// Select teacher and student ids
+export const selectTeacherIds = createSelector([selectTeachers], (teachers): number[] => {
+  return teachers.map((item) => item.id);
+});
+export const selectStudentIds = createSelector([selectStudents], (students): number[] => {
+  return students.map((item) => item.id);
+});
+
 export const selectIsSaveButtonEnabled = (state: RootState) => state.users.isSaveButtonEnabled;
