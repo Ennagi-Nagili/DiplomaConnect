@@ -3,6 +3,7 @@ import { selectSelectedUser, setSelectedUser } from '../../../../../services/red
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
+import { validateFatherName, validateFirstName, validateLastName } from '../validations';
 
 export type TextFieldAttributes = {
   label: string;
@@ -36,17 +37,20 @@ const NameInputs = () => {
   // Maybe this 3 function can be merged into one with switch
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, firstName: e.target.value }));
-    setFirstNameError(e.target.value.trim() === '');
+    const isValid = validateFirstName(e.target.value);
+    setFirstNameError(!isValid);
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, lastName: e.target.value }));
-    setLastNameError(e.target.value.trim() === '');
+    const isValid = validateLastName(e.target.value);
+    setLastNameError(!isValid);
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, fatherName: e.target.value }));
-    setFatherNameError(e.target.value.trim() === '');
+    const isValid = validateFatherName(e.target.value);
+    setFatherNameError(!isValid);
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -67,7 +71,7 @@ const NameInputs = () => {
     },
     {
       label: 'FatherName',
-      value: placeholderUser.fatherName,
+      value: placeholderUser.fatherName ? placeholderUser.fatherName : '',
       onChange: handleFatherNameChange,
       error: fatherNameError,
       helperText: fatherNameError ? 'Father Name is required' : ' ',

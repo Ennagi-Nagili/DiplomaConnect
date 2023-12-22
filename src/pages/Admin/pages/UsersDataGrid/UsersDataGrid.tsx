@@ -1,14 +1,22 @@
 import './UsersDataGrid.scss';
-import { Avatar, useMediaQuery } from '@mui/material';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { Avatar, Snackbar, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { DataGrid, GridActionsCellItem, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Student, Teacher } from '../../../../models/models';
 import { deleteUser, selectStudents, selectTeachers } from '../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import DataGridToolbar from '../../components/DataGridToolbar';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import axios from 'axios';
+import { token } from '../../Admin';
+import React from 'react';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export const UsersDataGrid = () => {
   const dispatch = useAppDispatch();
@@ -22,9 +30,26 @@ export const UsersDataGrid = () => {
     (user: Teacher | Student) => () => {
       // TODO: Use real API when available
       console.log(`Delete user with id ${user.id}`);
-      fetch(`https://jsonplaceholder.typicode.com/users/${user.id}`, {
-        method: 'DELETE',
-      }).then((_) => dispatch(deleteUser({ userCategory: pageMode, userId: user.id })));
+      dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
+
+      // TODO: There seems to be an error in backend
+      axios
+        .delete(`https://devedu-az.com:7001/Student/${user.id}`, {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          // Handle success
+          console.log('Student deleted successfully:', response.data);
+          dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
+          setOpen(true);
+        })
+        .catch((error) => {
+          // Handle errors
+          console.error('Error deleting student:', error);
+          setErrorOpen(true);
+        });
     },
     [users],
   );
@@ -35,6 +60,12 @@ export const UsersDataGrid = () => {
   const isTeacherScreen_3 = useMediaQuery('(max-width: 880px)');
   const isTeacherScreen_4 = useMediaQuery('(max-width: 705px)');
   const isTeacherScreen_5 = useMediaQuery('(max-width: 540px)');
+
+  // Media queries to use in student DataGrid
+  const isStudentScreen_1 = useMediaQuery('(max-width: 1000px)');
+  const isStudentScreen_2 = useMediaQuery('(max-width: 710px)');
+  const isStudentScreen_3 = useMediaQuery('(max-width: 585px)');
+  const isStudentScreen_4 = useMediaQuery('(max-width: 485px)');
 
   // Columns:
   const columns: GridColDef[] = [
@@ -142,29 +173,72 @@ export const UsersDataGrid = () => {
     }
   } else if (pageMode === 'students') {
     visibleColumns = visibleColumns.filter((column) => !['department', 'subject'].includes(column.field));
+    if (isStudentScreen_1) {
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'phoneNumber');
+    }
+    if (isStudentScreen_2) {
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'email');
+    }
+    if (isStudentScreen_3) {
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'group');
+    }
+    if (isStudentScreen_4) {
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'avatar');
+    }
   }
 
+  // SnackBar
+  const [open, setOpen] = useState(false);
+
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+  const handleErrorClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setErrorOpen(false);
+  };
+
+  const [errorOpen, setErrorOpen] = useState(false);
+
   return (
-    <DataGrid
-      rows={users} // teachers are initial state, rows are secondary
-      columns={visibleColumns}
-      initialState={{
-        pagination: { paginationModel: { pageSize: 10 } },
-      }}
-      pageSizeOptions={[10, 20]}
-      pagination
-      slots={{
-        toolbar: () => <DataGridToolbar />,
-      }}
-      sx={{
-        minWidth: '330px',
-        width: '80%',
-        maxWidth: pageMode === 'teachers' ? '1000px' : '800px',
-        margin: 'auto',
-      }}
-      autoHeight
-      // autoPageSize
-      getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 1 ? 'Mui-even' : 'Mui-odd')}
-    />
+    <>
+      <DataGrid
+        rows={users} // teachers are initial state, rows are secondary
+        columns={visibleColumns}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 10 } },
+        }}
+        pageSizeOptions={[10, 20]}
+        pagination
+        slots={{
+          toolbar: () => <DataGridToolbar />,
+        }}
+        sx={{
+          minWidth: '330px',
+          width: '80%',
+          maxWidth: pageMode === 'teachers' ? '1000px' : '780px',
+          margin: 'auto',
+        }}
+        autoHeight
+        // autoPageSize
+        getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 1 ? 'Mui-even' : 'Mui-odd')}
+      />
+
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          The user is successfully deleted!
+        </Alert>
+      </Snackbar>
+      <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleErrorClose}>
+        <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
+          There was an error when deleting user!
+        </Alert>
+      </Snackbar>
+    </>
   );
 };

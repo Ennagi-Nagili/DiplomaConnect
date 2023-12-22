@@ -13,12 +13,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { emptyStudent, emptyTeacher, mockTeacher } from '../../../../../models/mockAdminData';
+import { emptyStudent } from '../../../../../models/mockAdminData';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
 import { useEffect, useState } from 'react';
-// import axios from 'axios';
+import { validateEmail, validateFatherName, validateFirstName, validateLastName, validatePhoneNumber } from '../validations';
+import axios from 'axios';
+import { Student } from '../../../../../models/models';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
@@ -43,10 +45,38 @@ const SaveButton = () => {
     handleClose();
 
     dispatch(setIsSaveButtonEnabled(false));
+
     if (pageMode === 'add') {
-      userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
+      // Data that needs to be sent to API
+      //       {
+      //   "firstName": "string",
+      //   "lastName": "string",
+      //   "groupNumber": "string",
+      //   "email": "string",
+      //   "password": "string",
+      //   "phoneNumber": "string"
+      // }
+
+      // if typeof selectedUsr is Student, post to /Student, otherwise, to /Teacher
+      if (userCategory === 'students') {
+        const intermediateVar = selectedUser as Student;
+        axios
+          .post('https://devedu-az.com:7001/Student', {
+            data: {
+              firstName: intermediateVar.firstName,
+              lastName: intermediateVar.lastName,
+              groupNumber: intermediateVar.group,
+              email: intermediateVar.email,
+              password: intermediateVar.password,
+              phoneNumber: intermediateVar.phoneNumber,
+            },
+          })
+          .then((res) => console.log('res', res))
+          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+      }
+
       // TODO:
-      dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
+      // dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
       console.log('Add User Icon Button is clicked');
     } else {
       console.log('Edit User Icon Button is clicked');
@@ -69,11 +99,12 @@ const SaveButton = () => {
 
   useEffect(() => {
     // validations
-    const firstNameError = selectedUser.firstName === '';
-    const lastNameError = selectedUser.lastName === '';
-    const fatherNameError = selectedUser.fatherName.trim() === '';
-    const emailError = !/^\S+@\S+\.\S+$/.test(selectedUser.email);
-    const phoneNumberError = !/^\d+$/.test(selectedUser.phoneNumber);
+    const firstNameError = !validateFirstName(selectedUser.firstName); // firstNameError is set when first name is not valid
+    const lastNameError = !validateLastName(selectedUser.lastName);
+    const fatherNameError = selectedUser.fatherName && !validateFatherName(selectedUser.fatherName);
+    const emailError = !validateEmail(selectedUser.email);
+    const phoneNumberError = !validatePhoneNumber(selectedUser.phoneNumber);
+
     const passwordError = selectedUser.password === '';
     let confirmPasswordError = false;
     if (pageMode === 'add') {

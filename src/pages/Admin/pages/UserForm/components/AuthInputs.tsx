@@ -42,7 +42,7 @@ const AuthInputs = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
   useEffect(() => {
-    setPasswordError(passwordTouched && selectedUser.password.trim() === '');
+    setPasswordError(passwordTouched && selectedUser.password?.trim() === '');
   }, [selectedUser.password, passwordTouched]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const AuthInputs = () => {
     {
       label: 'Pasword',
       type: isPasswordVisible ? 'text' : 'password',
-      value: selectedUser.password,
+      value: selectedUser.password ? selectedUser.password : '',
       onChange: handlePasswordChange,
       error: passwordError,
       helperText: passwordError ? 'Password is required' : ' ',

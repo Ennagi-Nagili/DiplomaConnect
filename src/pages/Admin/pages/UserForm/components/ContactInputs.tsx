@@ -4,6 +4,7 @@ import { selectSelectedUser, setSelectedUser } from '../../../../../services/red
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import InputTextField from './InputTextField';
+import { validateEmail, validatePhoneNumber } from '../validations';
 
 const ContactInputs = () => {
   const dispatch = useAppDispatch();
@@ -20,12 +21,14 @@ const ContactInputs = () => {
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
-    setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
+    const isValid = validateEmail(e.target.value);
+    setEmailError(!isValid); // when value is erroneous, isValid is false, and error is true
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
-    setPhoneError(!/^\d+$/.test(e.target.value));
+    const isValid = validatePhoneNumber(e.target.value);
+    setPhoneError(!isValid);
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number

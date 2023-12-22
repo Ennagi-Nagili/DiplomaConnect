@@ -4,10 +4,10 @@ export interface User {
   profilePhoto?: string; // url
   firstName: string;
   lastName: string;
-  fatherName: string;
+  fatherName?: string;
   phoneNumber: string;
   email: string;
-  password: string;
+  password?: string;
   confirmPassword?: string;
 }
 
@@ -31,10 +31,10 @@ export interface Admin {
   profilePhoto?: string; // url
   firstName: string;
   lastName: string;
-  fatherName: string;
+  fatherName?: string;
   phoneNumber: string;
   email: string;
-  password: string;
+  password?: string;
   confirmPassword?: string;
 }
 
