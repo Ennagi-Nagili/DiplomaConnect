@@ -8,27 +8,24 @@ import { token } from '../../Admin';
 import { useEffect } from 'react';
 
 export const StudentInfo = () => {
-  const selectedTeacher = useAppSelector(selectSelectedUser) as Teacher;
+  const id = window.location.pathname.split('/').pop();
 
   // TODO: Returns 403
   let teacherStudents: Student[] = [];
   useEffect(() => {
-    // At first render, selectedTeacher is emptyTeacher and it has id -1. When selectedUser changes to actual user, we'll fetch students by his id.
-    if (selectedTeacher.id !== -1) {
-      axios
-        .get(`https://devedu-az.com:7001/Student/by-teacher/${selectedTeacher.id}`, {
-          headers: { Authorization: `bearer ${token}` },
-        })
-        .then((response: AxiosResponse<Student[]>) => {
-          teacherStudents = response.data; // Extract the data property
-          console.log('teacherStudents', teacherStudents);
-        })
-        .catch((error) => {
-          // Handle errors
-          console.error('Error fetching teachers:', error);
-        });
-    }
-  }, [selectedTeacher]);
+    axios
+      .get(`https://devedu-az.com:7001/Student/by-teacher/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      })
+      .then((response: AxiosResponse<Student[]>) => {
+        teacherStudents = response.data; // Extract the data property
+        console.log('teacherStudents', teacherStudents);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error fetching teachers:', error);
+      });
+  }, []);
 
   return <CardContent sx={{ margin: '2px' }}>{teacherStudents?.map((item, index) => <StudentListItem data={item} key={index} />)}</CardContent>;
 };
