@@ -1,6 +1,6 @@
 import {
   addUser,
-  selectCurrentUser,
+  selectFixedSelectedUser,
   selectIsSaveButtonEnabled,
   selectPageMode,
   selectSelectedUser,
@@ -24,8 +24,8 @@ import { useEffect, useState } from 'react';
 const SaveButton = () => {
   const dispatch = useAppDispatch();
 
-  const currentUser = useAppSelector(selectCurrentUser);
   const selectedUser = useAppSelector(selectSelectedUser);
+  const fixedSelectedUsr = useAppSelector(selectFixedSelectedUser);
   const pageMode = useAppSelector(selectPageMode);
   const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
 
@@ -75,7 +75,7 @@ const SaveButton = () => {
     const emailError = !/^\S+@\S+\.\S+$/.test(selectedUser.email);
     const phoneNumberError = !/^\d+$/.test(selectedUser.phoneNumber);
     const passwordError = selectedUser.password === '';
-    let confirmPasswordError;
+    let confirmPasswordError = false;
     if (pageMode === 'add') {
       confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
     } else if (pageMode === 'edit') {
@@ -85,8 +85,7 @@ const SaveButton = () => {
     // If no error, enable save button
     const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError, confirmPasswordError];
     errorsArray.every((item) => item === false) ? dispatch(setIsSaveButtonEnabled(true)) : dispatch(setIsSaveButtonEnabled(false));
-    console.log('errorsArray', errorsArray);
-    JSON.stringify(selectedUser) === JSON.stringify(currentUser) && dispatch(setIsSaveButtonEnabled(false));
+    JSON.stringify(selectedUser) === JSON.stringify(fixedSelectedUsr) && dispatch(setIsSaveButtonEnabled(false));
   }, [selectedUser]);
 
   return (

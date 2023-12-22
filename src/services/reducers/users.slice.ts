@@ -8,7 +8,9 @@ type GeneralType = Teacher | Student | Admin;
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
-  confirmPassword: string;
+  // fixedSelectedUser is used in 'edit' pageMode. By comparing selectedUser to fixedSelectedUser,
+  // we know whether there is any change in selectedUser.
+  fixedSelectedUser: GeneralType;
   pageMode: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
   isSaveButtonEnabled: boolean;
   teachers: {
@@ -27,7 +29,7 @@ const initialState: IUsersState = {
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
-  confirmPassword: '',
+  fixedSelectedUser: emptyUser,
   isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
   teachers: {
@@ -75,8 +77,8 @@ const usersSlice = createSlice({
     setSelectedUser: (state: IUsersState, action: PayloadAction<GeneralType>) => {
       state.selectedUser = action.payload;
     },
-    setConfirmPassword: (state: IUsersState, action: PayloadAction<string>) => {
-      state.confirmPassword = action.payload;
+    setFixedSelectedUser: (state: IUsersState, action: PayloadAction<GeneralType>) => {
+      state.fixedSelectedUser = action.payload;
     },
 
     // Adds user of selectedUserId to users array
@@ -93,7 +95,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setConfirmPassword, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setFixedSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
   usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
@@ -107,7 +109,7 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
-export const selectConfirmPassword = (state: RootState) => state.users.confirmPassword;
+export const selectFixedSelectedUser = (state: RootState) => state.users.fixedSelectedUser;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {

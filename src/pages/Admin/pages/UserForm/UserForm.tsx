@@ -6,6 +6,7 @@ import {
   selectStudents,
   selectTeacherIds,
   selectTeachers,
+  setFixedSelectedUser,
   setIsSaveButtonEnabled,
   setPageMode,
   setSelectedUser,
@@ -55,6 +56,7 @@ const UserForm = () => {
       case pathEnd === 'edit-profile': {
         dispatch(setPageMode('edit'));
         dispatch(setSelectedUser(currentUser));
+        dispatch(setFixedSelectedUser(currentUser));
         break;
       }
       case pathEnd === 'add-teacher': {
@@ -72,7 +74,9 @@ const UserForm = () => {
         // If user with requested id doesn't exits
         const id = path.split('/')[3];
         if (teachers.length !== 0 && teacherIds.includes(+id)) {
-          dispatch(setSelectedUser(teachers.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
+          const teacher = teachers.filter((item) => item.id === +id)[0];
+          dispatch(setSelectedUser(teacher)); // since 'id' is string, we use '+id' to make it number.
+          dispatch(setFixedSelectedUser(teacher));
         } else if (teachers.length !== 0 && !teacherIds.includes(+id)) {
           console.log(`User with id ${id} is not found.`);
           navigate('/notFound');
