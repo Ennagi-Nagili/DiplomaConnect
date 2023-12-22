@@ -18,8 +18,6 @@ const AuthInputs = () => {
     // isTouched
     setPasswordTouched(false);
     setConfirmPasswordTouched(false);
-    // state
-    setConfirmPassword('');
     // error state
     setPasswordError(false);
     setConfirmPasswordError(false);
@@ -39,9 +37,6 @@ const AuthInputs = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
-  // State
-  const [confirmPassword, setConfirmPassword] = useState('');
-
   // Corresponding Error State
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
@@ -51,8 +46,8 @@ const AuthInputs = () => {
   }, [selectedUser.password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
-  }, [selectedUser.password, confirmPassword, confirmPasswordTouched]);
+    setConfirmPasswordError(confirmPasswordTouched && selectedUser.confirmPassword !== selectedUser.password);
+  }, [selectedUser.password, selectedUser.confirmPassword, confirmPasswordTouched]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
@@ -61,7 +56,8 @@ const AuthInputs = () => {
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
+    const confirmPassword = e.target.value;
+    dispatch(setSelectedUser({ ...selectedUser, confirmPassword: confirmPassword }));
     setConfirmPasswordTouched(true);
   };
 
@@ -85,7 +81,7 @@ const AuthInputs = () => {
     {
       label: 'Confirm Password',
       type: isConfirmPasswordVisible ? 'text' : 'password',
-      value: confirmPassword,
+      value: selectedUser.confirmPassword ? selectedUser.confirmPassword : '',
       onChange: handleConfirmPasswordChange,
       error: confirmPasswordError,
       helperText: confirmPasswordError ? 'Passwords do not match' : ' ',

@@ -8,6 +8,7 @@ export interface User {
   phoneNumber: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 }
 
 // const departmentOptions = [...(["Algebra and Geometry", "Analysis", "Mathematical Control Theory"] as const)];
@@ -34,6 +35,7 @@ export interface Admin {
   phoneNumber: string;
   email: string;
   password: string;
+  confirmPassword?: string;
 }
 
 // Students sends cover letter to teacher to ask him to be his supervisor

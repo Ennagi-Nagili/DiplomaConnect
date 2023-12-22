@@ -75,11 +75,17 @@ const SaveButton = () => {
     const emailError = !/^\S+@\S+\.\S+$/.test(selectedUser.email);
     const phoneNumberError = !/^\d+$/.test(selectedUser.phoneNumber);
     const passwordError = selectedUser.password === '';
+    let confirmPasswordError;
+    if (pageMode === 'add') {
+      confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
+    } else if (pageMode === 'edit') {
+      confirmPasswordError = false;
+    }
 
     // If no error, enable save button
-    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError];
+    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError, confirmPasswordError];
     errorsArray.every((item) => item === false) ? dispatch(setIsSaveButtonEnabled(true)) : dispatch(setIsSaveButtonEnabled(false));
-
+    console.log('errorsArray', errorsArray);
     JSON.stringify(selectedUser) === JSON.stringify(currentUser) && dispatch(setIsSaveButtonEnabled(false));
   }, [selectedUser]);
 

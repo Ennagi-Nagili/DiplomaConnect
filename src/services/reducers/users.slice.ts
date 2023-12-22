@@ -8,6 +8,7 @@ type GeneralType = Teacher | Student | Admin;
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
+  confirmPassword: string;
   pageMode: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
   isSaveButtonEnabled: boolean;
   teachers: {
@@ -26,6 +27,7 @@ const initialState: IUsersState = {
   // This is default
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
+  confirmPassword: '',
   isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
   teachers: {
@@ -73,6 +75,9 @@ const usersSlice = createSlice({
     setSelectedUser: (state: IUsersState, action: PayloadAction<GeneralType>) => {
       state.selectedUser = action.payload;
     },
+    setConfirmPassword: (state: IUsersState, action: PayloadAction<string>) => {
+      state.confirmPassword = action.payload;
+    },
 
     // Adds user of selectedUserId to users array
     addUser: (state: IUsersState, action: PayloadAction<{ userCategory: UserCategory; data: User }>) => {
@@ -88,7 +93,8 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } = usersSlice.actions;
+export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setConfirmPassword, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
+  usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -101,6 +107,7 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
+export const selectConfirmPassword = (state: RootState) => state.users.confirmPassword;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {
