@@ -10,8 +10,9 @@ import axios, { AxiosResponse } from 'axios';
 import { Student, Teacher } from '../../models/models';
 
 export const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzAzMjczODM2LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.ZX9t6tBaGkX6RXwItPJvE5V4WMhHChw1sNXlvcGW-Sk';
-export default function Admin() {
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzAzMzA4Nzg4LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.hnXynb95myLK9bQveeXbtEvgj4p9BbwnG9JHUf6jqcg';
+
+  export default function Admin() {
   const [open, setOpen] = React.useState(false);
 
   const dispatch = useAppDispatch();
@@ -32,18 +33,7 @@ export default function Admin() {
   //   fetchUsersArray();
   // }, []);
 
-  // TODO: This useEffect should be triggered only if user is admin, add condition inside block
-
   useEffect(() => {
-    // TODO:
-    // const users = [mockTeacher, { ...mockTeacher, id: 1 }, { ...mockTeacher, id: 2 }];
-    // const generateUsers = () => {
-    //   for (let index = 0; index < 60; index++) {
-    //     fetch(`https://jsonplaceholder.typicode.com/users`).then((response) => response.json().then((json) => console.log(json)));
-    //   }
-    // };
-    // generateUsers();
-    // const users = generateNUsers({type: 'teacher', number: 600});
     // Set teachers
     axios
       .get('https://devedu-az.com:7001/Teacher', { headers: { Authorization: `bearer ${token}` } })

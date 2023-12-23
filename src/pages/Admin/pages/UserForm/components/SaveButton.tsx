@@ -20,7 +20,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { useEffect, useState } from 'react';
 import { validateEmail, validateFatherName, validateFirstName, validateLastName, validatePhoneNumber } from '../validations';
 import axios from 'axios';
-import { Student } from '../../../../../models/models';
+import { Student, Teacher } from '../../../../../models/models';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
@@ -47,17 +47,6 @@ const SaveButton = () => {
     dispatch(setIsSaveButtonEnabled(false));
 
     if (pageMode === 'add') {
-      // Data that needs to be sent to API
-      //       {
-      //   "firstName": "string",
-      //   "lastName": "string",
-      //   "groupNumber": "string",
-      //   "email": "string",
-      //   "password": "string",
-      //   "phoneNumber": "string"
-      // }
-
-      // if typeof selectedUsr is Student, post to /Student, otherwise, to /Teacher
       if (userCategory === 'students') {
         const intermediateVar = selectedUser as Student;
         axios
@@ -72,6 +61,24 @@ const SaveButton = () => {
             },
           })
           .then((res) => console.log('res', res))
+          .then((_) => dispatch(addUser({ userCategory: 'students', data: selectedUser })))
+          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+      } else if (userCategory === 'teachers') {
+        const intermediateVar = selectedUser as Teacher;
+        axios
+          .post('https://devedu-az.com:7001/Teacher', {
+            data: {
+              firstName: intermediateVar.firstName,
+              lastName: intermediateVar.lastName,
+              department: intermediateVar.department,
+              subject: intermediateVar.subject,
+              email: intermediateVar.email,
+              password: intermediateVar.password,
+              phoneNumber: intermediateVar.phoneNumber,
+            },
+          })
+          .then((res) => console.log('res', res))
+          .then((_) => dispatch(addUser({ userCategory: 'teachers', data: selectedUser })))
           .then((_) => dispatch(setSelectedUser(emptyStudent)));
       }
 
@@ -120,6 +127,7 @@ const SaveButton = () => {
   }, [selectedUser]);
 
   return (
+    // TODO: Maybe add a snackbar
     <>
       <Button variant="contained" onClick={handleClickOpen} disabled={!isSaveButtonEnabled}>
         {pageMode === 'add' ? (

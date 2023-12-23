@@ -5,6 +5,26 @@ import { emptyUser, mockTeacher } from '../../models/mockAdminData';
 
 type GeneralType = Teacher | Student | Admin;
 
+type errorState = {
+  firstNameError: boolean;
+  lastNameError: boolean;
+  fatherNameError: boolean;
+  emailError: boolean;
+  phoneNumberError: boolean;
+  passwordError?: boolean;
+  confirmPasswordError?: boolean;
+};
+
+export const noErrorState = {
+  firstNameError: false,
+  lastNameError: false,
+  fatherNameError: false,
+  emailError: false,
+  phoneNumberError: false,
+  passwordError: false,
+  confirmPasswordError: false,
+};
+
 interface IUsersState {
   currentUser: GeneralType;
   selectedUser: GeneralType;
@@ -12,6 +32,7 @@ interface IUsersState {
   // we know whether there is any change in selectedUser.
   fixedSelectedUser: GeneralType;
   pageMode: 'add' | 'edit' | 'no-edit'; // 'no-edit' is neither edit, nor add
+  errorState: errorState;
   isSaveButtonEnabled: boolean;
   teachers: {
     data: Teacher[];
@@ -30,8 +51,9 @@ const initialState: IUsersState = {
   // NOTE: In AddUser page, this will point to an id that doesn't yet exist. If operation succeeds, it will be added, otherwise, discarded.
   selectedUser: emptyUser, // TODO: change to emptyUser after development
   fixedSelectedUser: emptyUser,
-  isSaveButtonEnabled: false,
   pageMode: 'no-edit', // TODO: default
+  errorState: noErrorState,
+  isSaveButtonEnabled: false,
   teachers: {
     data: [],
     isSet: false,
@@ -80,6 +102,9 @@ const usersSlice = createSlice({
     setFixedSelectedUser: (state: IUsersState, action: PayloadAction<GeneralType>) => {
       state.fixedSelectedUser = action.payload;
     },
+    setErrorState: (state: IUsersState, action: PayloadAction<errorState>) => {
+      state.errorState = action.payload;
+    },
 
     // Adds user of selectedUserId to users array
     addUser: (state: IUsersState, action: PayloadAction<{ userCategory: UserCategory; data: User }>) => {
@@ -95,8 +120,18 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setIsSet, setUsers, setCurrentUser, setSelectedUser, setFixedSelectedUser, setIsSaveButtonEnabled, setPageMode, addUser, deleteUser } =
-  usersSlice.actions;
+export const {
+  setIsSet,
+  setUsers,
+  setCurrentUser,
+  setSelectedUser,
+  setFixedSelectedUser,
+  setErrorState,
+  setIsSaveButtonEnabled,
+  setPageMode,
+  addUser,
+  deleteUser,
+} = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;
 
 export const selectTeachersIsSet = (state: RootState) => state.users.teachers.isSet;
@@ -110,6 +145,7 @@ export const selectPageMode = (state: RootState) => state.users.pageMode;
 export const selectCurrentUser = (state: RootState) => state.users.currentUser;
 export const selectSelectedUser = (state: RootState) => state.users.selectedUser;
 export const selectFixedSelectedUser = (state: RootState) => state.users.fixedSelectedUser;
+export const selectErrorState = (state: RootState) => state.users.errorState;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {

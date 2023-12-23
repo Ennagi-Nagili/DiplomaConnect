@@ -1,34 +1,27 @@
 import { Box, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectErrorState, selectSelectedUser, setErrorState, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InputTextField from './InputTextField';
 import { validateEmail, validatePhoneNumber } from '../validations';
 
 const ContactInputs = () => {
   const dispatch = useAppDispatch();
   const placeholderUser = useAppSelector(selectSelectedUser);
-
-  //Corresponding Error States
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-
-  useEffect(() => {
-    setEmailError(false);
-    setPhoneError(false);
-  }, [window.location.pathname]);
+  const errorState = useAppSelector(selectErrorState);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
     const isValid = validateEmail(e.target.value);
-    setEmailError(!isValid); // when value is erroneous, isValid is false, and error is true
+    // when value is erroneous, isValid is false, and error is true
+    dispatch(setErrorState({ ...errorState, emailError: !isValid }));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
     const isValid = validatePhoneNumber(e.target.value);
-    setPhoneError(!isValid);
+    dispatch(setErrorState({ ...errorState, phoneNumberError: !isValid }));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
@@ -38,15 +31,15 @@ const ContactInputs = () => {
       type: 'email',
       value: placeholderUser.email,
       onChange: handleEmailChange,
-      error: emailError,
-      helperText: emailError ? 'Enter a valid email address' : ' ',
+      error: errorState.emailError,
+      helperText: errorState.emailError ? 'Enter a valid email address' : ' ',
     },
     {
       label: 'Phone Number',
       value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
-      error: phoneError,
-      helperText: phoneError ? 'Enter a valid phone number' : ' ',
+      error: errorState.phoneNumberError,
+      helperText: errorState.phoneNumberError ? 'Enter a valid phone number' : ' ',
     },
   ];
 
@@ -63,8 +56,7 @@ const ContactInputs = () => {
         Contact Info
       </Typography>
 
-      {/* Box for First Name and Last Name with wrap */}
-      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {/* Phone Number and Email Address */}
       {textFieldAttributes.map((item, index) => (
         <InputTextField item={item} key={item.label + index} />
       ))}

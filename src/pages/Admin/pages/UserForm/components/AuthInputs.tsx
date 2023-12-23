@@ -1,6 +1,6 @@
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectErrorState, selectSelectedUser, setErrorState, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -10,6 +10,7 @@ import InputTextField from './InputTextField';
 const AuthInputs = () => {
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
+  const errorState = useAppSelector(selectErrorState);
 
   useEffect(() => {
     // isVisible
@@ -18,9 +19,6 @@ const AuthInputs = () => {
     // isTouched
     setPasswordTouched(false);
     setConfirmPasswordTouched(false);
-    // error state
-    setPasswordError(false);
-    setConfirmPasswordError(false);
   }, [window.location.pathname]);
 
   // Visible State
@@ -37,16 +35,14 @@ const AuthInputs = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
-  // Corresponding Error State
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-
   useEffect(() => {
-    setPasswordError(passwordTouched && selectedUser.password?.trim() === '');
+    const error = passwordTouched && selectedUser.password?.trim() === '';
+    dispatch(setErrorState({ ...errorState, passwordError: error }));
   }, [selectedUser.password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(confirmPasswordTouched && selectedUser.confirmPassword !== selectedUser.password);
+    const error = confirmPasswordTouched && selectedUser.confirmPassword !== selectedUser.password;
+    dispatch(setErrorState({ ...errorState, confirmPasswordError: error }));
   }, [selectedUser.password, selectedUser.confirmPassword, confirmPasswordTouched]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +64,8 @@ const AuthInputs = () => {
       type: isPasswordVisible ? 'text' : 'password',
       value: selectedUser.password ? selectedUser.password : '',
       onChange: handlePasswordChange,
-      error: passwordError,
-      helperText: passwordError ? 'Password is required' : ' ',
+      error: errorState.passwordError ? errorState.passwordError : false,
+      helperText: errorState.passwordError ? 'Password is required' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -83,8 +79,8 @@ const AuthInputs = () => {
       type: isConfirmPasswordVisible ? 'text' : 'password',
       value: selectedUser.confirmPassword ? selectedUser.confirmPassword : '',
       onChange: handleConfirmPasswordChange,
-      error: confirmPasswordError,
-      helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
+      error: errorState.confirmPasswordError ? errorState.confirmPasswordError : false,
+      helperText: errorState.confirmPasswordError ? 'Passwords do not match' : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -111,8 +107,7 @@ const AuthInputs = () => {
         Authentication
       </Typography>
 
-      {/* Box for First Name and Last Name with wrap */}
-      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {/* Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
         <InputTextField item={item} key={item.label + index} />
       ))}

@@ -1,11 +1,13 @@
 import { Box } from '@mui/material';
 import { emptyStudent, emptyTeacher } from '../../../../models/mockAdminData';
 import {
+  noErrorState,
   selectCurrentUser,
   selectIsSaveButtonEnabled,
   selectStudents,
   selectTeacherIds,
   selectTeachers,
+  setErrorState,
   setFixedSelectedUser,
   setIsSaveButtonEnabled,
   setPageMode,
@@ -30,13 +32,15 @@ const UserForm = () => {
   const teacherIds = useAppSelector(selectTeacherIds);
 
   const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled);
-  // TODO: Add 'Your saves will not be changed' alert dialog.
-  // NOTE: INDEPENDENT OF isSaveButtonEnabled, IF ANYTHING CHANGES, WE NEED TO ALERT. -- maybe leave tbis functionality for now...
+  // Resets errorState
+  useEffect(() => {
+    dispatch(setErrorState(noErrorState));
+  }, [window.location.pathname]);
+
+  // If user is ready to be added, and page is refreshed, it will ask for confirmation
   useEffect(() => {
     if (!isSaveButtonEnabled) return;
-    // window.onbeforeunload = function () {
-    //   return console.log('Do you want to leave?');
-    // };
+
     function handleOnBeforeUnload(event: BeforeUnloadEvent) {
       event.preventDefault();
       return (event.returnValue = '');
@@ -47,11 +51,11 @@ const UserForm = () => {
     };
   }, [isSaveButtonEnabled, window.location.pathname]);
 
+  // Set pageMode, selectedUser, fixedSelectedUser, and reset isSaveButtonEnabled to false
   useEffect(() => {
     console.log('USER FORM USE EFFECT');
     dispatch(setIsSaveButtonEnabled(false));
 
-    // Setting selectedUser and pageMode
     switch (true) {
       case pathEnd === 'edit-profile': {
         dispatch(setPageMode('edit'));
@@ -71,6 +75,7 @@ const UserForm = () => {
       }
       // At first, teachers and students are not set.
       case /\/teachers\/\d+\/edit$/.test(path): {
+        dispatch(setPageMode('edit'));
         // If user with requested id doesn't exits
         const id = path.split('/')[3];
         if (teachers.length !== 0 && teacherIds.includes(+id)) {
@@ -86,6 +91,8 @@ const UserForm = () => {
       case /\/students\/\d+\/edit$/.test(path): {
         // TODO
         console.log('PAGE MODE: EDIT SOME STUDENT');
+        dispatch(setPageMode('edit'));
+
         break;
       }
       default:

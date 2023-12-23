@@ -30,7 +30,7 @@ export const UsersDataGrid = () => {
     (user: Teacher | Student) => () => {
       // TODO: Use real API when available
       console.log(`Delete user with id ${user.id}`);
-      dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
+      // dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
 
       // TODO: There seems to be an error in backend
       axios
