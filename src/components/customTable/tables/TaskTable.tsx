@@ -11,12 +11,15 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import Paper from '@mui/material/Paper';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios';
+import { Cookie } from '@mui/icons-material';
+import Cookies from 'universal-cookie';
 
 type TableHeader = {
   name: string;
@@ -26,15 +29,28 @@ type TableHeader = {
 export const TaskTable = () => {
   const dispatch = useAppDispatch();
   const heads: TableHeader[] = [
-    { name: 'Başlıq', align: 'left' },
-    { name: 'Başlama tarixi', align: 'right' },
-    { name: 'Son tarix', align: 'right' },
+    { name: 'Number', align: 'left' },
+    { name: 'Header', align: 'right' },
+    { name: 'Deadline', align: 'right' },
     { name: 'Bitib', align: 'right' },
   ];
 
-  const [data, setData] = React.useState(taskData);
+  const [data, setData] = React.useState<Task[]>([]);
 
   const navigate = useNavigate();
+  const cookie = new Cookies();
+
+  useEffect(() => {
+    axios
+      .get('https://devedu-az.com:7001/Work/65', {
+        headers: {
+          Authorization: 'bearer ' + cookie.get('token'),
+        },
+      })
+      .then((response) => {
+        setData(response.data);
+      });
+  }, []);
 
   function handleGo(id: number) {
     navigate('/task');
@@ -50,8 +66,8 @@ export const TaskTable = () => {
     setData(data.filter((item) => item.id !== id));
   }
 
-  function getFinish(finish: boolean) {
-    if (finish) {
+  function getFinish(finish: number) {
+    if (finish === 1) {
       return <CheckCircleOutlineIcon className="true" />;
     } else {
       return <DoNotDisturbIcon className="false" />;
@@ -81,10 +97,10 @@ export const TaskTable = () => {
         <TableBody>
           {data.map((item, index) => (
             <StyledTableRow key={`row-${index}`}>
-              <StyledTableCell>{item.head}</StyledTableCell>
-              <StyledTableCell align="right">{item.date}</StyledTableCell>
+              <StyledTableCell>{item.number}</StyledTableCell>
+              <StyledTableCell align="right">{item.name}</StyledTableCell>
               <StyledTableCell align="right">{item.deadline}</StyledTableCell>
-              <StyledTableCell align="right">{getFinish(item.finished)}</StyledTableCell>
+              <StyledTableCell align="right">{getFinish(item.state)}</StyledTableCell>
 
               <StyledTableCell align="right">
                 <button onClick={() => handleDelete(item.id)} className="goBtn">

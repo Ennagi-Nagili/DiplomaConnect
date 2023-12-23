@@ -4,18 +4,17 @@ import { ProfilePage } from './pages/Teacher/ProfilePage';
 import { RequestsPage } from './pages/Teacher/RequestsPage';
 import { Route, Routes } from 'react-router-dom';
 import { StudentsPage } from './pages/Teacher/StudentsPage';
-import { TaskDetails } from './pages/Teacher/TaskDetailsPage/TaskDetails';
+import { TaskDetails } from './pages/Teacher/TaskDetails';
 import { TaskPage } from './Task';
 import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
 import { setIsSet, setUsers } from './services/reducers/users.slice';
 import { useAppDispatch } from './services/hooks';
 import { useEffect } from 'react';
 import Cookies from 'universal-cookie';
-import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
-import { DetailsPage } from './pages/Teacher/DetailsPage/DetailsPage';
+import { TasksPage } from './pages/Teacher/TasksPage';
 
 function parseJwt(token: string) {
   const base64Url = token.split('.')[1];
@@ -104,7 +103,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="/profile/*" element={<Profile />} />
-        <Route path="task" element={<TaskDetails />} />
+        <Route path="taskDetails" element={<TaskDetails />} />
         <Route path="*" element={<NotFound />} />
         <Route path="task-page" element={<TaskPage />} />
         <Route path="/login" element={<Login />} />
@@ -112,7 +111,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="requests" element={<RequestsPage />} />
         <Route path="students" element={<StudentsPage />} />
-        <Route path="details" element={<DetailsPage />} />
+        <Route path="tasks" element={<TasksPage />} />
       </Routes>
     </>
   );

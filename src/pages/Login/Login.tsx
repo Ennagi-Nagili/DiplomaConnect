@@ -52,7 +52,12 @@ function parseJwt(token: string) {
 
 export default function LogIn() {
   const navigate = useNavigate();
+  const cookie = new Cookies();
 
+  let mail = cookie.get('mail');
+  mail ??= '';
+  let password = cookie.get('password');
+  password ??= '';
   const [Wrong_Email, setWrong_Email] = React.useState('none');
   const [Wrong_Password, setWrong_Password] = React.useState('none');
   const [wrongCredentials, setWrongCredentials] = React.useState('none');
@@ -65,7 +70,6 @@ export default function LogIn() {
       .then((response) => {
         if (parseJwt(response.data)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'teacher') {
           setWrongCredentials('none');
-          const cookie = new Cookies();
           cookie.set('token', response.data);
           cookie.set('id', parseJwt(response.data).Id);
           if (remember) {
@@ -154,7 +158,7 @@ export default function LogIn() {
                   onChange={(e) => {
                     setWrong_Email(e.target.value ? 'none' : 'block');
                   }}
-                  // value={mail}
+                  value={mail}
                 />
                 <Typography
                   className="redp"
@@ -178,7 +182,7 @@ export default function LogIn() {
                 onChange={(e) => {
                   setWrong_Password(e.target.value ? 'none' : 'block');
                 }}
-                // value={password}
+                value={password}
               />
               <Typography
                 className="redp"

@@ -1,11 +1,9 @@
 import '../../style/ProfilePage.scss';
 import * as React from 'react';
-import { Cookie } from '@mui/icons-material';
 import { Header } from '../../components/Header/Header';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
 import { SimpleDialog } from '../../components/Dialog';
 import { Teacher } from '../../models/Teacher';
-import { login } from '../../services/login';
 import { teacherInitial } from '../../models/initials';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -50,6 +48,7 @@ export const ProfilePage = () => {
   }
 
   const [teacher, setTeacher] = React.useState<Teacher>(teacherInitial);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const cookie = new Cookies();
@@ -64,9 +63,7 @@ export const ProfilePage = () => {
         setTeacher(response.data);
       })
       .catch(() => {
-        if (cookie.get('mail') === undefined) {
-          login(cookie.get('mail'), cookie.get('password'), cookie.get('remember'));
-        }
+        navigate('/login');
       });
   }, []);
 

@@ -2,7 +2,6 @@ import { Button } from '@mui/material';
 import { Student } from '../../../models/Student';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
-import { login } from '../../../services/login';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Cookies from 'universal-cookie';
@@ -71,9 +70,7 @@ export const StudentTable = ({ type }: { type: string }) => {
           console.log(response.data);
         })
         .catch(() => {
-          if (cookie.get('mail') === undefined) {
-            login(cookie.get('mail'), cookie.get('password'), cookie.get('remember'));
-          }
+          navigate('/login');
         });
     } else {
       const url = 'https://devedu-az.com:7001/Application/teacher/' + cookie.get('id');
