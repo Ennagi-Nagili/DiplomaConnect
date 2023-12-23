@@ -1,5 +1,6 @@
 import { Student } from './Student';
 import { Task } from './Task';
+import { TaskStudent } from './TaskStudent';
 import { Teacher } from './Teacher';
 
 export const teacherInitial: Teacher = {
@@ -25,16 +26,11 @@ export const studentInitial: Student = {
   success: '',
 };
 
-export const taskInitial: Task = {
+export const taskInitial: TaskStudent = {
   id: 0,
-  head: '',
-  steps: [],
-  stepDetails: [],
+  number: 0,
+  name: '',
   deadline: '',
-  deadlines: [],
-  finished: false,
-  date: '',
-  answer: '',
-  files: [''],
-  review: '',
+  state: 0,
+  studentId: 0,
 };

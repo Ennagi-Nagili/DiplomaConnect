@@ -2,7 +2,6 @@ import { Fab } from '@mui/material';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
 import { Task } from '../../../models/Task';
-import { taskData } from '../../../models/mockData';
 import { useAppDispatch } from '../../../services/hooks';
 import { useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,6 +27,7 @@ type TableHeader = {
 
 export const TaskTable = () => {
   const dispatch = useAppDispatch();
+
   const heads: TableHeader[] = [
     { name: 'Number', align: 'left' },
     { name: 'Header', align: 'right' },
@@ -53,6 +53,7 @@ export const TaskTable = () => {
   }, []);
 
   function handleGo(id: number) {
+    dispatch({ type: 'details', payload: { studentId: 65, taskId: data[id].id } });
     navigate('/task');
   }
 

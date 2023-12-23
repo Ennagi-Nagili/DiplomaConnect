@@ -1,11 +1,7 @@
 import { RootState } from '../store';
-import { Task } from '../../models/Task';
 import { createSlice } from '@reduxjs/toolkit';
-import { taskInitial } from '../../models/initials';
 
-interface ITaskState extends Task {}
-
-const initialState: ITaskState = taskInitial;
+const initialState = { studentId: 0, taskId: 0 };
 
 export const taskSlice = createSlice({
   name: 'task',
