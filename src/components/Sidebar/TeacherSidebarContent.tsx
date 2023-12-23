@@ -1,6 +1,8 @@
-import { Divider, List, ListSubheader } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import '../../style/ProfilePage.scss';
+import { Button, Divider, List, ListSubheader } from '@mui/material';
+import { redirect, useNavigate } from 'react-router-dom';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Cookies from 'universal-cookie';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -35,6 +37,16 @@ export const TeacherSidebarContent: React.FC<TeacherSidebarContentProps> = ({ se
     ],
   };
 
+  function handleLogout() {
+    const cookie = new Cookies();
+    cookie.remove('token');
+    cookie.remove('id');
+    cookie.remove('mail');
+    cookie.remove('password');
+    navigate('/login');
+    console.log('salam');
+  }
+
   return (
     <>
       <div>
@@ -55,6 +67,16 @@ export const TeacherSidebarContent: React.FC<TeacherSidebarContentProps> = ({ se
               </ListItemButton>
             </ListItem>
           ))}
+
+          <Button
+            variant="contained"
+            className="logout"
+            onClick={() => {
+              handleLogout();
+            }}
+          >
+            Logout
+          </Button>
         </List>
       </div>
     </>

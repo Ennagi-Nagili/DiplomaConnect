@@ -1,10 +1,8 @@
 export type Teacher = {
-  name: string;
-  phone: string;
-  mail: string;
-  date: string;
-  education: Array<string>;
-  work: Array<string>;
-  event: Array<string>;
-  books: Array<string>;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  faculty: { id: number; name: string };
+  subjects: [{ id: number; name: string }];
 };

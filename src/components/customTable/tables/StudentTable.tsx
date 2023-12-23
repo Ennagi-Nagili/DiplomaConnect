@@ -1,9 +1,11 @@
 import { Button } from '@mui/material';
+import { Student } from '../../../models/Student';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
-import { useAppDispatch } from '../../../services/hooks';
+import { login } from '../../../services/login';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import Cookies from 'universal-cookie';
 import Paper from '@mui/material/Paper';
 import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
@@ -11,6 +13,7 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import axios from 'axios';
 
 type TableHeader = {
   name: string;
@@ -44,66 +47,49 @@ export const StudentTable = ({ type }: { type: string }) => {
   }
 
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   function handleGo(id: number) {
-    dispatch({ type: 'details', payload: data[id] });
     navigate('/details');
   }
 
-  const [token, setToken] = React.useState('');
+  type Application = { id: number; student: Student; applicationState: number; workTheme: string; coveringLetter: string };
+  const [data, setData] = React.useState<Application[]>([]);
 
-  async function login() {
-    const response = await fetch('https://194.87.210.5:7001/Login?email=teacher&password=teacher', {
-      method: 'POST',
-    });
-
-    const data: Promise<string> = response.text();
-    data.then((value) => {
-      setToken(value);
-      console.log(value);
-    });
-  }
-
-  type Student = { id: number; fullName: string; groupNumber: string; email: string; phoneNumber: string };
-
-  const [data, setData] = React.useState<Student[]>([]);
-
-  async function getStudents() {
-    console.log("salamaaa");
-    login();
-
-    fetch('https://194.87.210.5:7001/Student/by-teacher/1', {
-      method: 'GET',
-      headers: {
-        Authorization: 'bearer ' + token,
-      },
-    })
-      .then((response) => response.json())
-      .then((res: Student[]) => setData(res));
-  }
-
-  async function getRequests() {
-    console.log("hhhsalamaaa");
-    // login();
-
-    // fetch('https://194.87.210.5:7001/Application/teacher/1', {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: 'bearer ' + token,
-    //   },
-    // })
-    //   .then((response) => response.json())
-    //   .then((res: Student[]) => setData(res));
-  }
+  const cookie = new Cookies();
 
   useEffect(() => {
     if (type === 'student') {
-      getStudents();
+      const url = 'https://devedu-az.com:7001/Student/by-teacher/' + cookie.get('id');
+      axios
+        .get(url, {
+          headers: {
+            Authorization: 'bearer ' + cookie.get('token'),
+          },
+        })
+        .then((response) => {
+          setData(response.data);
+          console.log(response.data);
+        })
+        .catch(() => {
+          if (cookie.get('mail') === undefined) {
+            login(cookie.get('mail'), cookie.get('password'), cookie.get('remember'));
+          }
+        });
     } else {
-      getRequests();
+      const url = 'https://devedu-az.com:7001/Application/teacher/' + cookie.get('id');
+
+      axios
+        .get(url, {
+          headers: {
+            Authorization: 'bearer ' + cookie.get('token'),
+          },
+        })
+        .then((response) => {
+          setData(response.data);
+          console.log(response.data);
+        });
     }
-  });
+  }, []);
 
   return (
     <TableContainer component={Paper}>
@@ -120,19 +106,19 @@ export const StudentTable = ({ type }: { type: string }) => {
         <TableBody>
           {data.map((item, index) => (
             <StyledTableRow key={`row-${index}`}>
-              <StyledTableCell>{item.fullName}</StyledTableCell>
-              <StyledTableCell align="right">{item.groupNumber}</StyledTableCell>
-              <StyledTableCell align="right">{item.email}</StyledTableCell>
-              <StyledTableCell align="right">{item.phoneNumber}</StyledTableCell>
+              <StyledTableCell>{item.student.firstName + ' ' + item.student.lastName}</StyledTableCell>
+              <StyledTableCell align="right">{item.student.groupNumber}</StyledTableCell>
+              <StyledTableCell align="right">{item.student.email}</StyledTableCell>
+              <StyledTableCell align="right">{item.student.phoneNumber}</StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
-                <Button variant="contained" color="success" onClick={() => getStudents()}>
+                <Button variant="contained" color="success">
                   Accept
                 </Button>
               </StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
-                <Button variant="contained" color="error" onClick={() => login()}>
+                <Button variant="contained" color="error">
                   Decline
                 </Button>
               </StyledTableCell>

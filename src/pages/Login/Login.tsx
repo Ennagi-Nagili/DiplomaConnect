@@ -14,8 +14,10 @@ import {
   Typography,
   createTheme,
 } from '@mui/material';
-import { red } from '@mui/material/colors';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import Logo from '/src/assets/diplomalogo.png';
+import axios from 'axios';
 
 interface FormData {
   get: (name: string) => string | null;
@@ -32,31 +34,81 @@ function Copyright() {
 
 const defaultTheme = createTheme();
 
-async function login(email: string, password: string) {
-  const url = 'https://194.87.210.5:7001/Login?email=' + email + '&password=' + password;
-  const response = await fetch(url, {
-    method: 'POST',
-  });
+function parseJwt(token: string) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    window
+      .atob(base64)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(''),
+  );
 
-  const data: Promise<string> = response.text();
-  data.then((value) => {
-    console.log(value);
-  });
+  return JSON.parse(jsonPayload);
 }
 
 export default function LogIn() {
+  const navigate = useNavigate();
+
+  const [Wrong_Email, setWrong_Email] = React.useState('none');
+  const [Wrong_Password, setWrong_Password] = React.useState('none');
+  const [wrongCredentials, setWrongCredentials] = React.useState('none');
+
+  async function login(email: string, password: string) {
+    const url = 'https://devedu-az.com:7001/Login?email=' + email + '&password=' + password;
+
+    axios
+      .post(url)
+      .then((response) => {
+        if (parseJwt(response.data)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'teacher') {
+          setWrongCredentials('none');
+          const cookie = new Cookies();
+          cookie.set('token', response.data);
+          cookie.set('id', parseJwt(response.data).Id);
+          if (remember) {
+            cookie.set('mail', email);
+            cookie.set('password', password);
+          }
+          navigate('/profile');
+        } else if (parseJwt(response.data)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin') {
+          setWrongCredentials('none');
+          const cookie = new Cookies();
+          cookie.set('token', response.data);
+          cookie.set('id', parseJwt(response.data).Id);
+          if (remember || cookie.get('mail') !== undefined) {
+            cookie.set('mail', email);
+            cookie.set('password', password);
+          }
+          navigate('/profile');
+        } else {
+          setWrongCredentials('block');
+        }
+      })
+      .catch(() => {
+        setWrongCredentials('block');
+      });
+  }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget) as FormData;
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email');
+    const password = data.get('password');
+
+    if (email !== null && password !== null) {
+      login(email, password);
+    }
   };
-  const [Wrong_Email, setWrong_Email] = React.useState('block');
-  const [Wrong_Password, setWrong_Password] = React.useState('block');
-  const [mail, setMail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+
+  const [remember, setRemember] = React.useState(false);
+
+  const handleRemember = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRemember(event.target.checked);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
@@ -100,7 +152,6 @@ export default function LogIn() {
                   autoComplete="email"
                   autoFocus
                   onChange={(e) => {
-                    setMail(e.target.value);
                     setWrong_Email(e.target.value ? 'none' : 'block');
                   }}
                   // value={mail}
@@ -125,7 +176,6 @@ export default function LogIn() {
                 id="password"
                 autoComplete="current-password"
                 onChange={(e) => {
-                  setPassword(e.target.value);
                   setWrong_Password(e.target.value ? 'none' : 'block');
                 }}
                 // value={password}
@@ -139,7 +189,16 @@ export default function LogIn() {
               >
                 *Please write your password
               </Typography>
-              <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+              <FormControlLabel control={<Checkbox value="remember" color="primary" onChange={handleRemember} />} label="Remember me" />
+              <Typography
+                className="redp"
+                sx={{
+                  display: wrongCredentials,
+                  color: 'red',
+                }}
+              >
+                *Email or password is incorrect
+              </Typography>
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={() => {}}>
                 Log In
               </Button>

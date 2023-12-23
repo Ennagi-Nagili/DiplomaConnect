@@ -1,14 +1,20 @@
 import '../../style/ProfilePage.scss';
 import * as React from 'react';
+import { Cookie } from '@mui/icons-material';
 import { Header } from '../../components/Header/Header';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
 import { SimpleDialog } from '../../components/Dialog';
 import { Teacher } from '../../models/Teacher';
+import { login } from '../../services/login';
+import { teacherInitial } from '../../models/initials';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import Cookies from 'universal-cookie';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
+import axios from 'axios';
 
 export const ProfilePage = () => {
   const [open, setOpen] = React.useState(false);
@@ -43,25 +49,26 @@ export const ProfilePage = () => {
     input.click();
   }
 
-  const teacher: Teacher = {
-    name: 'Müəllimov Müəllim',
-    phone: '+994 12 345 67 89',
-    mail: 'muallim2023@gmail.com',
-    date: '30.11.2023 Bakı, Azərbaycan',
-    education: [
-      '2023-2024, Orta məktəb',
-      '2023-2024, Bakı Dövlət Universiteti İlahiyyat fakultəsində bakalvr təhsili',
-      '2023-2024, Bakı Dövlət Universiteti İlahiyyat fakultəsində magistr təhsili',
-      '2023-2024, Bakı Dövlət Universiteti İlahiyyat fakultəsində doktorantura təhsili',
-      '2023-2024, Fəlsəfə doktorluğu: Tezis: "Azərbaycan ilahiyyyat"',
-    ],
-    work: [
-      '2023-2024, Bakı Dövlət Universiteti İlahiyyat fakultəsində müəllim',
-      'Keçdiyi fənnlər: "Azərbaycanda ilahiyyat", "Uzaq şərqdə ilahiyyat", "Amerikada ilahiyyat"',
-    ],
-    event: ['2023, Dünya universitetləri təhsil sərgisi', '2024, Dünya dinləri tədbiri'],
-    books: ['Dinin insan psixologiyasına təsiri, 2023 Baku 230 s', 'Ateizmlə mübarizə, 2024 Baku 345 s'],
-  };
+  const [teacher, setTeacher] = React.useState<Teacher>(teacherInitial);
+
+  React.useEffect(() => {
+    const cookie = new Cookies();
+    const url = 'https://devedu-az.com:7001/Teacher/' + cookie.get('id');
+    axios
+      .get(url, {
+        headers: {
+          Authorization: 'bearer ' + cookie.get('token'),
+        },
+      })
+      .then((response) => {
+        setTeacher(response.data);
+      })
+      .catch(() => {
+        if (cookie.get('mail') === undefined) {
+          login(cookie.get('mail'), cookie.get('password'), cookie.get('remember'));
+        }
+      });
+  }, []);
 
   return (
     <div>
@@ -90,47 +97,31 @@ export const ProfilePage = () => {
           <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
             <Grid container>
               <Grid item>
-                <div id="header">
-                  <p className="head">Profil məlumatları</p>
+                <div>
+                  <p className="head">Profil information</p>
                 </div>
-                <div id="section-name">
-                  <p className="info-head">Ad & Soyad</p>
-                  <p>{teacher.name}</p>
+                <div className="info-container">
+                  <p className="info-head">Name and surname</p>
+                  <p className="info-body">{teacher.firstName + ' ' + teacher.lastName}</p>
                 </div>
-                <div id="section-phone">
-                  <p className="info-head">Telefon nömrəsi</p>
-                  <p>{teacher.phone}</p>
+                <div className="info-container">
+                  <p className="info-head">Email</p>
+                  <p className="info-body">{teacher.email}</p>
                 </div>
-                <div id="section-mail">
-                  <p className="info-head">E-mail ünvanı</p>
-                  <p>{teacher.mail}</p>
+                <div className="info-container">
+                  <p className="info-head">Phone number</p>
+                  <p className="info-body">{teacher.phoneNumber}</p>
                 </div>
-                <div id="section-date">
-                  <p className="info-head">Doğum yeri və tarixi</p>
-                  <p>{teacher.date}</p>
+                <div className="info-container">
+                  <p className="info-head">Faculty</p>
+                  <p className="info-body">{teacher.faculty.name}</p>
                 </div>
-                <div id="section-education">
-                  <p className="info-head">Təhsil və elmi dərəcələr</p>
-                  {teacher.education.map((item, index) => (
-                    <p key={`edu-${index}`}>{item}</p>
-                  ))}
-                </div>
-                <div id="section-work">
-                  <p className="info-head">Əmək fəaliyyəti</p>
-                  {teacher.work.map((item, index) => (
-                    <p key={`work-${index}`}>{item}</p>
-                  ))}
-                </div>
-                <div id="section-event">
-                  <p className="info-head">Beynəlxalq tədbirlərdə iştirak</p>
-                  {teacher.event.map((item, index) => (
-                    <p key={`event-${index}`}>{item}</p>
-                  ))}
-                </div>
-                <div id="section-books">
-                  <p className="info-head">Yazdığı kitablar</p>
-                  {teacher.books.map((item, index) => (
-                    <p key={`book-${index}`}>{item}</p>
+                <div className="info-container">
+                  <p className="info-head">Subjects teaching</p>
+                  {teacher.subjects.map((subject) => (
+                    <p className="info-body" key={subject.id}>
+                      {subject.name}
+                    </p>
                   ))}
                 </div>
               </Grid>
