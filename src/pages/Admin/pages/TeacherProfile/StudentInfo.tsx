@@ -1,8 +1,6 @@
 import { CardContent } from '@mui/material';
 import { StudentListItem } from './components/StudentListItem';
-import { useAppSelector } from '../../../../services/hooks';
-import { selectSelectedUser } from '../../../../services/reducers/users.slice';
-import { Student, Teacher } from '../../../../models/models';
+import { Student } from '../../../../models/models';
 import axios, { AxiosResponse } from 'axios';
 import { token } from '../../Admin';
 import { useEffect } from 'react';

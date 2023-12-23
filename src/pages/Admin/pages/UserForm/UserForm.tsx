@@ -15,8 +15,8 @@ import {
 } from '../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
 import { useEffect } from 'react';
-import UserFormCard from './UserFormCard';
 import { useNavigate } from 'react-router-dom';
+import UserFormCard from './UserFormCard';
 
 const UserForm = () => {
   console.log('USER FORM PAGE IS RENDERED');

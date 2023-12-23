@@ -1,10 +1,10 @@
 import { Avatar, Button, CardContent, Typography } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import { Teacher } from '../../../../models/models';
-import { useAppSelector } from '../../../../services/hooks';
-import { selectSelectedUser } from '../../../../services/reducers/users.slice';
-import { Link } from 'react-router-dom';
 import { emptyTeacher } from '../../../../models/mockAdminData';
+import { Link } from 'react-router-dom';
+import { Teacher } from '../../../../models/models';
+import { selectSelectedUser } from '../../../../services/reducers/users.slice';
+import { useAppSelector } from '../../../../services/hooks';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const TeacherInfo = () => {
   // const dispatch = useAppDispatch();

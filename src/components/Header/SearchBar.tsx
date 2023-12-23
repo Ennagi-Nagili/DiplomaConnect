@@ -1,11 +1,11 @@
 import { Autocomplete, Box, Drawer, createFilterOptions } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
+import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
+import { useAppSelector } from '../../services/hooks';
 import React, { useRef, useState } from 'react';
+import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useAppSelector } from '../../services/hooks';
-import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
 
 const SearchBar = () => {
   const teacherNames = useAppSelector(selectTeacherNames);

@@ -25,7 +25,7 @@ const UploadAvatar: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
-    
+
     dispatch(setIsSaveButtonEnabled(true));
   };
 

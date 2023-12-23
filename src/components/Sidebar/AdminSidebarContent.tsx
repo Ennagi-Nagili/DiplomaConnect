@@ -1,5 +1,6 @@
 import { Divider, List, ListSubheader } from '@mui/material';
 import { Person, School } from '@mui/icons-material';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 import { useNavigate } from 'react-router-dom';
 import AddTeacher from '../../pages/Admin/pages/UserForm/UserForm';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -10,7 +11,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React from 'react';
-import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 
 type AdminSidebarContentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
