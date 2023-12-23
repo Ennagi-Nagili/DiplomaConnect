@@ -10,8 +10,6 @@ const Dashboard = () => {
     { title: 'Total Students', value: 3000 },
     { title: 'Total Teachers', value: 100 },
     { title: 'Teacher-Student Ratio', value: '1:30' },
-    { title: 'Popular Teachers', value: 'John Doe, Jane Smith' },
-    { title: 'Popular Subjects', value: 'Math, Science' },
   ];
 
   // Mock data for bar chart

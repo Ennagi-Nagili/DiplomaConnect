@@ -10,7 +10,7 @@ import axios, { AxiosResponse } from 'axios';
 import { Student, Teacher } from '../../models/models';
 
 export const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzAzMzA4Nzg4LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.hnXynb95myLK9bQveeXbtEvgj4p9BbwnG9JHUf6jqcg';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzAzMzM1MDA2LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.TZSNorSfU-ULohncb8Lfjv4E-nSqRf9iypPFBuv7x1M';
 
   export default function Admin() {
   const [open, setOpen] = React.useState(false);
@@ -48,20 +48,6 @@ export const token =
         console.error('Error fetching teachers:', error);
       });
 
-    // Set students
-    axios
-      .get('https://devedu-az.com:7001/Student', { headers: { Authorization: `bearer ${token}` } })
-      .then((response: AxiosResponse<Student[]>) => {
-        const students = response.data; // Extract the data property
-        console.log('students', students);
-        dispatch(setUsers({ userCategory: 'students', data: students }));
-        dispatch(setIsSet({ userCategory: 'students' }));
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error('Error fetching students:', error);
-      });
-
     // const teachers = generateNTeachers({ number: 21 });
     // console.log('teachers', teachers);
     // dispatch(setUsers({ userCategory: 'teachers', data: teachers }));
@@ -78,6 +64,22 @@ export const token =
 
     // Set selected user
     // dispatch(setSelectedUser());
+  }, []);
+
+  useEffect(() => {
+    // Set students
+    axios
+      .get('https://devedu-az.com:7001/Student', { headers: { Authorization: `bearer ${token}` } })
+      .then((response: AxiosResponse<Student[]>) => {
+        const students = response.data; // Extract the data property
+        console.log('students', students);
+        dispatch(setUsers({ userCategory: 'students', data: students }));
+        dispatch(setIsSet({ userCategory: 'students' }));
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error fetching students:', error);
+      });
   }, []);
 
   return (

@@ -21,6 +21,7 @@ import { useEffect, useState } from 'react';
 import { validateEmail, validateFatherName, validateFirstName, validateLastName, validatePhoneNumber } from '../validations';
 import axios from 'axios';
 import { Student, Teacher } from '../../../../../models/models';
+import { token } from '../../../Admin';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
@@ -49,55 +50,57 @@ const SaveButton = () => {
     if (pageMode === 'add') {
       if (userCategory === 'students') {
         const intermediateVar = selectedUser as Student;
-        axios
-          .post('https://devedu-az.com:7001/Student', {
-            data: {
-              firstName: intermediateVar.firstName,
-              lastName: intermediateVar.lastName,
-              groupNumber: intermediateVar.group,
-              email: intermediateVar.email,
-              password: intermediateVar.password,
-              phoneNumber: intermediateVar.phoneNumber,
-            },
-          })
-          .then((res) => console.log('res', res))
-          .then((_) => dispatch(addUser({ userCategory: 'students', data: selectedUser })))
-          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+        console.log('intermediateVar', intermediateVar);
+        const addStudent = () => {
+          axios
+            .post(
+              'https://devedu-az.com:7001/Student',
+              {
+                firstName: intermediateVar.firstName,
+                lastName: intermediateVar.lastName,
+                groupNumber: intermediateVar.group ? intermediateVar.group : null,
+                email: intermediateVar.email,
+                password: intermediateVar.password,
+                phoneNumber: intermediateVar.phoneNumber,
+              },
+              {
+                headers: { Authorization: `bearer ${token}` },
+              },
+            )
+            .then((res) => console.log('res', res))
+            .then((_) => dispatch(addUser({ userCategory: 'students', data: selectedUser })))
+            .then((_) => dispatch(setSelectedUser(emptyStudent)));
+        };
+        addStudent();
       } else if (userCategory === 'teachers') {
         const intermediateVar = selectedUser as Teacher;
-        axios
-          .post('https://devedu-az.com:7001/Teacher', {
-            data: {
-              firstName: intermediateVar.firstName,
-              lastName: intermediateVar.lastName,
-              department: intermediateVar.department,
-              subject: intermediateVar.subject,
-              email: intermediateVar.email,
-              password: intermediateVar.password,
-              phoneNumber: intermediateVar.phoneNumber,
-            },
-          })
-          .then((res) => console.log('res', res))
-          .then((_) => dispatch(addUser({ userCategory: 'teachers', data: selectedUser })))
-          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+        const addTeacher = () => {
+          axios
+            .post(
+              'https://devedu-az.com:7001/Teacher',
+              {
+                firstName: intermediateVar.firstName,
+                lastName: intermediateVar.lastName,
+                department: intermediateVar.department,
+                subject: intermediateVar.subject,
+                email: intermediateVar.email,
+                password: intermediateVar.password,
+                phoneNumber: intermediateVar.phoneNumber,
+              },
+              {
+                headers: { Authorization: `bearer ${token}` },
+              },
+            )
+            .then((res) => console.log('res', res))
+            .then((_) => dispatch(addUser({ userCategory: 'teachers', data: selectedUser })))
+            .then((_) => dispatch(setSelectedUser(emptyStudent)));
+        };
+        addTeacher();
       }
 
-      // TODO:
-      // dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
       console.log('Add User Icon Button is clicked');
     } else {
       console.log('Edit User Icon Button is clicked');
-
-      // TODO: Connect to API
-      // axios
-      //   .post('https://194.87.210.5:7001/Student', {
-      //     fullName: `${selectedUser.firstName} ${selectedUser.lastName} ${selectedUser.fatherName}`,
-      //     groupNumber: 'selectedUser.group',
-      //     email: selectedUser.email,
-      //     password: selectedUser.password,
-      //     phoneNumber: selectedUser.phoneNumber,
-      //   })
-      //   .then((res) => console.log('res', res));
     }
     console.log(JSON.stringify(selectedUser));
   };

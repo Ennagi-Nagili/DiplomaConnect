@@ -1,5 +1,3 @@
-// JUST EXPERIMENTING... IGNORE THIS FILE.
-
 import { Autocomplete, Box, Drawer, createFilterOptions } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import React, { useRef, useState } from 'react';
