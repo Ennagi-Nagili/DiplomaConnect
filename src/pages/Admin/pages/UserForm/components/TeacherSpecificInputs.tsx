@@ -5,19 +5,53 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
-// TODO: This info needs to come from backend
-// Note: Each item in itemList should be an array of objects
-const departments = {
-  title: 'Department',
-  itemList: ['Analysis', 'Algebra and Geometry', 'Differential and Integral Equations'],
-};
-const subjects = {
-  title: 'Subject',
-  itemList: ['Real Analysis', 'Complex Analysis', 'Group Theory'],
-};
+import { useEffect, useState } from 'react';
+import axios, { AxiosResponse } from 'axios';
+import { token } from '../../../Admin';
 
 const TeacherSpecificInputs = () => {
+  const [departmentList, setDepartmentList] = useState<string[]>([]);
+  const [subjectList, setSubjectList] = useState<string[]>([]);
+
+  const departments = {
+    title: 'Department',
+    itemList: departmentList,
+  };
+  const subjects = {
+    title: 'Subject',
+    itemList: subjectList,
+  };
+
+  type itemObject = {
+    id: number;
+    name: string;
+  };
+
+  useEffect(() => {
+    axios
+      .get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } })
+      .then((response: AxiosResponse<itemObject[]>) => {
+        const faculties = response.data.map((item) => item.name);
+        setDepartmentList(faculties);
+        console.log('faculties', faculties);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error fetching faculties:', error);
+      });
+    axios
+      .get('https://devedu-az.com:7001/Options/subject', { headers: { Authorization: `bearer ${token}` } })
+      .then((response: AxiosResponse<itemObject[]>) => {
+        const subjects = response.data.map((item) => item.name);
+        setSubjectList(subjects);
+        console.log('subjects', subjects);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error fetching faculties:', error);
+      });
+  }, [window.location.pathname]);
+
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser) as Teacher;
 
