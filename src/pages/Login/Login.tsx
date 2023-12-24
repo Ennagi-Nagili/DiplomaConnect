@@ -14,11 +14,14 @@ import {
   Typography,
   createTheme,
 } from '@mui/material';
-import Logo from '/src/assets/diplomalogo.png';
+import { Trans, useTranslation } from 'react-i18next';
+import { config } from '../../translation/config';
 import { red } from '@mui/material/colors';
+import Logo from '/src/assets/diplomalogo.png';
 
 interface FormData {
   get: (name: string) => string | null;
+ 
 }
 
 function Copyright() {
@@ -33,6 +36,12 @@ function Copyright() {
 const defaultTheme = createTheme();
 
 export default function LogIn() {
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget) as FormData;
@@ -45,8 +54,15 @@ export default function LogIn() {
   const [Wrong_Password, setWrong_Password] = React.useState('block');
   const [mail, setMail] = React.useState('');
   const [password, setPassword] = React.useState('');
+
+  // React.useEffect(() => {
+  //   i18n.changeLanguage('aze');
+  // }, []);
+
   return (
     <ThemeProvider theme={defaultTheme}>
+      <button onClick={() => changeLanguage('az')}>az</button>
+      <button onClick={() => changeLanguage('en')}>en</button>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -74,7 +90,7 @@ export default function LogIn() {
           >
             <img src={Logo} height={100} width={190} alt="Logo" />
             <Typography component="h1" variant="h5">
-              Log In
+              {t('Login')}
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <FormControl required fullWidth>
@@ -93,10 +109,13 @@ export default function LogIn() {
                   }}
                   // value={mail}
                 />
-                <Typography className="redp" sx={{
-                  display: Wrong_Email,
-                  color:'red' 
-                  }}>
+                <Typography
+                  className="redp"
+                  sx={{
+                    display: Wrong_Email,
+                    color: 'red',
+                  }}
+                >
                   *Please write your E-mail
                 </Typography>
               </FormControl>
@@ -115,20 +134,17 @@ export default function LogIn() {
                 }}
                 // value={password}
               />
-              <Typography className="redp" sx={{ 
-              display: Wrong_Password,
-              color:'red'}}>
+              <Typography
+                className="redp"
+                sx={{
+                  display: Wrong_Password,
+                  color: 'red',
+                }}
+              >
                 *Please write your password
               </Typography>
               <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                onClick={() => {
-                }}
-              >
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={() => {}}>
                 Log In
               </Button>
               <Copyright />
@@ -138,4 +154,4 @@ export default function LogIn() {
       </Grid>
     </ThemeProvider>
   );
- }
+}

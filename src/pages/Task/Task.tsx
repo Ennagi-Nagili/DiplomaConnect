@@ -19,7 +19,7 @@ export const TaskPage = () => {
   const addInputSet = () => {
     const newInputSet = [
       <input key={inputSets.length * 3 + 1} type="text" placeholder={`step${inputSets.length + 1}`} className="input" />,
-      <textarea cols={30} rows={10} key={inputSets.length * 3 + 2} placeholder={`explanation${inputSets.length + 1}`} className="input"></textarea>,
+      <textarea cols={30} rows={10} key={inputSets.length * 3 + 2} placeholder={`explanation ${inputSets.length + 1}`} className="input"></textarea>,
       <input key={inputSets.length * 3 + 3} type="date" placeholder={`deadline${inputSets.length + 1}`} className="input" />,
     ];
 
@@ -27,7 +27,6 @@ export const TaskPage = () => {
   };
 
   const handleSubmit = () => {
-    // Implement your submit logic here
     console.log('Submitted!');
   };
 

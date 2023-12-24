@@ -12,7 +12,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
 import Profile from './pages/Admin/Admin';
-import { TaskPage } from './Task';
+import { TaskPage } from './pages/Task/Task';
 
 function App() {
   const dispatch = useAppDispatch();
