@@ -8,29 +8,41 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PeopleIcon from '@mui/icons-material/People';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type TeacherSidebarContentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  lng: string;
 };
 
-export const TeacherSidebarContent: React.FC<TeacherSidebarContentProps> = ({ setOpen }) => {
+export const TeacherSidebarContent: React.FC<TeacherSidebarContentProps> = ({ setOpen, lng }) => {
   const navigate = useNavigate();
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = () => {
+    i18n.changeLanguage(lng);
+  };
+
+  useEffect(() => {
+    changeLanguage();
+  }, [lng]);
 
   // Add types if needed
   const listContent = {
-    subheader: 'Navigation',
+    subheader: t('Navigation'),
     content: [
       {
         id: 1,
-        title: 'Requests',
+        title: t('Requests'),
         link: '/requests',
         icon: <CheckCircleOutlineIcon />,
       },
 
       {
         id: 1,
-        title: 'My Students',
+        title: t('My Students'),
         link: '/students',
         icon: <PeopleIcon />,
       },
@@ -75,7 +87,7 @@ export const TeacherSidebarContent: React.FC<TeacherSidebarContentProps> = ({ se
               handleLogout();
             }}
           >
-            Logout
+            {t('Logout')}
           </Button>
         </List>
       </div>

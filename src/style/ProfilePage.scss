@@ -4,7 +4,7 @@ body {
 }
 
 .avatar {
-    width: 64px !important; 
+    width: 64px !important;
     height: 64px !important;
     margin-left: 16px;
     margin-top: 8px;
@@ -68,9 +68,9 @@ body {
 }
 
 .details-container {
-   line-height: 2;
-   letter-spacing: 1px;
-   padding-top: 24px;
+    line-height: 2;
+    letter-spacing: 1px;
+    padding-top: 24px;
 }
 
 .foot {
@@ -141,7 +141,6 @@ body {
 .table-container {
     height: 100vh;
     padding: 0 48px;
-    background-color: #f5f5f5;
     display: flex;
     align-items: center;
 }
@@ -193,4 +192,87 @@ body {
 
 .accept {
     margin-top: 16px !important;
+}
+
+.task-page-container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+
+    .header {
+        // max-width: 700px;
+        width: 100%;
+        color: #1976d2;
+        text-align: center;
+        padding: 30px;
+    }
+
+    .diploma {
+        margin: 0;
+    }
+
+    .inputs {
+        max-width: 600px;
+        width: 100%;
+        margin: 60px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+
+        .input {
+            width: calc(100% - 20px);
+            margin-bottom: 10px;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .button,
+            .submit-button {
+                width: 100%;
+                background-color: #1976d2;
+                color: #fff;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 16px;
+                margin-bottom: 10px;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: #277aae;
+                }
+            }
+
+            .submit-button {
+                margin-left: 0;
+                height: 40px;
+                width: 100%;
+                font-size: 20px;
+            }
+        }
+
+        .filebutton {
+            display: block;
+            width: 100%;
+            max-width: 120px;
+            height: 30px;
+            background-color: #1976d2;
+            border: #1976d2;
+            color: #fff;
+            margin-left: 10px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+        }
+    }
+
 }

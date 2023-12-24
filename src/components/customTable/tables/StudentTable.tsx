@@ -15,26 +15,37 @@ import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { detail } from '../../../services/reducers/detail.slice';
+import { useTranslation } from 'react-i18next';
 
 type TableHeader = {
   name: string;
   align: 'left' | 'center' | 'right' | 'justify' | 'inherit' | undefined;
 };
 
-export const StudentTable = ({ type }: { type: string }) => {
+export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = () => {
+    i18n.changeLanguage(lng);
+  };
+
+  useEffect(() => {
+    changeLanguage();
+  }, [lng]);
+
   const heads1: TableHeader[] = [
-    { name: 'Ad Soyad', align: 'left' },
-    { name: 'Qrup nömrəsi', align: 'right' },
+    { name: t('Name and surname'), align: 'left' },
+    { name: t('Group number'), align: 'right' },
     { name: 'Email', align: 'right' },
-    { name: 'Telefon nömrəsi', align: 'right' },
+    { name: t('Phone number'), align: 'right' },
     { name: '', align: 'right' },
     { name: '', align: 'right' },
   ];
   const heads2: TableHeader[] = [
-    { name: 'Ad Soyad', align: 'left' },
-    { name: 'Qrup nömrəsi', align: 'right' },
+    { name: t('Name and surname'), align: 'left' },
+    { name: t('Group number'), align: 'right' },
     { name: 'Email', align: 'right' },
-    { name: 'Telefon nömrəsi', align: 'right' },
+    { name: t('Phone number'), align: 'right' },
     { name: '', align: 'right' },
   ];
 
@@ -154,13 +165,13 @@ export const StudentTable = ({ type }: { type: string }) => {
                     handleAccept(item.id);
                   }}
                 >
-                  Accept
+                  {t('Accept')}
                 </Button>
               </StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
                 <Button variant="contained" color="error" onClick={() => handleDecline(item.id)}>
-                  Decline
+                  {t('Decline')}
                 </Button>
               </StyledTableCell>
 

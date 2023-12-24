@@ -1,5 +1,6 @@
-import './Task.scss';
-import { useRef, useState } from 'react';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 
@@ -8,6 +9,26 @@ export const AddTaskPage = () => {
   const [header, setHeader] = useState<string>('');
   const [deadline, setDeadLine] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+
+  const [open, setOpen] = useState(false);
+
+  const [lang1, setLang1] = useState<string>('outlined');
+  const [lang2, setLang2] = useState<string>('contained');
+  const [lng, setLng] = useState<string>('');
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng: string) => {
+    setLng(lng);
+    if (lng === 'az') {
+      setLang1('contained');
+      setLang2('outlined');
+    } else {
+      setLang2('contained');
+      setLang1('outlined');
+    }
+    i18n.changeLanguage(lng);
+  };
 
   const cookie = new Cookies();
 
@@ -37,13 +58,22 @@ export const AddTaskPage = () => {
   return (
     <div className="task-page-container container task-container">
       <div className="header">
+        <div style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
+          <Button variant={lang1} size="small" onClick={() => changeLanguage('az')}>
+            Aze
+          </Button>
+          <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
+            En
+          </Button>
+        </div>
+
         <h1 className="diploma">DIPLOMA CONNECT</h1>
 
         <div className="inputs">
           <input
             key={1}
             type="number"
-            placeholder={'Task number'}
+            placeholder={t('Task number')}
             className="input"
             onChange={(event) => {
               setNumber(Number(event.target.value));
@@ -52,7 +82,7 @@ export const AddTaskPage = () => {
           <input
             key={2}
             type="text"
-            placeholder={'Header of task'}
+            placeholder={t('Header of task')}
             className="input"
             onChange={(event) => {
               setHeader(event.target.value);
@@ -62,7 +92,7 @@ export const AddTaskPage = () => {
             cols={30}
             rows={10}
             key={3}
-            placeholder={'Description'}
+            placeholder={t('Description')}
             className="input"
             onChange={(event) => {
               setDescription(event.target.value);
@@ -71,7 +101,7 @@ export const AddTaskPage = () => {
           <input
             key={4}
             type="date"
-            placeholder={'deadline1'}
+            placeholder={'Deadline'}
             className="input"
             onChange={(event) => {
               setDeadLine(event.target.value);
@@ -79,7 +109,7 @@ export const AddTaskPage = () => {
           />
           <div className="button-container">
             <button className="submit-button" onClick={handleSubmit}>
-              Submit
+              {t('Submit')}
             </button>
           </div>
         </div>

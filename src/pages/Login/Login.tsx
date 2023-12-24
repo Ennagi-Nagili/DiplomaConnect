@@ -15,47 +15,27 @@ import {
   createTheme,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import Logo from '/src/assets/diplomalogo.png';
 import axios from 'axios';
-import { Trans, useTranslation } from 'react-i18next';
-import { config } from '../../translation/config';
-import { red } from '@mui/material/colors';
-import Logo from '/src/assets/diplomalogo.png';
 
 interface FormData {
   get: (name: string) => string | null;
- 
-}
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit">Turac</Link> {new Date().getFullYear()}.
-    </Typography>
-  );
 }
 
 const defaultTheme = createTheme();
 
-function parseJwt(token: string) {
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const jsonPayload = decodeURIComponent(
-    window
-      .atob(base64)
-      .split('')
-      .map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      })
-      .join(''),
-  );
-
-  return JSON.parse(jsonPayload);
-}
-
 export default function LogIn() {
+  function Copyright() {
+    return (
+      <Typography variant="body2" color="textSecondary" align="center">
+        {t('Copyright © ')}
+        <Link color="inherit">Turac</Link> {new Date().getFullYear()} {t('Lion is always lion')}
+      </Typography>
+    );
+  }
+
   const navigate = useNavigate();
   const cookie = new Cookies();
 
@@ -66,6 +46,9 @@ export default function LogIn() {
   const [Wrong_Email, setWrong_Email] = React.useState('none');
   const [Wrong_Password, setWrong_Password] = React.useState('none');
   const [wrongCredentials, setWrongCredentials] = React.useState('none');
+
+  const [lang1, setLang1] = React.useState<string>('outlined');
+  const [lang2, setLang2] = React.useState<string>('contained');
 
   async function login(email: string, password: string) {
     const url = 'https://devedu-az.com:7001/Login?email=' + email + '&password=' + password;
@@ -103,7 +86,14 @@ export default function LogIn() {
   }
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = (lng) => {
+  const changeLanguage = (lng: string) => {
+    if (lng === 'az') {
+      setLang1('contained');
+      setLang2('outlined');
+    } else {
+      setLang2('contained');
+      setLang1('outlined');
+    }
     i18n.changeLanguage(lng);
   };
 
@@ -123,19 +113,9 @@ export default function LogIn() {
   const handleRemember = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRemember(event.target.checked);
   };
-  const [Wrong_Email, setWrong_Email] = React.useState('block');
-  const [Wrong_Password, setWrong_Password] = React.useState('block');
-  const [mail, setMail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  // React.useEffect(() => {
-  //   i18n.changeLanguage('aze');
-  // }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <button onClick={() => changeLanguage('az')}>az</button>
-      <button onClick={() => changeLanguage('en')}>en</button>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -154,13 +134,22 @@ export default function LogIn() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
-              mx: 4,
+              my: 4,
+              mx: 2,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
             }}
           >
+            <div style={{ display: 'flex', gap: 16, marginBottom: 32 }}>
+              <Button variant={lang1} size="small" onClick={() => changeLanguage('az')}>
+                Aze
+              </Button>
+              <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
+                En
+              </Button>
+            </div>
+
             <img src={Logo} height={100} width={190} alt="Logo" />
             <Typography component="h1" variant="h5">
               {t('Login')}
@@ -172,7 +161,7 @@ export default function LogIn() {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label={t('Email Address')}
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -188,7 +177,7 @@ export default function LogIn() {
                     color: 'red',
                   }}
                 >
-                  *Please write your E-mail
+                  {t('*Please write your E-mail')}
                 </Typography>
               </FormControl>
               <TextField
@@ -196,7 +185,7 @@ export default function LogIn() {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label={t('Password')}
                 type="password"
                 id="password"
                 autoComplete="current-password"
@@ -212,9 +201,9 @@ export default function LogIn() {
                   color: 'red',
                 }}
               >
-                *Please write your password
+                {t('*Please write your password')}
               </Typography>
-              <FormControlLabel control={<Checkbox value="remember" color="primary" onChange={handleRemember} />} label="Remember me" />
+              <FormControlLabel control={<Checkbox value="remember" color="primary" onChange={handleRemember} />} label={t('Remember me')} />
               <Typography
                 className="redp"
                 sx={{
@@ -222,10 +211,10 @@ export default function LogIn() {
                   color: 'red',
                 }}
               >
-                *Email or password is incorrect
+                {t('*Email or password is incorrect')}
               </Typography>
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={() => {}}>
-                Log In
+                {t('Log In')}
               </Button>
               <Copyright />
             </Box>

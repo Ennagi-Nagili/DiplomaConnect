@@ -11,13 +11,14 @@ export interface TemporaryDrawerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   admin: boolean;
+  lng: string;
 }
 
-export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen, admin }) => {
+export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen, admin, lng }) => {
   let content = <AdminSidebarContent setOpen={setOpen} />;
 
   if (!admin) {
-    content = <TeacherSidebarContent setOpen={setOpen} />;
+    content = <TeacherSidebarContent setOpen={setOpen} lng={lng} />;
   }
 
   return (

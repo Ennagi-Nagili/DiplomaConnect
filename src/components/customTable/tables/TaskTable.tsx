@@ -21,22 +21,33 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 type TableHeader = {
   name: string;
   align: 'left' | 'center' | 'right' | 'justify' | 'inherit' | undefined;
 };
 
-export const TaskTable = () => {
+export const TaskTable = ({ lng }: { lng: string }) => {
   const dispatch = useAppDispatch();
   const idData = useSelector((state: RootState) => state.detail);
 
+  const { t, i18n } = useTranslation();
+
   const heads: TableHeader[] = [
-    { name: 'Number', align: 'left' },
-    { name: 'Header', align: 'right' },
-    { name: 'Deadline', align: 'right' },
-    { name: 'Finished', align: 'right' },
+    { name: t('Number'), align: 'left' },
+    { name: t('Header'), align: 'right' },
+    { name: t('Deadline'), align: 'right' },
+    { name: t('Finished'), align: 'right' },
   ];
+
+  const changeLanguage = () => {
+    i18n.changeLanguage(lng);
+  };
+
+  useEffect(() => {
+    changeLanguage();
+  }, [lng]);
 
   const [data, setData] = React.useState<Task[]>([]);
 
@@ -45,16 +56,19 @@ export const TaskTable = () => {
 
   useEffect(() => {
     axios
-      .get('https://devedu-az.com:7001/Work/' + idData, {
+      .get('https://devedu-az.com:7001/Work/' + idData.value, {
         headers: {
           Authorization: 'bearer ' + cookie.get('token'),
         },
       })
       .then((response) => {
+        console.log(idData.value);
         setData(response.data);
       })
-      .catch(() => {
-        navigate('/login');
+      .catch((error) => {
+        if (error.status === 401) {
+          navigate('/login');
+        }
       });
   }, []);
 
