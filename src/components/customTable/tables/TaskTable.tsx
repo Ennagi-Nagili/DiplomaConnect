@@ -1,12 +1,16 @@
 import { Fab } from '@mui/material';
+import { RootState } from '../../../services/store';
 import { StyledTableCell } from '../styled/StyledTableCell';
 import { StyledTableRow } from '../styled/StyledTableRow';
 import { Task } from '../../../models/Task';
+import { task } from '../../../services/reducers/task.slice';
 import { useAppDispatch } from '../../../services/hooks';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import Cookies from 'universal-cookie';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import Paper from '@mui/material/Paper';
@@ -17,8 +21,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
-import { Cookie } from '@mui/icons-material';
-import Cookies from 'universal-cookie';
 
 type TableHeader = {
   name: string;
@@ -27,12 +29,13 @@ type TableHeader = {
 
 export const TaskTable = () => {
   const dispatch = useAppDispatch();
+  const idData = useSelector((state: RootState) => state.detail);
 
   const heads: TableHeader[] = [
     { name: 'Number', align: 'left' },
     { name: 'Header', align: 'right' },
     { name: 'Deadline', align: 'right' },
-    { name: 'Bitib', align: 'right' },
+    { name: 'Finished', align: 'right' },
   ];
 
   const [data, setData] = React.useState<Task[]>([]);
@@ -42,19 +45,22 @@ export const TaskTable = () => {
 
   useEffect(() => {
     axios
-      .get('https://devedu-az.com:7001/Work/65', {
+      .get('https://devedu-az.com:7001/Work/' + idData, {
         headers: {
           Authorization: 'bearer ' + cookie.get('token'),
         },
       })
       .then((response) => {
         setData(response.data);
+      })
+      .catch(() => {
+        navigate('/login');
       });
   }, []);
 
   function handleGo(id: number) {
-    dispatch({ type: 'details', payload: { studentId: 65, taskId: data[id].id } });
-    navigate('/task');
+    dispatch(task({ studentId: 65, taskId: data[id].id }));
+    navigate('/taskDetails');
   }
 
   function handleDelete(id: number) {
@@ -89,7 +95,13 @@ export const TaskTable = () => {
             <StyledTableCell align="right"></StyledTableCell>
 
             <StyledTableCell align={'right'} className="table-cell">
-              <Fab size="medium" aria-label="add">
+              <Fab
+                size="medium"
+                aria-label="add"
+                onClick={() => {
+                  navigate('/task-add');
+                }}
+              >
                 <AddIcon />
               </Fab>
             </StyledTableCell>
@@ -110,7 +122,7 @@ export const TaskTable = () => {
               </StyledTableCell>
 
               <StyledTableCell align="right">
-                <button onClick={() => handleGo(item.id)} className="goBtn">
+                <button onClick={() => handleGo(index)} className="goBtn">
                   <ArrowForwardIosIcon className="arrow" />
                 </button>
               </StyledTableCell>

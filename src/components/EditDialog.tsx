@@ -30,7 +30,7 @@ export const EditDialog = (props: SimpleDialogProps) => {
         <input
           type="text"
           className="edit-input"
-          value={text}
+          defaultValue={text}
           onChange={(event) => {
             setValue(event.target.value);
           }}

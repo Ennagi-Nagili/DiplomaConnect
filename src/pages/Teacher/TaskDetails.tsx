@@ -1,19 +1,18 @@
-import { Button, Step, StepLabel, Stepper } from '@mui/material';
+import { Button } from '@mui/material';
 import { EditDialog } from '../../components/EditDialog';
-import { Task } from '../../models/Task';
+import { RootState } from '../../services/store';
 import { TaskStudent } from '../../models/TaskStudent';
-import { selectCount } from '../../services/reducers/task.slice';
-import { useAppSelector } from '../../services/hooks';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import React, { useEffect } from 'react';
-import { taskInitial } from '../../models/initials';
-import axios from 'axios';
+import { taskStudentInitial } from '../../models/initials';
+import { useSelector } from 'react-redux';
 import Cookies from 'universal-cookie';
+import EditIcon from '@mui/icons-material/Edit';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const TaskDetails = () => {
-  const task = useAppSelector(selectCount);
-  const [tasks, setTasks] = React.useState<TaskStudent>(taskInitial);
+  const idData = useSelector((state: RootState) => state.task);
+  const [tasks, setTasks] = React.useState<TaskStudent>(taskStudentInitial);
 
   const [dialog, setDialog] = React.useState(false);
   const [selectedValue, setSelectedValue] = React.useState('');
@@ -22,16 +21,20 @@ export const TaskDetails = () => {
   const [text, setText] = React.useState('');
 
   const cookie = new Cookies();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get('https://devedu-az.com:7001/Work/' + task.taskId + '/' + task.studentId, {
+      .get('https://devedu-az.com:7001/Work/' + idData.studentId + '/' + idData.taskId, {
         headers: {
           Authorization: 'bearer ' + cookie.get('token'),
         },
       })
       .then((response) => {
         setTasks(response.data);
+      })
+      .catch(() => {
+        navigate('/login');
       });
   }, []);
 
@@ -39,40 +42,6 @@ export const TaskDetails = () => {
     setDialog(false);
     setSelectedValue(value);
   };
-
-  function handleDelete(index: number) {
-    if (tasks.steps.length > 1) {
-      const steps: string[] = [];
-      const stepDetails: string[] = [];
-      const deadlines: string[] = [];
-
-      for (let i = 0; i < tasks.steps.length; i++) {
-        if (i !== index) {
-          steps.push(tasks.steps[i]);
-          stepDetails.push(tasks.stepDetails[i]);
-          deadlines.push(tasks.deadlines[i]);
-        }
-      }
-
-      const ts: Task = {
-        id: tasks.id,
-        head: tasks.head,
-        steps: steps,
-        stepDetails: stepDetails,
-        deadlines: deadlines,
-        deadline: tasks.deadline,
-        finished: tasks.finished,
-        date: tasks.date,
-        answer: tasks.answer,
-        files: tasks.files,
-        review: tasks.review,
-      };
-
-      if (ts !== tasks) {
-        setTasks(ts);
-      }
-    }
-  }
 
   function handleEdit(item: string, index: number, text: string) {
     setItem(item);
@@ -82,41 +51,26 @@ export const TaskDetails = () => {
   }
 
   function edit(item: string, value: string, index: number) {
-    const ts: Task = {
+    const ts: TaskStudent = {
       id: tasks.id,
-      head: tasks.head,
-      steps: tasks.steps,
-      stepDetails: tasks.stepDetails,
-      deadlines: tasks.deadlines,
+      number: tasks.number,
+      name: tasks.name,
       deadline: tasks.deadline,
-      finished: tasks.finished,
-      date: tasks.date,
-      answer: tasks.answer,
-      files: tasks.files,
-      review: tasks.review,
+      description: tasks.description,
+      materials: tasks.materials,
+      state: tasks.state,
+      comments: tasks.comments,
     };
 
     switch (item) {
       case 'head': {
-        ts.head = value;
+        ts.name = value;
         setTasks(ts);
         break;
       }
 
-      case 'steps': {
-        ts.steps[index] = value;
-        setTasks(ts);
-        break;
-      }
-
-      case 'stepDetails': {
-        ts.stepDetails[index] = value;
-        setTasks(ts);
-        break;
-      }
-
-      case 'deadlines': {
-        ts.head = value;
+      case 'description': {
+        ts.description = value;
         setTasks(ts);
         break;
       }
@@ -129,82 +83,106 @@ export const TaskDetails = () => {
     }
   }
 
+  const [review, setReview] = useState<string>('');
+
+  function handleReview() {
+    axios.post(
+      'https://devedu-az.com:7001/Work/' + idData.studentId + '/' + idData.taskId,
+      {
+        comment: review,
+        materialsIds: [0],
+      },
+      {
+        headers: {
+          Authorization: 'bearer ' + cookie.get('token'),
+        },
+      },
+    );
+  }
+
+  function handleAccept() {
+    axios
+      .put(
+        'https://devedu-az.com:7001/Work/state' + idData.studentId + '/' + idData.taskId + '?newState=2',
+        {},
+        {
+          headers: {
+            Authorization: 'bearer ' + cookie.get('token'),
+          },
+        },
+      )
+      .then(() => {
+        location.reload();
+      });
+  }
+
   return (
     <div className="min">
-      <div>
+      <div className="details-container">
         <div className="task-container">
-          <p className="head">{tasks.name}</p>
-          <button className="goBtn" onClick={() => handleEdit('head', index, tasks.name)} style={{ marginBottom: 28 }}>
+          <p className="info-head">Header</p>
+          <button className="goBtn" onClick={() => handleEdit('head', index, tasks.name)}>
             <EditIcon />
           </button>
         </div>
+        <p className="info-body">{tasks.name}</p>
 
         <div className="details-container">
-          {tasks.stepDetails.map((item: string, index: number) => (
-            <div key={`edu-${index}`}>
-              <div className="task-container">
-                <p className="info-head">{tasks.steps[index]}</p>
-                <button className="goBtn" onClick={() => handleEdit('steps', index, tasks.steps[index])}>
-                  <EditIcon />
-                </button>
-
-                <button className="goBtn" onClick={() => handleDelete(index)}>
-                  <DeleteIcon />
-                </button>
-              </div>
-              <div className="task-container">
-                <p>{item}</p>
-                <button className="goBtn" onClick={() => handleEdit('stepDetails', index, item)}>
-                  <EditIcon />
-                </button>
-              </div>
-              <div className="task-container">
-                <p>{'Deadline: ' + tasks.deadlines[index]}</p>
-                <button className="goBtn" onClick={() => handleEdit('deadlines', index, tasks.deadlines[index])}>
-                  <EditIcon />
-                </button>
-              </div>
-
-              <p>Students answer</p>
-              <p className="answer">{tasks.answer}</p>
-
-              <p>Attached files</p>
-              {tasks.files.map((file: string) => (
-                <a href={file} key={index} className="file">
-                  File
-                </a>
-              ))}
-
-              <textarea name="" id="" cols={195} rows={15} placeholder="Teacher's review"></textarea>
-
-              <button className="rew-btn" style={{ display: 'block' }}>
-                Submit review
+          <div key={`edu-${index}`}>
+            <div className="task-container">
+              <p className="info-head">Description</p>
+              <button className="goBtn" onClick={() => handleEdit('description', index, tasks.description)}>
+                <EditIcon />
               </button>
-
-              <Button variant="contained" color="success" onClick={() => handleDelete(index)}>
-                Accept answer
-              </Button>
             </div>
-          ))}
+            <p className="info-body">{tasks.description}</p>
 
-          <div className="task-container">
-            <p className="info-head">{'Task deadline: ' + tasks.deadline}</p>
-            <button className="goBtn" onClick={() => handleEdit('deadline', index, tasks.deadline)}>
-              <EditIcon />
+            <div className="task-container">
+              <p className="info-head">Deadline</p>
+              <button className="goBtn" onClick={() => handleEdit('deadline', index, tasks.deadline)}>
+                <EditIcon />
+              </button>
+            </div>
+            <p className="info-body">{tasks.deadline}</p>
+
+            <p className="info-head">Students answer</p>
+            <p className="answer">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem ab animi ipsa quidem alias aliquam amet at rem dolorem modi mollitia
+              voluptatum obcaecati, voluptas expedita eaque, veniam praesentium eligendi consequuntur?
+            </p>
+
+            <textarea
+              name=""
+              id=""
+              cols={195}
+              rows={15}
+              placeholder="Teacher's review"
+              onChange={(event) => {
+                setReview(event.target.value);
+              }}
+            ></textarea>
+
+            <button
+              className="rew-btn"
+              style={{ display: 'block' }}
+              onClick={() => {
+                handleReview();
+              }}
+            >
+              Submit review
             </button>
+
+            <Button
+              variant="contained"
+              color="success"
+              className="accept"
+              onClick={() => {
+                handleAccept();
+              }}
+            >
+              Accept Task
+            </Button>
           </div>
-
-          <p>Students answer</p>
-          <p className="answer">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis aperiam id, nostrum eos et vel quo necessitatibus perspiciatis numquam
-            enim eaque, quisquam debitis, ab sequi velit ea tenetur incidunt delectus?
-          </p>
-
-          <textarea name="" id="" cols={195} rows={15} placeholder="Teacher's review"></textarea>
-
-          <Button variant="contained" color="success">
-            Accept task
-          </Button>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { RequestsPage } from './pages/Teacher/RequestsPage';
 import { Route, Routes } from 'react-router-dom';
 import { StudentsPage } from './pages/Teacher/StudentsPage';
 import { TaskDetails } from './pages/Teacher/TaskDetails';
-import { TaskPage } from './Task';
+import { AddTaskPage } from './AddTask';
 import { generateNStudents, generateNTeachers } from './models/generateMockUsers';
 import { setIsSet, setUsers } from './services/reducers/users.slice';
 import { useAppDispatch } from './services/hooks';
@@ -105,7 +105,7 @@ function App() {
         <Route path="/profile/*" element={<Profile />} />
         <Route path="taskDetails" element={<TaskDetails />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="task-page" element={<TaskPage />} />
+        <Route path="task-add" element={<AddTaskPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/admin/*" element={<Profile />} />
         <Route path="*" element={<NotFound />} />

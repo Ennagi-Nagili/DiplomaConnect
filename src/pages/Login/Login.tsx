@@ -68,31 +68,32 @@ export default function LogIn() {
     axios
       .post(url)
       .then((response) => {
-        if (parseJwt(response.data)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'teacher') {
+        if (response.data.role === 'teacher') {
           setWrongCredentials('none');
-          cookie.set('token', response.data);
-          cookie.set('id', parseJwt(response.data).Id);
+          cookie.set('token', response.data.token);
+          cookie.set('id', response.data.id);
           if (remember) {
             cookie.set('mail', email);
             cookie.set('password', password);
           }
           navigate('/profile');
-        } else if (parseJwt(response.data)['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === 'admin') {
+        } else if (response.data.role === 'admin') {
           setWrongCredentials('none');
           const cookie = new Cookies();
-          cookie.set('token', response.data);
-          cookie.set('id', parseJwt(response.data).Id);
+          cookie.set('token', response.data.token);
+          cookie.set('id', response.data.id);
           if (remember || cookie.get('mail') !== undefined) {
             cookie.set('mail', email);
             cookie.set('password', password);
           }
-          navigate('/profile');
+          navigate('/admin');
         } else {
           setWrongCredentials('block');
         }
       })
-      .catch(() => {
+      .catch((error) => {
         setWrongCredentials('block');
+        console.log(error);
       });
   }
 
@@ -158,7 +159,7 @@ export default function LogIn() {
                   onChange={(e) => {
                     setWrong_Email(e.target.value ? 'none' : 'block');
                   }}
-                  value={mail}
+                  defaultValue={mail}
                 />
                 <Typography
                   className="redp"
@@ -182,7 +183,7 @@ export default function LogIn() {
                 onChange={(e) => {
                   setWrong_Password(e.target.value ? 'none' : 'block');
                 }}
-                value={password}
+                defaultValue={password}
               />
               <Typography
                 className="redp"

@@ -38,6 +38,7 @@ body {
 .info-head {
     font-weight: bold;
     font-size: 24px;
+    margin: 0;
 }
 
 .table-cell {
@@ -67,7 +68,7 @@ body {
 }
 
 .details-container {
-   line-height: 4;
+   line-height: 2;
    letter-spacing: 1px;
    padding-top: 24px;
 }
@@ -188,4 +189,8 @@ body {
 
 .logout {
     margin: 32px 0 0 8px !important;
+}
+
+.accept {
+    margin-top: 16px !important;
 }

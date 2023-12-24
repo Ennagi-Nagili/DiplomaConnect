@@ -26,11 +26,21 @@ export const studentInitial: Student = {
   success: '',
 };
 
-export const taskInitial: TaskStudent = {
+export const taskInitial: Task = {
   id: 0,
   number: 0,
   name: '',
   deadline: '',
   state: 0,
-  studentId: 0,
+};
+
+export const taskStudentInitial: TaskStudent = {
+  id: 0,
+  number: 0,
+  name: '',
+  deadline: '',
+  description: '',
+  materials: [],
+  state: 0,
+  comments: [],
 };

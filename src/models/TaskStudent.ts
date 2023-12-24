@@ -3,6 +3,8 @@ export type TaskStudent = {
   number: number;
   name: string;
   deadline: string;
-  state: number;
-  studentId: number;
+  description: string;
+  materials: [];
+  state: 0;
+  comments: [];
 };

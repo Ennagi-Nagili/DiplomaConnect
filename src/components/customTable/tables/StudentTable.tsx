@@ -13,6 +13,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { detail } from '../../../services/reducers/detail.slice';
 
 type TableHeader = {
   name: string;
@@ -27,7 +29,6 @@ export const StudentTable = ({ type }: { type: string }) => {
     { name: 'Telefon nömrəsi', align: 'right' },
     { name: '', align: 'right' },
     { name: '', align: 'right' },
-    { name: '', align: 'right' },
   ];
   const heads2: TableHeader[] = [
     { name: 'Ad Soyad', align: 'left' },
@@ -39,16 +40,20 @@ export const StudentTable = ({ type }: { type: string }) => {
 
   let heads: TableHeader[] = heads1;
   let btn: string = 'table-cell';
+  let go: string = 'none';
 
   if (type === 'student') {
     heads = heads2;
     btn = 'none';
+    go = 'table-cell';
   }
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function handleGo(id: number) {
-    navigate('/details');
+    dispatch(detail(id));
+    navigate('/tasks');
   }
 
   type Application = { id: number; student: Student; applicationState: number; workTheme: string; coveringLetter: string };
@@ -67,7 +72,6 @@ export const StudentTable = ({ type }: { type: string }) => {
         })
         .then((response) => {
           setData(response.data);
-          console.log(response.data);
         })
         .catch(() => {
           navigate('/login');
@@ -83,10 +87,44 @@ export const StudentTable = ({ type }: { type: string }) => {
         })
         .then((response) => {
           setData(response.data);
-          console.log(response.data);
+        })
+        .catch(() => {
+          navigate('/login');
         });
     }
   }, []);
+
+  function handleAccept(id: number) {
+    axios
+      .put(
+        'https://devedu-az.com:7001/Application/teacher/' + cookie.get('id') + '/' + id + '?newState=2',
+        {},
+        {
+          headers: {
+            Authorization: 'bearer ' + cookie.get('token'),
+          },
+        },
+      )
+      .then(() => {
+        location.reload();
+      });
+  }
+
+  function handleDecline(id: number) {
+    axios
+      .put(
+        'https://devedu-az.com:7001/Application/teacher/' + cookie.get('id') + '/' + id + '?newState=1',
+        {},
+        {
+          headers: {
+            Authorization: 'bearer ' + cookie.get('token'),
+          },
+        },
+      )
+      .then(() => {
+        location.reload();
+      });
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -109,18 +147,24 @@ export const StudentTable = ({ type }: { type: string }) => {
               <StyledTableCell align="right">{item.student.phoneNumber}</StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
-                <Button variant="contained" color="success">
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => {
+                    handleAccept(item.id);
+                  }}
+                >
                   Accept
                 </Button>
               </StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
-                <Button variant="contained" color="error">
+                <Button variant="contained" color="error" onClick={() => handleDecline(item.id)}>
                   Decline
                 </Button>
               </StyledTableCell>
 
-              <StyledTableCell align="right">
+              <StyledTableCell align="right" sx={{ display: '' }}>
                 <button onClick={() => handleGo(item.id)} className="goBtn">
                   <ArrowForwardIosIcon className="arrow" />
                 </button>
