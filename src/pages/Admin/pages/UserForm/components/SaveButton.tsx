@@ -8,7 +8,7 @@ import {
   setSelectedUser,
 } from '../../../../../services/reducers/users.slice';
 import { Button } from '@mui/material';
-import { emptyStudent } from '../../../../../models/mockAdminData';
+import { emptyStudent, emptyTeacher } from '../../../../../models/mockAdminData';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import { useEffect, useState } from 'react';
 import { validateEmail, validateFatherName, validateFirstName, validateLastName, validatePhoneNumber } from '../validations';
@@ -30,7 +30,7 @@ const SaveButton = () => {
   const selectedUser = useAppSelector(selectSelectedUser);
   const fixedSelectedUsr = useAppSelector(selectFixedSelectedUser);
   const pageMode = useAppSelector(selectPageMode);
-  const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
+  const userCategory = window.location.pathname.includes('teacher') ? 'teachers' : 'students';
 
   // RELATED TO DIALOG
   const [open, setOpen] = useState(false);
@@ -42,65 +42,84 @@ const SaveButton = () => {
     setOpen(false);
   };
 
+  console.log('userCategory', userCategory);
+
   const handleAgreeClick = () => {
     handleClose();
 
     dispatch(setIsSaveButtonEnabled(false));
 
-    if (pageMode === 'add') {
-      if (userCategory === 'students') {
-        const intermediateVar = selectedUser as Student;
-        console.log('intermediateVar', intermediateVar);
-        const addStudent = () => {
-          axios
-            .post(
-              'https://devedu-az.com:7001/Student',
-              {
-                firstName: intermediateVar.firstName,
-                lastName: intermediateVar.lastName,
-                groupNumber: intermediateVar.group ? intermediateVar.group : null,
-                email: intermediateVar.email,
-                password: intermediateVar.password,
-                phoneNumber: intermediateVar.phoneNumber,
-              },
-              {
-                headers: { Authorization: `bearer ${token}` },
-              },
-            )
-            .then((res) => dispatch(addUser({ userCategory: 'students', data: { ...selectedUser, id: res.data } })))
-            .then((_) => dispatch(setSelectedUser(emptyStudent)));
-        };
-        addStudent();
-      } else if (userCategory === 'teachers') {
-        const intermediateVar = selectedUser as Teacher;
-        const addTeacher = () => {
-          axios
-            .post(
-              'https://devedu-az.com:7001/Teacher',
-              {
-                firstName: intermediateVar.firstName,
-                lastName: intermediateVar.lastName,
-                // department: intermediateVar.department,
-                // subject: intermediateVar.subject,
-                email: intermediateVar.email,
-                password: intermediateVar.password,
-                phoneNumber: intermediateVar.phoneNumber,
-              },
-              {
-                headers: { Authorization: `bearer ${token}` },
-              },
-            )
-            .then((res) => console.log('res', res))
-            .then((_) => dispatch(addUser({ userCategory: 'teachers', data: selectedUser })))
-            .then((_) => dispatch(setSelectedUser(emptyStudent)));
-        };
-        addTeacher();
-      }
+    if (userCategory === 'students') {
+      const intermediateVar = selectedUser as Student;
+      console.log('intermediateVar', intermediateVar);
 
-      console.log('Add User Icon Button is clicked');
-    } else {
-      console.log('Edit User Icon Button is clicked');
+      const requestData = {
+        firstName: intermediateVar.firstName,
+        lastName: intermediateVar.lastName,
+        groupNumber: intermediateVar.group ? intermediateVar.group : null,
+        email: intermediateVar.email,
+        password: intermediateVar.password,
+        phoneNumber: intermediateVar.phoneNumber,
+      };
+
+      const addStudent = () => {
+        console.log('Add Student Button is clicked');
+        axios
+          .post('https://devedu-az.com:7001/Student', requestData, {
+            headers: { Authorization: `bearer ${token}` },
+          })
+          .then((res) => dispatch(addUser({ userCategory: 'students', data: { ...selectedUser, id: res.data } })))
+          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+      };
+
+      addStudent();
+    } else if (userCategory === 'teachers') {
+      const intermediateVar = selectedUser as Teacher;
+      console.log('intermediateVar', intermediateVar);
+
+      const requestId = intermediateVar.id;
+      const requestData = {
+        firstName: intermediateVar.firstName,
+        lastName: intermediateVar.lastName,
+        fatherName: intermediateVar.fatherName,
+        email: intermediateVar.email,
+        phoneNumber: intermediateVar.phoneNumber,
+        facultyId: 2,
+        subjectsIds: [1],
+      };
+
+      const addTeacher = () => {
+        console.log('Add Teacehr Button is clicked');
+        axios
+          .post(
+            'https://devedu-az.com:7001/Teacher',
+            { ...requestData, password: intermediateVar.password },
+            {
+              headers: { Authorization: `bearer ${token}` },
+            },
+          )
+          .then((res) => dispatch(addUser({ userCategory: 'teachers', data: { ...selectedUser, id: res.data } })))
+          .then((_) => dispatch(setSelectedUser(emptyTeacher)));
+      };
+      const updateTeacher = () => {
+        console.log('Edit Teacher Button is clicked');
+        // TODO: The same user cannot be updated twice. Backend issue.
+        axios
+          .put(
+            `https://devedu-az.com:7001/Teacher/${requestId}`,
+            // TODO: Profile photo needs to be optional in put request
+            { id: requestId, ...requestData, photoLink: intermediateVar.profilePhoto ? intermediateVar.profilePhoto : undefined },
+            {
+              headers: { Authorization: `bearer ${token}` },
+            },
+          )
+          .then((res) => dispatch(addUser({ userCategory: 'teachers', data: { ...selectedUser, id: res.data } })))
+          .then((_) => dispatch(setSelectedUser(emptyTeacher)));
+      };
+
+      pageMode === 'add' ? addTeacher() : updateTeacher();
     }
+
     console.log(JSON.stringify(selectedUser));
   };
 
