@@ -1,6 +1,7 @@
 import { Autocomplete, Box, Drawer, createFilterOptions } from '@mui/material';
-import { selectStudentNames, selectTeacherNames } from '../../services/reducers/users.slice';
-import { useAppSelector } from '../../services/hooks';
+import { selectTeacherNames } from '../../../services/reducers/users.slice';
+import { useAppSelector } from '../../../services/hooks';
+import { useNavigate } from 'react-router-dom';
 import React, { useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
@@ -8,10 +9,12 @@ import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 const SearchBar = () => {
-  const teacherNames = useAppSelector(selectTeacherNames);
-  const studentNames = useAppSelector(selectStudentNames);
+  const navigate = useNavigate();
 
-  const userNames = teacherNames.concat(studentNames);
+  const teacherNames = useAppSelector(selectTeacherNames);
+  // const studentNames = useAppSelector(selectStudentNames);
+  // const userNames = teacherNames.concat(studentNames);
+  const userNames = teacherNames; // Note: Because of time constraints we couldn't make student profile page, so we'll use just teacherNames
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const isSmallScreen = useMediaQuery('(max-width: 750px)');
@@ -74,6 +77,14 @@ const SearchBar = () => {
           options={userNames}
           style={{ width: '30%', minWidth: '400px' }}
           filterOptions={filterOptions}
+          onChange={(event, value) => {
+            console.log('change');
+            if (value) {
+              const userId = (value as string).split(' ')[0];
+              console.log('userId', userId);
+              navigate(`/admin/teachers/${userId}`);
+            }
+          }}
           renderInput={(params) => (
             <TextField
               {...params}

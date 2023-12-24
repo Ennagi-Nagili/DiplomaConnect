@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Box, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import { StyledHeader } from './styled/StyledHeader';
 import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsButton from './NotificationsButton';
-import ProfileButton from './ProfileButton';
-import SearchBar from './SearchBar';
+import NotificationsButton from './components/NotificationsButton';
+import ProfileButton from './components/ProfileButton';
+import SearchBar from './components/SearchBar';
 
 interface HeaderProps {
   open: boolean;

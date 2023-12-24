@@ -12,8 +12,8 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
 import React, { ReactElement } from 'react';
-import { useAppSelector } from '../../services/hooks';
-import { selectCurrentUser } from '../../services/reducers/users.slice';
+import { useAppSelector } from '../../../services/hooks';
+import { selectCurrentUser } from '../../../services/reducers/users.slice';
 
 const ProfileButton: React.FC = () => {
   const currentUser = useAppSelector(selectCurrentUser);

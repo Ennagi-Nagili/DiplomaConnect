@@ -1,20 +1,18 @@
-import * as React from 'react';
 import { Header } from '../../components/Header/Header';
 import { Main } from '../../components/Main/Main';
 import { Sidebar } from '../../components/Sidebar/Sidebar';
-import Box from '@mui/material/Box';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { setIsSet, setUsers } from '../../services/reducers/users.slice';
 import { useAppDispatch } from '../../services/hooks';
-import axios, { AxiosResponse } from 'axios';
-import { Student, Teacher } from '../../models/models';
+import axios from 'axios';
 import axiosRetry from 'axios-retry';
+import Box from '@mui/material/Box';
 
 export const token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiZXhwIjoxNzAzNDg2NDE5LCJpc3MiOiJNeUF1dGhTZXJ2ZXIiLCJhdWQiOiJNeUF1dGhDbGllbnQifQ.NgnExgTTjVZxDop4vJHRVMGl_diFzGGuBym0KZKVEL0';
 
 export default function Admin() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
 

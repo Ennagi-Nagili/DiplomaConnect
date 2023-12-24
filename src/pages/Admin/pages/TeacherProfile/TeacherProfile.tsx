@@ -32,7 +32,7 @@ export const TeacherProfile = () => {
       console.log(`User with id ${id} is not found.`);
       navigate('/notFound');
     }
-  }, [teachers, students]);
+  }, [window.location.pathname, teachers, students]);
 
   return (
     // Container

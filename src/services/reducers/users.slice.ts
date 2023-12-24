@@ -149,10 +149,12 @@ export const selectErrorState = (state: RootState) => state.users.errorState;
 
 // Select teacher and student names for search bar
 export const selectTeacherNames = createSelector([selectTeachers], (teachers): string[] => {
-  return teachers.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+  // return teachers.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+  return teachers.map((item) => `${item.id} ${item.firstName} ${item.lastName}`);
 });
 export const selectStudentNames = createSelector([selectStudents], (students): string[] => {
-  return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+  // return students.map((item) => `${item.id} ${item.firstName} ${item.lastName} ${item.fatherName} (${item.type})`);
+  return students.map((item) => `${item.id} ${item.firstName} ${item.lastName}`);
 });
 
 // Select teacher and student ids
