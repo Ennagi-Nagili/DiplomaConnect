@@ -67,8 +67,7 @@ const SaveButton = () => {
                 headers: { Authorization: `bearer ${token}` },
               },
             )
-            .then((res) => console.log('res', res))
-            .then((_) => dispatch(addUser({ userCategory: 'students', data: selectedUser })))
+            .then((res) => dispatch(addUser({ userCategory: 'students', data: { ...selectedUser, id: res.data } })))
             .then((_) => dispatch(setSelectedUser(emptyStudent)));
         };
         addStudent();
@@ -81,8 +80,8 @@ const SaveButton = () => {
               {
                 firstName: intermediateVar.firstName,
                 lastName: intermediateVar.lastName,
-                department: intermediateVar.department,
-                subject: intermediateVar.subject,
+                // department: intermediateVar.department,
+                // subject: intermediateVar.subject,
                 email: intermediateVar.email,
                 password: intermediateVar.password,
                 phoneNumber: intermediateVar.phoneNumber,

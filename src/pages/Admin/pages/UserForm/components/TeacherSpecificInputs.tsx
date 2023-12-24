@@ -8,6 +8,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { token } from '../../../Admin';
+import axiosRetry from 'axios-retry';
 
 const TeacherSpecificInputs = () => {
   const [departmentList, setDepartmentList] = useState<string[]>([]);
@@ -27,29 +28,42 @@ const TeacherSpecificInputs = () => {
     name: string;
   };
 
+  axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
+
   useEffect(() => {
-    axios
-      .get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } })
-      .then((response: AxiosResponse<itemObject[]>) => {
-        const faculties = response.data.map((item) => item.name);
+    const fetchData = async () => {
+      try {
+        // Set faculties
+        const facultiesResponse = await axios.get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } });
+        const faculties = facultiesResponse.data.map((item: itemObject) => item.name);
         setDepartmentList(faculties);
         console.log('faculties', faculties);
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error('Error fetching faculties:', error);
-      });
-    axios
-      .get('https://devedu-az.com:7001/Options/subject', { headers: { Authorization: `bearer ${token}` } })
-      .then((response: AxiosResponse<itemObject[]>) => {
-        const subjects = response.data.map((item) => item.name);
+      } catch (error: any) {
+        if (axiosRetry.isNetworkError(error) || (error.response && error.response.status === 500)) {
+          console.error('Error fetching faculties. Retrying...');
+          throw error; // This will trigger the retry
+        } else {
+          console.error('Error fetching faculties:', error);
+        }
+      }
+
+      try {
+        // Set subjects
+        const subjectsResponse = await axios.get('https://devedu-az.com:7001/Options/subject', { headers: { Authorization: `bearer ${token}` } });
+        const subjects = subjectsResponse.data.map((item: itemObject) => item.name);
         setSubjectList(subjects);
         console.log('subjects', subjects);
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error('Error fetching faculties:', error);
-      });
+      } catch (error: any) {
+        if (axiosRetry.isNetworkError(error) || (error.response && error.response.status === 500)) {
+          console.error('Error fetching subjects. Retrying...');
+          throw error; // This will trigger the retry
+        } else {
+          console.error('Error fetching subjects:', error);
+        }
+      }
+    };
+
+    fetchData();
   }, [window.location.pathname]);
 
   const dispatch = useAppDispatch();
