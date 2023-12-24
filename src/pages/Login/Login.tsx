@@ -18,9 +18,14 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import Logo from '/src/assets/diplomalogo.png';
 import axios from 'axios';
+import { Trans, useTranslation } from 'react-i18next';
+import { config } from '../../translation/config';
+import { red } from '@mui/material/colors';
+import Logo from '/src/assets/diplomalogo.png';
 
 interface FormData {
   get: (name: string) => string | null;
+ 
 }
 
 function Copyright() {
@@ -96,6 +101,11 @@ export default function LogIn() {
         console.log(error);
       });
   }
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -113,9 +123,19 @@ export default function LogIn() {
   const handleRemember = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRemember(event.target.checked);
   };
+  const [Wrong_Email, setWrong_Email] = React.useState('block');
+  const [Wrong_Password, setWrong_Password] = React.useState('block');
+  const [mail, setMail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  // React.useEffect(() => {
+  //   i18n.changeLanguage('aze');
+  // }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <button onClick={() => changeLanguage('az')}>az</button>
+      <button onClick={() => changeLanguage('en')}>en</button>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -143,7 +163,7 @@ export default function LogIn() {
           >
             <img src={Logo} height={100} width={190} alt="Logo" />
             <Typography component="h1" variant="h5">
-              Log In
+              {t('Login')}
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <FormControl required fullWidth>
