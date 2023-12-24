@@ -19,7 +19,7 @@ export const TeacherProfile = () => {
   const studentIds = useAppSelector(selectStudentIds);
 
   // TODO: Write useEffect with empty dependency array that feches teacher with id extracted from url. If successful, assign selectedUser to that, otherwise, navigate to not-found page
-  // navigate('/notFound') - even though such route doesn't exist, '*' path will catch this route
+  // navigate('/not-found') - even though such route doesn't exist, '*' path will catch this route
   useEffect(() => {
     const pathArray = window.location.pathname.split('/'); // returns an array
     const id = pathArray.pop() as string; // changes pathArray by removing and returning the last element
@@ -30,7 +30,7 @@ export const TeacherProfile = () => {
       dispatch(setSelectedUser(users.filter((item) => item.id === +id)[0])); // since 'id' is string, we use '+id' to make it number.
     } else if (users.length !== 0 && !userIds.includes(+id)) {
       console.log(`User with id ${id} is not found.`);
-      navigate('/notFound');
+      navigate('/not-found');
     }
   }, [window.location.pathname, teachers, students]);
 

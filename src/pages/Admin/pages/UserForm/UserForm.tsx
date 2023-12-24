@@ -84,7 +84,7 @@ const UserForm = () => {
           dispatch(setFixedSelectedUser(teacher));
         } else if (teachers.length !== 0 && !teacherIds.includes(+id)) {
           console.log(`User with id ${id} is not found.`);
-          navigate('/notFound');
+          navigate('/not-found');
         }
         break;
       }

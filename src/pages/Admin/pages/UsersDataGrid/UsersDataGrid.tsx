@@ -44,43 +44,9 @@ export const UsersDataGrid = () => {
       };
 
       deleteUserApi(user.id);
-      // // Handle user deletion based on user type
-      // if (pageMode === 'teachers') {
-      //   deleteUserApi(user.id);
-      // } else {
-      //   // TODO: Handle student deletion
-      // }
     },
     [users, dispatch, pageMode],
   );
-
-  // const deleteRow = useCallback(
-  //   (user: Teacher | Student) => () => {
-  //     // TODO: Use real API when available
-  //     console.log(`Delete user with id ${user.id}`);
-  //     // dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
-
-  //     // TODO: There seems to be an error in backend
-  //     axios
-  //       .delete(`https://devedu-az.com:7001/Student/${user.id}`, {
-  //         headers: {
-  //           Authorization: `bearer ${token}`,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         // Handle success
-  //         console.log('Student deleted successfully:', response.data);
-  //         dispatch(deleteUser({ userCategory: pageMode, userId: user.id }));
-  //         setOpen(true);
-  //       })
-  //       .catch((error) => {
-  //         // Handle errors
-  //         console.error('Error deleting student:', error);
-  //         setErrorOpen(true);
-  //       });
-  //   },
-  //   [users],
-  // );
 
   // Media queries to use in teacher DataGrid
   const isTeacherScreen1 = useMediaQuery('(max-width: 1255px)');

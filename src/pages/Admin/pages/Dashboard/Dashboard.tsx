@@ -1,9 +1,11 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
-import { Card, CardContent, CssBaseline, createTheme, Grid, ThemeProvider, Typography } from '@mui/material';
+import { Card, CardContent, CssBaseline, createTheme, Grid, ThemeProvider, Typography, useMediaQuery } from '@mui/material';
 
 const theme = createTheme();
 
 const Dashboard = () => {
+  const isSmallScreen = useMediaQuery('(max-width: 550px)');
+
   // Mock data for widgets
   const widgetsData = [
     { title: 'Total Visits', value: 1500 },
@@ -53,7 +55,7 @@ const Dashboard = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6">Subjects Distribution</Typography>
-                <BarChart width={400} height={300} data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <BarChart width={isSmallScreen ? 275 : 400} height={300} data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -69,7 +71,7 @@ const Dashboard = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6">Subjects Distribution (Pie Chart)</Typography>
-                <PieChart width={400} height={300}>
+                <PieChart width={isSmallScreen ? 275 : 400} height={300}>
                   <Pie dataKey="value" isAnimationActive={false} data={pieChartData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
                     {pieChartData.map((entry, i) => (
                       <Cell key={`${entry} cell-${i}`} fill={COLORS[i % COLORS.length]} />

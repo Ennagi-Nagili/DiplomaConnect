@@ -24,7 +24,7 @@ export const StudentInfo = () => {
       .catch((error) => {
         // Handle errors
         console.error('Error fetching teachers:', error);
-        return navigate('/notFound');
+        return navigate('/not-found');
       });
   }, []);
 

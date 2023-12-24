@@ -8,7 +8,7 @@ const NotFound = () => {
         404
       </Typography>
       <Typography variant="h5" color="textSecondary" paragraph>
-        Oops! The page you're looking for could not be found.
+        Oops! The page you&apos;re looking for could not be found.
       </Typography>
       <Typography variant="body1" color="textSecondary" paragraph>
         The page may have been moved, deleted, or never existed.
