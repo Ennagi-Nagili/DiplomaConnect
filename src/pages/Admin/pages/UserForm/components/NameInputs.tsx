@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React from 'react';
 import InputTextField from './InputTextField';
 import { validateFatherName, validateFirstName, validateLastName } from '../validations';
+import { useTranslation } from 'react-i18next';
 
 export type TextFieldAttributes = {
   label: string;
@@ -18,6 +19,7 @@ export type TextFieldAttributes = {
 };
 
 const NameInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
 
   // Note selected user was set either to empty placeholder or currentUser depending on the route in UserForm.tsx
@@ -46,25 +48,25 @@ const NameInputs = () => {
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'First Name',
+      label: t('First Name'),
       value: placeholderUser.firstName,
       onChange: handleFirstNameChange,
       error: errorState.firstNameError ? errorState.firstNameError : false,
-      helperText: errorState.firstNameError ? 'First Name is required' : ' ',
+      helperText: errorState.firstNameError ? t('First name is required') : ' ',
     },
     {
-      label: 'Last Name',
+      label: t('Last Name'),
       value: placeholderUser.lastName,
       onChange: handleLastNameChange,
       error: errorState.lastNameError ? errorState.lastNameError : false,
-      helperText: errorState.lastNameError ? 'Last Name is required' : ' ',
+      helperText: errorState.lastNameError ? t('Last name is required') : ' ',
     },
     {
-      label: 'FatherName',
+      label: t('Father Name'),
       value: placeholderUser.fatherName ? placeholderUser.fatherName : '',
       onChange: handleFatherNameChange,
       error: errorState.fatherNameError ? errorState.fatherNameError : false,
-      helperText: errorState.fatherNameError ? 'Father Name is required' : ' ',
+      helperText: errorState.fatherNameError ? t('Father name is required') : ' ',
     },
   ];
 

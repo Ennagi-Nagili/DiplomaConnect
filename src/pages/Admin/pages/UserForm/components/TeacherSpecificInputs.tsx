@@ -6,7 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { token } from '../../../Admin';
 import axiosRetry from 'axios-retry';
 
@@ -35,7 +35,7 @@ const TeacherSpecificInputs = () => {
       try {
         // Set faculties
         const facultiesResponse = await axios.get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } });
-        const faculties = facultiesResponse.data.map((item: itemObject) => item.name);
+        const faculties = facultiesResponse.data.map((item: itemObject) => `${item.id} ${item.name}`);
         setDepartmentList(faculties);
         console.log('faculties', faculties);
       } catch (error: any) {
@@ -50,7 +50,7 @@ const TeacherSpecificInputs = () => {
       try {
         // Set subjects
         const subjectsResponse = await axios.get('https://devedu-az.com:7001/Options/subject', { headers: { Authorization: `bearer ${token}` } });
-        const subjects = subjectsResponse.data.map((item: itemObject) => item.name);
+        const subjects = subjectsResponse.data.map((item: itemObject) => `${item.id} ${item.name}`);
         setSubjectList(subjects);
         console.log('subjects', subjects);
       } catch (error: any) {
@@ -71,6 +71,7 @@ const TeacherSpecificInputs = () => {
 
   const handleDepartmentChange = (event: SelectChangeEvent) => {
     const temporaryDepartmentVar = event.target.value;
+    console.log('temporaryDepartmentVar', temporaryDepartmentVar);
     dispatch(setSelectedUser({ ...selectedUser, department: temporaryDepartmentVar }));
   };
 

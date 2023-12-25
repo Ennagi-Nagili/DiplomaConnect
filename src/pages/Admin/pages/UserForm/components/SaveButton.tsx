@@ -22,9 +22,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SaveIcon from '@mui/icons-material/Save';
+import { useTranslation } from 'react-i18next';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
 
   const selectedUser = useAppSelector(selectSelectedUser);
@@ -84,8 +86,8 @@ const SaveButton = () => {
         fatherName: intermediateVar.fatherName,
         email: intermediateVar.email,
         phoneNumber: intermediateVar.phoneNumber,
-        facultyId: 2,
-        subjectsIds: [1],
+        facultyId: intermediateVar.department?.split(' ')[0],
+        subjectsIds: [intermediateVar.department?.split(' ')[0]],
       };
 
       const addTeacher = () => {
@@ -108,13 +110,18 @@ const SaveButton = () => {
           .put(
             `https://devedu-az.com:7001/Teacher/${requestId}`,
             // TODO: Profile photo needs to be optional in put request
-            { id: requestId, ...requestData, photoLink: intermediateVar.profilePhoto ? intermediateVar.profilePhoto : undefined },
+            {
+              id: requestId,
+              ...requestData,
+              photoLink: intermediateVar.profilePhoto ? intermediateVar.profilePhoto : '',
+              password: intermediateVar.password,
+            },
             {
               headers: { Authorization: `bearer ${token}` },
             },
           )
           .then((res) => dispatch(addUser({ userCategory: 'teachers', data: { ...selectedUser, id: res.data } })))
-          .then((_) => dispatch(setSelectedUser(emptyTeacher)));
+          .then((_) => dispatch(setSelectedUser(intermediateVar)));
       };
 
       pageMode === 'add' ? addTeacher() : updateTeacher();
@@ -134,12 +141,14 @@ const SaveButton = () => {
     const phoneNumberError = !validatePhoneNumber(selectedUser.phoneNumber);
 
     const passwordError = selectedUser.password === '';
-    let confirmPasswordError = false;
-    if (pageMode === 'add') {
-      confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
-    } else if (pageMode === 'edit') {
-      confirmPasswordError = false;
-    }
+    // let confirmPasswordError = false;
+    const confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
+
+    // if (pageMode === 'add') {
+    //   confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
+    // } else if (pageMode === 'edit') {
+    //   confirmPasswordError = false;
+    // }
 
     // If no error, enable save button
     const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError, confirmPasswordError];
@@ -153,11 +162,11 @@ const SaveButton = () => {
       <Button variant="contained" onClick={handleClickOpen} disabled={!isSaveButtonEnabled}>
         {pageMode === 'add' ? (
           <>
-            <AddIcon /> Add {selectedUser.type}
+            <AddIcon /> {selectedUser.type === 'teacher' ? t('add teacher') : t('add student')}
           </>
         ) : (
           <>
-            <SaveIcon /> Save Changes
+            <SaveIcon /> {t('Save Changes')}
           </>
         )}
       </Button>
@@ -172,7 +181,7 @@ const SaveButton = () => {
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
           <Button onClick={handleAgreeClick} autoFocus>
-            Agree
+            {t('Agree')}
           </Button>
         </DialogActions>
       </Dialog>

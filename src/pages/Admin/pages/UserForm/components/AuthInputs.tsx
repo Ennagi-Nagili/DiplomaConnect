@@ -6,8 +6,10 @@ import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputTextField from './InputTextField';
+import { useTranslation } from 'react-i18next';
 
 const AuthInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
   const errorState = useAppSelector(selectErrorState);
@@ -60,12 +62,12 @@ const AuthInputs = () => {
   // Password, Confirm Password
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'Pasword',
+      label: t('Password'),
       type: isPasswordVisible ? 'text' : 'password',
       value: selectedUser.password ? selectedUser.password : '',
       onChange: handlePasswordChange,
       error: errorState.passwordError ? errorState.passwordError : false,
-      helperText: errorState.passwordError ? 'Password is required' : ' ',
+      helperText: errorState.passwordError ? t('Password is required') : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -75,12 +77,12 @@ const AuthInputs = () => {
       },
     },
     {
-      label: 'Confirm Password',
+      label: t('Confirm Password'),
       type: isConfirmPasswordVisible ? 'text' : 'password',
       value: selectedUser.confirmPassword ? selectedUser.confirmPassword : '',
       onChange: handleConfirmPasswordChange,
       error: errorState.confirmPasswordError ? errorState.confirmPasswordError : false,
-      helperText: errorState.confirmPasswordError ? 'Passwords do not match' : ' ',
+      helperText: errorState.confirmPasswordError ? t('Passwords do not match') : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">

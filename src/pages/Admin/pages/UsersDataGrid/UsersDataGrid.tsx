@@ -12,12 +12,14 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import React, { useCallback, useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export const UsersDataGrid = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const pageMode = window.location.pathname.split('/').pop() as 'teachers' | 'students'; // pop() method removes the last element of the array and returns it
 
@@ -87,7 +89,7 @@ export const UsersDataGrid = () => {
     // Full Name
     {
       field: 'fullName',
-      headerName: 'Full name',
+      headerName: t('Full name'),
       description: 'This column has a value getter and is not sortable.',
       sortable: true,
       width: isTeacherScreen5 ? 170 : 200,
@@ -96,37 +98,37 @@ export const UsersDataGrid = () => {
     // Teacher Specific:
     {
       field: 'department',
-      headerName: 'Department',
+      headerName: t('Faculty'),
       width: 140,
     },
     {
       field: 'subject',
-      headerName: 'Subject',
+      headerName: t('Subject'),
       width: 140,
     },
     // Student Specific:
     {
       field: 'group',
-      headerName: 'Group',
+      headerName: t('Group'),
       width: 80,
     },
     // Email
     {
       field: 'email',
-      headerName: 'Email',
+      headerName: t('Email'),
       width: 160,
     },
     // Phone Number
     {
       field: 'phoneNumber',
-      headerName: 'Phone Number',
+      headerName: t('Phone Number'),
       width: 140,
     },
     // Actions
     {
       field: 'actions',
       type: 'actions',
-      headerName: 'Actions',
+      headerName: t('Actions'),
       width: pageMode === 'teachers' ? 100 : 75,
       headerAlign: 'center',
       align: 'center',
@@ -184,13 +186,13 @@ export const UsersDataGrid = () => {
   // SnackBar
   const [open, setOpen] = useState(false);
 
-  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
     setOpen(false);
   };
-  const handleErrorClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+  const handleErrorClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -225,12 +227,12 @@ export const UsersDataGrid = () => {
 
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          The user is successfully deleted!
+          {t('The user is successfully deleted'!)}
         </Alert>
       </Snackbar>
       <Snackbar open={errorOpen} autoHideDuration={6000} onClose={handleErrorClose}>
         <Alert onClose={handleErrorClose} severity="error" sx={{ width: '100%' }}>
-          There was an error when deleting user!
+          {t('There was an error when deleting user'!)}
         </Alert>
       </Snackbar>
     </>

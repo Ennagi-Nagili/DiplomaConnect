@@ -7,9 +7,11 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTranslation } from 'react-i18next';
 
 const SearchBar = () => {
   const navigate = useNavigate();
+  const [t, i18] = useTranslation();
 
   const teacherNames = useAppSelector(selectTeacherNames);
   // const studentNames = useAppSelector(selectStudentNames);
@@ -77,7 +79,7 @@ const SearchBar = () => {
           options={userNames}
           style={{ width: '30%', minWidth: '400px' }}
           filterOptions={filterOptions}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             console.log('change');
             if (value) {
               const userId = (value as string).split(' ')[0];
@@ -105,7 +107,7 @@ const SearchBar = () => {
                   </IconButton>
                 ),
               }}
-              placeholder="Search for users..."
+              placeholder={t('Search for users...')}
             />
           )}
         />

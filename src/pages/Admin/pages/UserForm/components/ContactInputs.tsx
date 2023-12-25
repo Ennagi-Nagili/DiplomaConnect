@@ -5,8 +5,10 @@ import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React from 'react';
 import InputTextField from './InputTextField';
 import { validateEmail, validatePhoneNumber } from '../validations';
+import { useTranslation } from 'react-i18next';
 
 const ContactInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const placeholderUser = useAppSelector(selectSelectedUser);
   const errorState = useAppSelector(selectErrorState);
@@ -27,19 +29,19 @@ const ContactInputs = () => {
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'Email Address',
+      label: t('Email Address'),
       type: 'email',
       value: placeholderUser.email,
       onChange: handleEmailChange,
       error: errorState.emailError,
-      helperText: errorState.emailError ? 'Enter a valid email address' : ' ',
+      helperText: errorState.emailError ? t('Enter a valid email address') : ' ',
     },
     {
-      label: 'Phone Number',
+      label: t('Phone number'),
       value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
       error: errorState.phoneNumberError,
-      helperText: errorState.phoneNumberError ? 'Enter a valid phone number' : ' ',
+      helperText: errorState.phoneNumberError ? t('Enter a valid phone number') : ' ',
     },
   ];
 

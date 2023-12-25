@@ -1,21 +1,21 @@
 // Validate first name
 export const validateFirstName = (value: string): boolean => {
   // First name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-Z]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 
 // Validate last name
 export const validateLastName = (value: string): boolean => {
   // Last name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-Z]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 
 // Validate father name
 export const validateFatherName = (value: string): boolean => {
   // Father name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-Z]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 
@@ -28,8 +28,8 @@ export const validateEmail = (value: string): boolean => {
 
 // Validate phone number
 export const validatePhoneNumber = (value: string): boolean => {
-  // Phone number should contain only digits and be 10 characters long
-  const regex = /^\d{6,20}$/;
+  // Phone number should contain only digits, and it can be optionally prefixed with + and a country code
+  const regex = /^(\+\d{2})?\d{10}$/;
   return regex.test(value);
 };
 
