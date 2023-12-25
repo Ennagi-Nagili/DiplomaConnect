@@ -88,7 +88,7 @@ const UserFormCard = () => {
                 {userType === 'teacher' ? t('Teacher Information') : t('Student Information')}
               </Typography>
 
-              {/* User specific input fields: department/subject or group */}
+              {/* User specific input fields: faculty/subject or group */}
               {userType === 'student' && <StudentSpecificInputs />}
               {userType === 'teacher' && <TeacherSpecificInputs />}
             </div>

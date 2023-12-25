@@ -69,6 +69,11 @@ export const UsersDataGrid = () => {
   const isStudentScreen3 = useMediaQuery('(max-width: 585px)');
   const isStudentScreen4 = useMediaQuery('(max-width: 485px)');
 
+  type subjectItem = {
+    id: number;
+    name: string;
+  };
+
   // Columns:
   const columns: GridColDef[] = [
     // Profile Photo
@@ -103,21 +108,21 @@ export const UsersDataGrid = () => {
     },
     // Teacher Specific:
     {
-      field: 'department',
+      field: 'faculty',
       headerName: t('Faculty'),
       width: 140,
-
       valueGetter: (params: GridValueGetterParams) => (`${params.row.faculty?.id}` ? `${params.row.faculty?.name}` : ''),
     },
     {
       field: 'subject',
       headerName: t('Subject'),
       width: 140,
-      valueGetter: (params: GridValueGetterParams) => (`${params.row.subject?.id}` ? `${params.row.subject?.name}` : ''),
+      // valueGetter: (params: GridValueGetterParams) => (`${params.row.subject?.id}` ? `${params.row.subject?.name}` : ''),
+      valueGetter: (params: GridValueGetterParams) => params.row.subjects?.[0]?.name,
     },
     // Student Specific:
     {
-      field: 'group',
+      field: 'groupNumber',
       headerName: t('Group'),
       width: 80,
     },
@@ -160,7 +165,7 @@ export const UsersDataGrid = () => {
 
   let visibleColumns: GridColDef[] = columns;
   if (pageMode === 'teachers') {
-    visibleColumns = visibleColumns.filter((column) => column.field !== 'group');
+    visibleColumns = visibleColumns.filter((column) => column.field !== 'groupNumber');
     if (isTeacherScreen1) {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'phoneNumber');
     }
@@ -171,13 +176,13 @@ export const UsersDataGrid = () => {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'subject');
     }
     if (isTeacherScreen4) {
-      visibleColumns = visibleColumns.filter((column) => column.field !== 'department');
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'faculty');
     }
     if (isTeacherScreen5) {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'avatar');
     }
   } else if (pageMode === 'students') {
-    visibleColumns = visibleColumns.filter((column) => !['department', 'subject'].includes(column.field));
+    visibleColumns = visibleColumns.filter((column) => !['faculty', 'subject'].includes(column.field));
     if (isStudentScreen1) {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'phoneNumber');
     }
@@ -185,7 +190,7 @@ export const UsersDataGrid = () => {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'email');
     }
     if (isStudentScreen3) {
-      visibleColumns = visibleColumns.filter((column) => column.field !== 'group');
+      visibleColumns = visibleColumns.filter((column) => column.field !== 'groupNumber');
     }
     if (isStudentScreen4) {
       visibleColumns = visibleColumns.filter((column) => column.field !== 'avatar');

@@ -11,21 +11,16 @@ import { token } from '../../../Admin';
 import axiosRetry from 'axios-retry';
 
 const TeacherSpecificInputs = () => {
-  const [departmentList, setDepartmentList] = useState<[{ id: number; name: string }]>([{ id: 0, name: 'name' }]);
+  const [facultyList, setfacultyList] = useState<[{ id: number; name: string }]>([{ id: 0, name: 'name' }]);
   const [subjectList, setSubjectList] = useState<[{ id: number; name: string }]>([{ id: 0, name: 'name' }]);
 
-  const departments = {
-    title: 'Department',
-    itemList: departmentList,
+  const facultys = {
+    title: 'faculty',
+    itemList: facultyList,
   };
   const subjects = {
     title: 'Subject',
     itemList: subjectList,
-  };
-
-  type itemObject = {
-    id: number;
-    name: string;
   };
 
   axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay });
@@ -35,7 +30,7 @@ const TeacherSpecificInputs = () => {
       try {
         // Set faculties
         const facultiesResponse = await axios.get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } });
-        setDepartmentList(facultiesResponse.data);
+        setfacultyList(facultiesResponse.data);
         console.log('facultiesResponse.data', facultiesResponse.data);
       } catch (error: any) {
         if (axiosRetry.isNetworkError(error) || (error.response && error.response.status === 500)) {
@@ -67,40 +62,37 @@ const TeacherSpecificInputs = () => {
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser) as Teacher;
 
-  const handleDepartmentChange = (event: SelectChangeEvent) => {
-    const temporaryDepartmentVar = event.target.value;
-    const departmentArray = temporaryDepartmentVar.split(' ');
-    console.log('departmentArray', departmentArray);
-    dispatch(setSelectedUser({ ...selectedUser, faculty: { id: +departmentArray[0], name: departmentArray[1] } }));
+  const handlefacultyChange = (event: SelectChangeEvent) => {
+    const temporaryfacultyVar = event.target.value;
+    const facultyArray = temporaryfacultyVar.split(' ');
+    console.log('facultyArray', facultyArray);
+    dispatch(setSelectedUser({ ...selectedUser, faculty: { id: +facultyArray[0], name: facultyArray[1] } }));
     console.log('selectedUser', selectedUser);
   };
 
   const handleSubjectChange = (event: SelectChangeEvent) => {
     const temporarySubjectVar = event.target.value;
     const subjectArray = temporarySubjectVar.split(' ');
-    dispatch(setSelectedUser({ ...selectedUser, subject: [{ id: +subjectArray[0], name: subjectArray[1] }] }));
+    dispatch(setSelectedUser({ ...selectedUser, subjects: [{ id: +subjectArray[0], name: subjectArray[1] }] }));
     console.log('selectedUser', selectedUser);
   };
-
-  // const departmentsMenuItems = departmentList?.map((item) => `${item.id} ${item.name}`);
-  // const subjectsMenuItems = subjectList?.map((item) => `${item[0].id} ${item[0].name}`);
 
   return (
     <>
       <FormControl sx={{ width: '80%', textOverflow: 'ellipsis', marginBottom: '26px' }} size="small">
-        <InputLabel id="select-small-label">{departments.title}</InputLabel>
+        <InputLabel id="select-small-label">{facultys.title}</InputLabel>
         <Select
           labelId="select-small-label"
           id="select-small"
           value={selectedUser.faculty?.name ? `${selectedUser.faculty?.id} ${selectedUser.faculty?.name}` : ''}
           defaultValue=""
-          label={departments.title}
-          onChange={handleDepartmentChange}
+          label={facultys.title}
+          onChange={handlefacultyChange}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {departmentList.map((item, index) => (
+          {facultyList.map((item, index) => (
             <MenuItem value={`${item.id} ${item.name}`} key={index}>
               {item.id} {item.name}
             </MenuItem>
