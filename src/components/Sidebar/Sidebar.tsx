@@ -3,15 +3,24 @@ import AdminSidebarContent from './AdminSidebarContent';
 import Divider from '@mui/material/Divider';
 import DrawerHeader from './styled/DrawerHeader';
 import React from 'react';
+import TeacherSidebarContent from './TeacherSidebarContent';
 
 const drawerWidth = 240;
 
 export interface TemporaryDrawerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  admin: boolean;
+  lng: string;
 }
 
-export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen }) => {
+export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen, admin, lng }) => {
+  let content = <AdminSidebarContent setOpen={setOpen} />;
+
+  if (!admin) {
+    content = <TeacherSidebarContent setOpen={setOpen} lng={lng} />;
+  }
+
   return (
     <Drawer
       sx={{
@@ -28,15 +37,10 @@ export const Sidebar: React.FC<TemporaryDrawerProps> = ({ open, setOpen }) => {
       onClose={() => setOpen(false)} // Close the drawer when clicking outside
     >
       <DrawerHeader setOpen={setOpen} />
-
       <Divider />
-
       {/* Use switch cases for conditional rendering:  */}
-
       {/* Sidebar content for AdminPage */}
-      <AdminSidebarContent setOpen={setOpen} />
-
-      {/* Sidebar content for TeacherPage */}
+      {content}
     </Drawer>
   );
 };
