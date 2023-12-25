@@ -1,17 +1,19 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
 import { Card, CardContent, CssBaseline, createTheme, Grid, ThemeProvider, Typography, useMediaQuery } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const theme = createTheme();
 
 const Dashboard = () => {
+  const [t, i18] = useTranslation();
   const isSmallScreen = useMediaQuery('(max-width: 550px)');
 
   // Mock data for widgets
   const widgetsData = [
-    { title: 'Total Visits', value: 1500 },
-    { title: 'Total Students', value: 3000 },
-    { title: 'Total Teachers', value: 100 },
-    { title: 'Teacher-Student Ratio', value: '1:30' },
+    { title: t('Total Visits'), value: 1500 },
+    { title: t('Total Students'), value: 3000 },
+    { title: t('Total Teachers'), value: 100 },
+    { title: t('Teacher-Student Ratio'), value: '1:30' },
   ];
 
   // Mock data for bar chart

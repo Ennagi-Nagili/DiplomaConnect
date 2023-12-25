@@ -124,11 +124,13 @@ const ProfileButton: React.FC = () => {
               {language === 'en' ? (
                 <img
                   src="/src/assets/ukFlag.webp"
+                  alt=""
                   style={{ width: '24px', height: '24px', objectFit: 'cover', border: '1px solid grey', borderRadius: '50%' }}
                 />
               ) : (
                 <img
                   src="/src/assets/azFlag.jpg"
+                  alt=""
                   style={{ width: '24px', height: '24px', objectFit: 'cover', border: '1px solid grey', borderRadius: '50%' }}
                 />
               )}

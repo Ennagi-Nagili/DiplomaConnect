@@ -11,8 +11,8 @@ import { token } from '../../../Admin';
 import axiosRetry from 'axios-retry';
 
 const TeacherSpecificInputs = () => {
-  const [departmentList, setDepartmentList] = useState<string[]>([]);
-  const [subjectList, setSubjectList] = useState<string[]>([]);
+  const [departmentList, setDepartmentList] = useState<[{ id: number; name: string }]>([{ id: 0, name: 'name' }]);
+  const [subjectList, setSubjectList] = useState<[{ id: number; name: string }]>([{ id: 0, name: 'name' }]);
 
   const departments = {
     title: 'Department',
@@ -35,9 +35,8 @@ const TeacherSpecificInputs = () => {
       try {
         // Set faculties
         const facultiesResponse = await axios.get('https://devedu-az.com:7001/Options/faculty', { headers: { Authorization: `bearer ${token}` } });
-        const faculties = facultiesResponse.data.map((item: itemObject) => `${item.id} ${item.name}`);
-        setDepartmentList(faculties);
-        console.log('faculties', faculties);
+        setDepartmentList(facultiesResponse.data);
+        console.log('facultiesResponse.data', facultiesResponse.data);
       } catch (error: any) {
         if (axiosRetry.isNetworkError(error) || (error.response && error.response.status === 500)) {
           console.error('Error fetching faculties. Retrying...');
@@ -50,9 +49,8 @@ const TeacherSpecificInputs = () => {
       try {
         // Set subjects
         const subjectsResponse = await axios.get('https://devedu-az.com:7001/Options/subject', { headers: { Authorization: `bearer ${token}` } });
-        const subjects = subjectsResponse.data.map((item: itemObject) => `${item.id} ${item.name}`);
-        setSubjectList(subjects);
-        console.log('subjects', subjects);
+        setSubjectList(subjectsResponse.data);
+        console.log('subjectsResponse.data', subjectsResponse.data);
       } catch (error: any) {
         if (axiosRetry.isNetworkError(error) || (error.response && error.response.status === 500)) {
           console.error('Error fetching subjects. Retrying...');
@@ -71,14 +69,21 @@ const TeacherSpecificInputs = () => {
 
   const handleDepartmentChange = (event: SelectChangeEvent) => {
     const temporaryDepartmentVar = event.target.value;
-    console.log('temporaryDepartmentVar', temporaryDepartmentVar);
-    dispatch(setSelectedUser({ ...selectedUser, department: temporaryDepartmentVar }));
+    const departmentArray = temporaryDepartmentVar.split(' ');
+    console.log('departmentArray', departmentArray);
+    dispatch(setSelectedUser({ ...selectedUser, department: { id: +departmentArray[0], name: departmentArray[1] } }));
+    console.log('selectedUser', selectedUser);
   };
 
   const handleSubjectChange = (event: SelectChangeEvent) => {
     const temporarySubjectVar = event.target.value;
-    dispatch(setSelectedUser({ ...selectedUser, subject: temporarySubjectVar }));
+    const subjectArray = temporarySubjectVar.split(' ');
+    dispatch(setSelectedUser({ ...selectedUser, subject: { id: +subjectArray[0], name: subjectArray[1] } }));
+    console.log('selectedUser', selectedUser);
   };
+
+  // const departmentsMenuItems = departmentList?.map((item) => `${item.id} ${item.name}`);
+  // const subjectsMenuItems = subjectList?.map((item) => `${item[0].id} ${item[0].name}`);
 
   return (
     <>
@@ -87,16 +92,17 @@ const TeacherSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.department ? selectedUser.department : ''} // when selectedUser.department is undefined, nothing is chosen
+          value={selectedUser.department?.name ? `${selectedUser.department?.id} ${selectedUser.department?.name}` : ''}
+          defaultValue=""
           label={departments.title}
           onChange={handleDepartmentChange}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {departments.itemList.map((item, index) => (
-            <MenuItem value={item} key={index}>
-              {item}
+          {departmentList.map((item, index) => (
+            <MenuItem value={`${item.id} ${item.name}`} key={index}>
+              {item.id} {item.name}
             </MenuItem>
           ))}
         </Select>
@@ -107,16 +113,17 @@ const TeacherSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.subject ? selectedUser.subject : ''} // when selectedUser.department is undefined, nothing is chosen
+          value={selectedUser.subject?.name ? `${selectedUser.subject?.id} ${selectedUser.subject?.name}` : ''}
+          defaultValue=""
           label={subjects.title}
           onChange={handleSubjectChange}
         >
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          {subjects.itemList.map((item, index) => (
-            <MenuItem value={item} key={index}>
-              {item}
+          {subjectList.map((item, index) => (
+            <MenuItem value={`${item.id} ${item.name}`} key={index}>
+              {item.id} {item.name}
             </MenuItem>
           ))}
         </Select>

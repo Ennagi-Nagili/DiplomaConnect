@@ -23,11 +23,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
   const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const selectedUser = useAppSelector(selectSelectedUser);
   const fixedSelectedUsr = useAppSelector(selectFixedSelectedUser);
@@ -86,8 +88,13 @@ const SaveButton = () => {
         fatherName: intermediateVar.fatherName,
         email: intermediateVar.email,
         phoneNumber: intermediateVar.phoneNumber,
-        facultyId: intermediateVar.department?.split(' ')[0],
-        subjectsIds: [intermediateVar.department?.split(' ')[0]],
+        facultyId: intermediateVar.department?.id,
+        subjectsIds: [intermediateVar.department?.id],
+      };
+
+      const department = {
+        id: intermediateVar.department?.id ? +intermediateVar.department?.id : 0,
+        name: intermediateVar.department?.name ? intermediateVar.department?.name : '',
       };
 
       const addTeacher = () => {
@@ -100,8 +107,16 @@ const SaveButton = () => {
               headers: { Authorization: `bearer ${token}` },
             },
           )
-          .then((res) => dispatch(addUser({ userCategory: 'teachers', data: { ...selectedUser, id: res.data } })))
+          .then((res) =>
+            dispatch(
+              addUser({
+                userCategory: 'teachers',
+                data: { ...intermediateVar, id: res.data, department: department },
+              }),
+            ),
+          )
           .then((_) => dispatch(setSelectedUser(emptyTeacher)));
+        // .then((_) => navigate(0));
       };
       const updateTeacher = () => {
         console.log('Edit Teacher Button is clicked');

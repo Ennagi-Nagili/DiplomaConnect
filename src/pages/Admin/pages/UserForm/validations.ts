@@ -1,21 +1,21 @@
 // Validate first name
 export const validateFirstName = (value: string): boolean => {
   // First name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIİÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 
 // Validate last name
 export const validateLastName = (value: string): boolean => {
   // Last name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIİÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 
 // Validate father name
 export const validateFatherName = (value: string): boolean => {
   // Father name should contain only letters and be 2 to 30 characters long
-  const regex = /^[a-zA-ZəğıüöşçƏĞIÜÖŞÇ]{2,30}$/;
+  const regex = /^[a-zA-ZəğıüöşçƏĞIİÜÖŞÇ]{2,30}$/;
   return regex.test(value);
 };
 

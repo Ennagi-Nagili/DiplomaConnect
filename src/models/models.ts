@@ -15,8 +15,8 @@ export interface User {
 
 export interface Teacher extends User {
   // TODOL This should be just a limited set of departments
-  department?: string;
-  subject?: string;
+  department?: { id: number; name: string };
+  subject?: { id: number; name: string };
   students?: number[]; // id-s of students
 }
 

@@ -82,6 +82,7 @@ const UserForm = () => {
           const teacher = teachers.filter((item) => item.id === +id)[0];
           dispatch(setSelectedUser(teacher)); // since 'id' is string, we use '+id' to make it number.
           dispatch(setFixedSelectedUser(teacher));
+          console.log('teacher', teacher);
         } else if (teachers.length !== 0 && !teacherIds.includes(+id)) {
           console.log(`User with id ${id} is not found.`);
           navigate('/not-found');

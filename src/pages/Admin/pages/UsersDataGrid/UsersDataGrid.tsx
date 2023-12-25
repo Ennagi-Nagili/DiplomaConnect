@@ -25,6 +25,8 @@ export const UsersDataGrid = () => {
 
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
+
+  console.log('teachers', teachers.map(item => ));
   const users = pageMode === 'teachers' ? teachers : students;
 
   const deleteRow = useCallback(
@@ -93,13 +95,13 @@ export const UsersDataGrid = () => {
       description: 'This column has a value getter and is not sortable.',
       sortable: true,
       width: isTeacherScreen5 ? 170 : 200,
-      valueGetter: (params: GridValueGetterParams) => `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
     // Teacher Specific:
     {
       field: 'department',
       headerName: t('Faculty'),
       width: 140,
+      valueGetter: (params: GridValueGetterParams) => `${params.row.department?.id || ''} ${params.row.department?.name || ''}`,
     },
     {
       field: 'subject',
