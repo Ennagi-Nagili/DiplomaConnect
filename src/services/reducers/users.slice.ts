@@ -138,17 +138,6 @@ export const selectTeachersIsSet = (state: RootState) => state.users.teachers.is
 export const selectStudentsIsSet = (state: RootState) => state.users.students.isSet;
 
 export const selectTeachers = (state: RootState) => state.users.teachers.data;
-// export const selectTeachers = (state: RootState) => {
-//   const data = state.users.teachers.data;
-//   return data.map((item) => {
-//     const teacher = item;
-//     return {
-//       ...teacher,
-//       faculty: `${teacher.faculty?.id} ${teacher.faculty?.name}`,
-//       subject: `${teacher.subject?.id} ${teacher.subject?.name}`,
-//     };
-//   });
-// };
 export const selectStudents = (state: RootState) => state.users.students.data;
 
 export const selectPageMode = (state: RootState) => state.users.pageMode;

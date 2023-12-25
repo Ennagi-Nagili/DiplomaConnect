@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { StyledMain } from './styled/StyledMain';
 import { TeacherProfile } from '../../pages/Admin/pages/TeacherProfile/TeacherProfile';
-import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 import Dashboard from '../../pages/Admin/pages/Dashboard/Dashboard';
 import UserForm from '../../pages/Admin/pages/UserForm/UserForm';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 
 type Page = {
   link: string;
@@ -16,7 +16,14 @@ const AdminSidebarPages: Page[] = [
     link: '', // Because Dashboard is opened in profile
     element: <Dashboard />,
   },
-  
+  {
+    link: 'teachers',
+    element: <UsersDataGrid />,
+  },
+  {
+    link: 'students',
+    element: <UsersDataGrid />,
+  },
   {
     link: 'add-teacher',
     element: <UserForm />,

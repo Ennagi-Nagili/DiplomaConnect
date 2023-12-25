@@ -26,7 +26,7 @@ export const emptyTeacher: Teacher = {
   password: '',
   confirmPassword: '',
   faculty: { id: -1, name: '' },
-  subject: [{ id: -1, name: '' }],
+  subjects: [{ id: -1, name: '' }],
   students: [],
 };
 export const emptyStudent: Student = {
@@ -40,7 +40,7 @@ export const emptyStudent: Student = {
   email: '',
   password: '',
   confirmPassword: '',
-  group: '',
+  groupNumber: '',
   teacher: -1, // id of teacher
 };
 export const emptyAdmin: Admin = {

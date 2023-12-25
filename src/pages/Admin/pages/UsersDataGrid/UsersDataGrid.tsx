@@ -69,11 +69,6 @@ export const UsersDataGrid = () => {
   const isStudentScreen3 = useMediaQuery('(max-width: 585px)');
   const isStudentScreen4 = useMediaQuery('(max-width: 485px)');
 
-  type subjectItem = {
-    id: number;
-    name: string;
-  };
-
   // Columns:
   const columns: GridColDef[] = [
     // Profile Photo

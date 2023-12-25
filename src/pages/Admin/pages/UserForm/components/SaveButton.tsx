@@ -23,13 +23,22 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import SaveIcon from '@mui/icons-material/Save';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+
+type PostTeacher = {
+  firstName: string;
+  lastName: string;
+  fatherName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  facultyId: number;
+  subjectsIds: number[];
+};
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
   const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const selectedUser = useAppSelector(selectSelectedUser);
   const fixedSelectedUsr = useAppSelector(selectFixedSelectedUser);
@@ -60,11 +69,19 @@ const SaveButton = () => {
       const requestData = {
         firstName: intermediateVar.firstName,
         lastName: intermediateVar.lastName,
-        groupNumber: intermediateVar.group ? intermediateVar.group : null,
+        groupNumber: intermediateVar.groupNumber ? intermediateVar.groupNumber : null,
         email: intermediateVar.email,
         password: intermediateVar.password,
         phoneNumber: intermediateVar.phoneNumber,
       };
+      //       {
+      //   "firstName": "Testing",
+      //   "lastName": "Testingovich",
+      //   "groupNumber": "gr34",
+      //   "email": "stri@gmail.com",
+      //   "password": "asdjfkaslj",
+      //   "phoneNumber": "23976427854"
+      // }
 
       const addStudent = () => {
         console.log('Add Student Button is clicked');
@@ -107,13 +124,14 @@ const SaveButton = () => {
               headers: { Authorization: `bearer ${token}` },
             },
           )
-          .then((res) =>
-            dispatch(
-              addUser({
-                userCategory: 'teachers',
-                data: { ...intermediateVar, id: res.data, faculty: faculty },
-              }),
-            ),
+          .then(
+            (res) => console.log('res', res),
+            // dispatch(
+            //   addUser({
+            //     userCategory: 'teachers',
+            //     data: { ...intermediateVar, id: res.data, facultyId: faculty },
+            //   }),
+            // ),
           )
           .then((_) => dispatch(setSelectedUser(emptyTeacher)));
         // .then((_) => navigate(0));
@@ -156,14 +174,7 @@ const SaveButton = () => {
     const phoneNumberError = !validatePhoneNumber(selectedUser.phoneNumber);
 
     const passwordError = selectedUser.password === '';
-    // let confirmPasswordError = false;
     const confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
-
-    // if (pageMode === 'add') {
-    //   confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
-    // } else if (pageMode === 'edit') {
-    //   confirmPasswordError = false;
-    // }
 
     // If no error, enable save button
     const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError, confirmPasswordError];
