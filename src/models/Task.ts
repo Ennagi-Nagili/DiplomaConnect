@@ -1,10 +1,7 @@
 export type Task = {
   id: number;
-  head: string;
-  steps: Array<string>;
-  stepDetails: Array<string>;
-  deadlines: Array<string>;
+  number: number;
+  name: string;
   deadline: string;
-  finished: boolean;
-  date: string;
+  state: number;
 };

@@ -16,14 +16,7 @@ const AdminSidebarPages: Page[] = [
     link: '', // Because Dashboard is opened in profile
     element: <Dashboard />,
   },
-  {
-    link: 'teachers',
-    element: <UsersDataGrid />,
-  },
-  {
-    link: 'students',
-    element: <UsersDataGrid />,
-  },
+  
   {
     link: 'add-teacher',
     element: <UserForm />,
