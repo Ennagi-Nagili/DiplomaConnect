@@ -1,17 +1,19 @@
-import { Card, CardContent, CssBaseline, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from 'recharts';
+import { Card, CardContent, CssBaseline, createTheme, Grid, ThemeProvider, Typography, useMediaQuery } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 const theme = createTheme();
 
 const Dashboard = () => {
+  const [t, i18] = useTranslation();
+  const isSmallScreen = useMediaQuery('(max-width: 550px)');
+
   // Mock data for widgets
   const widgetsData = [
-    { title: 'Total Visits', value: 1500 },
-    { title: 'Total Students', value: 3000 },
-    { title: 'Total Teachers', value: 100 },
-    { title: 'Teacher-Student Ratio', value: '1:30' },
-    { title: 'Popular Teachers', value: 'John Doe, Jane Smith' },
-    { title: 'Popular Subjects', value: 'Math, Science' },
+    { title: t('Total Visits'), value: 1500 },
+    { title: t('Total Students'), value: 3000 },
+    { title: t('Total Teachers'), value: 100 },
+    { title: t('Teacher-Student Ratio'), value: '1:30' },
   ];
 
   // Mock data for bar chart
@@ -55,7 +57,7 @@ const Dashboard = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6">Subjects Distribution</Typography>
-                <BarChart width={400} height={300} data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <BarChart width={isSmallScreen ? 275 : 400} height={300} data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -71,7 +73,7 @@ const Dashboard = () => {
             <Card>
               <CardContent>
                 <Typography variant="h6">Subjects Distribution (Pie Chart)</Typography>
-                <PieChart width={400} height={300}>
+                <PieChart width={isSmallScreen ? 275 : 400} height={300}>
                   <Pie dataKey="value" isAnimationActive={false} data={pieChartData} cx="50%" cy="50%" outerRadius={80} fill="#8884d8" label>
                     {pieChartData.map((entry, i) => (
                       <Cell key={`${entry} cell-${i}`} fill={COLORS[i % COLORS.length]} />

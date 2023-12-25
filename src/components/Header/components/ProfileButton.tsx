@@ -1,5 +1,8 @@
 import { ListItemButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../../services/hooks';
+import { useTranslation } from 'react-i18next';
+import { selectCurrentUser } from '../../../services/reducers/users.slice';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
@@ -11,11 +14,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Popover from '@mui/material/Popover';
-import React, { ReactElement } from 'react';
-import { useAppSelector } from '../../services/hooks';
-import { selectCurrentUser } from '../../services/reducers/users.slice';
+import React, { ReactElement, useState } from 'react';
+import i18n from '../../../translation/config';
 
 const ProfileButton: React.FC = () => {
+  const [t, i18] = useTranslation();
+  const [language, setLanguage] = useState<'az' | 'en'>('en');
   const currentUser = useAppSelector(selectCurrentUser);
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -56,14 +60,30 @@ const ProfileButton: React.FC = () => {
     {
       onClick: handleEditProfileClick,
       icon: <EditIcon />,
-      primaryContent: 'Edit Profile',
+      primaryContent: t('Edit Profile'),
     },
     {
       onClick: handleLogoutClick,
       icon: <ExitToAppIcon />,
-      primaryContent: 'Logout',
+      primaryContent: t('Log out'),
     },
   ];
+
+  // Language change
+  const handleLanguageChange = () => {
+    // Implement your logic for language change
+    // For demonstration purposes, you can log a message
+    console.log('Language Change Clicked');
+    language === 'en' ? i18n.changeLanguage('en') : i18n.changeLanguage('az');
+    if (language === 'en') {
+      setLanguage('az');
+      i18n.changeLanguage('az');
+    } else if (language === 'az') {
+      setLanguage('en');
+      i18n.changeLanguage('en');
+    }
+    handleClose();
+  };
 
   return (
     <div>
@@ -94,6 +114,28 @@ const ProfileButton: React.FC = () => {
               <Avatar alt="Profile Photo" src={currentUser.profilePhoto} />
             </ListItemAvatar>
             <ListItemText primary={currentUser.firstName + currentUser.lastName} secondary={currentUser.email} />
+          </ListItem>
+
+          <Divider />
+
+          {/* Render the language change item */}
+          <ListItem sx={{ alignItems: 'center', cursor: 'pointer' }} onClick={handleLanguageChange}>
+            <ListItemButton>
+              {language === 'en' ? (
+                <img
+                  src="/src/assets/ukFlag.webp"
+                  alt=""
+                  style={{ width: '24px', height: '24px', objectFit: 'cover', border: '1px solid grey', borderRadius: '50%' }}
+                />
+              ) : (
+                <img
+                  src="/src/assets/azFlag.jpg"
+                  alt=""
+                  style={{ width: '24px', height: '24px', objectFit: 'cover', border: '1px solid grey', borderRadius: '50%' }}
+                />
+              )}
+              <ListItemText primary={t('Change Language')} sx={{ marginLeft: '8px' }} />
+            </ListItemButton>
           </ListItem>
 
           <Divider />

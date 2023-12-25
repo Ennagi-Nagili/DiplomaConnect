@@ -8,8 +8,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Popover from '@mui/material/Popover';
 import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import { useTranslation } from 'react-i18next';
+
 
 const NotificationsButton: React.FC = () => {
+  const { t, i18n } = useTranslation();
+
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [totalNotifications, setTotalNotifications] = useState(0);
   const [showDot, setShowDot] = useState(false);
@@ -28,9 +32,9 @@ const NotificationsButton: React.FC = () => {
 
   // Example notifications data
   const notifications = [
-    { id: 1, message: 'New message from John Doe' },
-    { id: 2, message: 'You have 3 new friend requests' },
-    { id: 3, message: 'Appointment reminder: Meeting at 2 PM' },
+    { id: 1, message: t('Warning: Teacher-Student Ratio is decreasing') },
+    { id: 2, message: t('There is an increasing demand to real analysis') },
+    { id: 3, message: t('Total visits are increasing') },
     // ... add more notifications as needed
     // TODO: After user views the notifications, if new notifications come, it counts all of them
     // instead of showing number of only new notifications. Fix this.

@@ -4,18 +4,19 @@ export interface User {
   profilePhoto?: string; // url
   firstName: string;
   lastName: string;
-  fatherName: string;
+  fatherName?: string;
   phoneNumber: string;
   email: string;
-  password: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
 // const departmentOptions = [...(["Algebra and Geometry", "Analysis", "Mathematical Control Theory"] as const)];
 
 export interface Teacher extends User {
   // TODOL This should be just a limited set of departments
-  department?: string;
-  subject?: string;
+  department?: { id: number; name: string };
+  subject?: { id: number; name: string };
   students?: number[]; // id-s of students
 }
 
@@ -30,10 +31,11 @@ export interface Admin {
   profilePhoto?: string; // url
   firstName: string;
   lastName: string;
-  fatherName: string;
+  fatherName?: string;
   phoneNumber: string;
   email: string;
-  password: string;
+  password?: string;
+  confirmPassword?: string;
 }
 
 // Students sends cover letter to teacher to ask him to be his supervisor

@@ -6,18 +6,19 @@ import ContactInputs from './components/ContactInputs';
 import EditIcon from '@mui/icons-material/Edit';
 import NameInputs from './components/NameInputs';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import React from 'react';
 import SaveButton from './components/SaveButton';
 import StudentSpecificInputs from './components/StudentSpecificInputs';
 import TeacherSpecificInputs from './components/TeacherSpecificInputs';
 import Typography from '@mui/material/Typography';
 import UploadAvatar from './components/UploadAvatar';
+import { useTranslation } from 'react-i18next';
 
-const UserFormCard: React.FC = () => {
+const UserFormCard = () => {
+  const [t, i18] = useTranslation();
   const isSmallScreen = useMediaQuery('(max-width: 805px)');
+  // console.log('USER FORM CARD PAGE IS RERENDERED');
 
   const path = window.location.pathname;
-  console.log('path', path);
   // All the possible path-s:
   // 1. /admin/add-teacher
   // 2. /admin/add-student
@@ -26,9 +27,6 @@ const UserFormCard: React.FC = () => {
   // 5. /students/:id/edit
   const pageMode = path?.includes('add') ? 'add' : 'edit';
   const userType = path?.includes('teacher') ? 'teacher' : path?.includes('student') ? 'student' : 'admin';
-  const capitalizedUserType = userType.slice(0, 1).toUpperCase() + userType.slice(1);
-
-  console.log('USER FORM CARD PAGE IS RERENDERED');
 
   return (
     <Card
@@ -55,14 +53,13 @@ const UserFormCard: React.FC = () => {
           {pageMode === 'edit' && (
             <>
               <EditIcon />
-              Edit Profile
+              {t('Edit Profile')}
             </>
           )}
           {pageMode === 'add' && (
             <>
               <PersonAddIcon />
-              {/* TODO: We should have capitalized userType */}
-              Add {capitalizedUserType}
+              {userType === 'teacher' ? t('Add Teacher') : t('Add Student')}
             </>
           )}
         </Typography>
@@ -78,20 +75,17 @@ const UserFormCard: React.FC = () => {
       >
         {/* Box 1: Upload Avatar and Name Inputs */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '330px' }}>
-          {/* TODO: Ask master Anton to check upload avatar */}
           <UploadAvatar />
           <NameInputs />
         </div>
 
         {/* Box 2: User Specific Inputs, Phone Number, Email, Password, Confirm Password */}
         <div style={{ width: isSmallScreen ? '98%' : '49%', minWidth: '330px' }}>
-          {/* TODO: Add optional dropdown fields here, namely department and subject. AFAIK this is a fixed list. */}
           {/* Student or Teacher specific information */}
-          {capitalizedUserType !== 'Admin' && (
+          {userType !== 'admin' && (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <Typography variant="h3" sx={{ fontSize: 26, mb: '10px', textAlign: 'center' }}>
-                {/* TODO: For student this should be "Student Information" */}
-                {capitalizedUserType} Information
+                {userType === 'teacher' ? t('Teacher Information') : t('Student Information')}
               </Typography>
 
               {/* User specific input fields: department/subject or group */}
@@ -104,6 +98,7 @@ const UserFormCard: React.FC = () => {
           <ContactInputs />
 
           {/* AuthInfo */}
+          {/* {pageMode === 'add' && <AuthInputs />} */}
           <AuthInputs />
         </div>
       </CardContent>

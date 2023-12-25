@@ -1,5 +1,6 @@
 import { Student } from './Student';
 import { Task } from './Task';
+import dummy from '../assets/dummy.pdf';
 
 export const studentData: Array<Student> = [];
 
@@ -46,6 +47,10 @@ for (let i = 0; i < 5; i++) {
     deadlines: ['03.12.2023', '04.12.2023', '05.12.2023', '06.12.2023', '07.12.2023'],
     finished: finish[i],
     date: '02.12.2023',
+    answer:
+      ' Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis aperiam id, nostrum eos et vel quo necessitatibus perspiciatis numquam enim eaque, quisquam debitis, ab sequi velit ea tenetur incidunt delectus?',
+    files: [dummy],
+    review: '',
   };
 
   taskData.push(task);

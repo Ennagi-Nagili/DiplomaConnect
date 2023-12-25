@@ -1,75 +1,105 @@
 import { Box } from '@mui/material';
 import { emptyStudent, emptyTeacher } from '../../../../models/mockAdminData';
 import {
+  noErrorState,
   selectCurrentUser,
+  selectIsSaveButtonEnabled,
   selectStudents,
+  selectTeacherIds,
   selectTeachers,
+  setErrorState,
+  setFixedSelectedUser,
   setIsSaveButtonEnabled,
   setPageMode,
   setSelectedUser,
 } from '../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../services/hooks';
-import React, { useEffect } from 'react';
-import UserFormCard from './UserFormCard';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserFormCard from './UserFormCard';
 
-const UserForm: React.FC = () => {
+const UserForm = () => {
   console.log('USER FORM PAGE IS RENDERED');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const path = window.location.pathname;
   const pathEnd = path.split('/').pop();
-  console.log('pathEnd', pathEnd);
 
   const currentUser = useAppSelector(selectCurrentUser);
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
+  const teacherIds = useAppSelector(selectTeacherIds);
 
+  const isSaveButtonEnabled = useAppSelector(selectIsSaveButtonEnabled);
+  // Resets errorState
+  useEffect(() => {
+    dispatch(setErrorState(noErrorState));
+  }, [window.location.pathname]);
+
+  // If user is ready to be added, and page is refreshed, it will ask for confirmation
+  useEffect(() => {
+    if (!isSaveButtonEnabled) return;
+
+    function handleOnBeforeUnload(event: BeforeUnloadEvent) {
+      event.preventDefault();
+      return (event.returnValue = '');
+    }
+    window.addEventListener('beforeunload', handleOnBeforeUnload, { capture: true });
+    return () => {
+      window.removeEventListener('beforeunload', handleOnBeforeUnload, { capture: true });
+    };
+  }, [isSaveButtonEnabled, window.location.pathname]);
+
+  // Set pageMode, selectedUser, fixedSelectedUser, and reset isSaveButtonEnabled to false
   useEffect(() => {
     console.log('USER FORM USE EFFECT');
     dispatch(setIsSaveButtonEnabled(false));
 
-    // Setting selectedUser and pageMode
     switch (true) {
       case pathEnd === 'edit-profile': {
         dispatch(setPageMode('edit'));
-        // TODO: selectedUser is currentUser
         dispatch(setSelectedUser(currentUser));
-        console.log('PAGE MODE: EDIT PROFILE');
+        dispatch(setFixedSelectedUser(currentUser));
         break;
       }
       case pathEnd === 'add-teacher': {
         dispatch(setPageMode('add'));
-        // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyTeacher)); // TODO: id needs to dynamically change
-        console.log('PAGE MODE: ADD TEACHER');
         break;
       }
       case pathEnd === 'add-student': {
         dispatch(setPageMode('add'));
-        // TODO: selectedUser point to an id that does not yet exist
         dispatch(setSelectedUser(emptyStudent)); // TODO: id needs to dynamically change
-        console.log('PAGE MODE: ADD STUDENT');
         break;
       }
       // At first, teachers and students are not set.
       case /\/teachers\/\d+\/edit$/.test(path): {
-        console.log('PAGE MODE: EDIT SOME TEACHER');
+        dispatch(setPageMode('edit'));
+        // If user with requested id doesn't exits
         const id = path.split('/')[3];
-        const selectedUser = teachers?.filter((item) => item.id === +id)[0];
-        selectedUser ? dispatch(setSelectedUser(selectedUser)) : dispatch(setSelectedUser(emptyTeacher));
+        if (teachers.length !== 0 && teacherIds.includes(+id)) {
+          const teacher = teachers.filter((item) => item.id === +id)[0];
+          dispatch(setSelectedUser(teacher)); // since 'id' is string, we use '+id' to make it number.
+          dispatch(setFixedSelectedUser(teacher));
+          console.log('teacher', teacher);
+        } else if (teachers.length !== 0 && !teacherIds.includes(+id)) {
+          console.log(`User with id ${id} is not found.`);
+          navigate('/not-found');
+        }
         break;
       }
       case /\/students\/\d+\/edit$/.test(path): {
+        // TODO
         console.log('PAGE MODE: EDIT SOME STUDENT');
+        dispatch(setPageMode('edit'));
+
         break;
       }
       default:
         navigate('/');
     }
   }, [window.location.pathname, teachers, students]);
-  console.log('window.location.pathname', window.location.pathname);
 
   return (
     // Container

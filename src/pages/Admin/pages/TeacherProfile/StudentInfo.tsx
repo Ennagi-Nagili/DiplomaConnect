@@ -1,16 +1,32 @@
 import { CardContent } from '@mui/material';
 import { StudentListItem } from './components/StudentListItem';
-import { useAppSelector } from '../../../../services/hooks';
-import { selectSelectedUser, selectStudents } from '../../../../services/reducers/users.slice';
-import { Teacher } from '../../../../models/models';
+import { Student } from '../../../../models/models';
+import axios, { AxiosResponse } from 'axios';
+import { token } from '../../Admin';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export const StudentInfo = () => {
-  const selectedTeacher = useAppSelector(selectSelectedUser) as Teacher;
+  const navigate = useNavigate();
 
-  const students = useAppSelector(selectStudents);
-  const teacherStudentIds = selectedTeacher?.students;
-  const teacherStudents = teacherStudentIds?.map((id) => students.filter((student) => (student.id === id))[0]);
-  console.log('teacherStudents', teacherStudents);
+  const id = window.location.pathname.split('/').pop();
+  // TODO: Returns 403
+  let teacherStudents: Student[] = [];
+  useEffect(() => {
+    axios
+      .get(`https://devedu-az.com:7001/Student/by-teacher/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      })
+      .then((response: AxiosResponse<Student[]>) => {
+        teacherStudents = response.data; // Extract the data property
+        console.log('teacherStudents', teacherStudents);
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error('Error fetching teachers:', error);
+        return navigate('/not-found');
+      });
+  }, []);
 
   return <CardContent sx={{ margin: '2px' }}>{teacherStudents?.map((item, index) => <StudentListItem data={item} key={index} />)}</CardContent>;
 };

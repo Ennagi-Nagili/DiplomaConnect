@@ -1,5 +1,6 @@
 import { Divider, List, ListSubheader } from '@mui/material';
 import { Person, School } from '@mui/icons-material';
+import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
 import { useNavigate } from 'react-router-dom';
 import AddTeacher from '../../pages/Admin/pages/UserForm/UserForm';
 import BarChartIcon from '@mui/icons-material/BarChart';
@@ -10,23 +11,25 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import React from 'react';
-import { UsersDataGrid } from '../../pages/Admin/pages/UsersDataGrid/UsersDataGrid';
+import { useTranslation } from 'react-i18next';
 
 type AdminSidebarContentProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpen }) => {
+  const [t, i18] = useTranslation();
+
   const navigate = useNavigate();
 
   // Add types if needed
   const listContent = [
     {
-      subheader: 'Dashboard',
+      subheader: t('Dashboard'),
       content: [
         {
           id: 1,
-          title: 'Dashboard',
+          title: t('Dashboard'),
           link: '', // Because Dashboard is opened in profile [Note: this link is "/profile"]
           icon: <BarChartIcon />,
           element: <Dashboard />,
@@ -34,18 +37,18 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
       ],
     },
     {
-      subheader: 'Users',
+      subheader: t('Users'),
       content: [
         {
           id: 2,
-          title: 'Teachers',
+          title: t('Teachers'),
           link: 'teachers',
           icon: <Person />,
           element: <UsersDataGrid />,
         },
         {
           id: 3,
-          title: 'Students',
+          title: t('Students'),
           link: 'students',
           icon: <School />,
           element: <UsersDataGrid />,
@@ -53,18 +56,18 @@ export const AdminSidebarContent: React.FC<AdminSidebarContentProps> = ({ setOpe
       ],
     },
     {
-      subheader: 'Add User',
+      subheader: t('Add User'),
       content: [
         {
           id: 4,
-          title: 'Add Teacher',
+          title: t('Add Teacher'),
           link: 'add-teacher',
           icon: <PersonAddIcon />,
           element: <AddTeacher />,
         },
         {
           id: 5,
-          title: 'Add Student',
+          title: t('Add Student'),
           link: 'add-student',
           icon: <PersonAddIcon />,
           element: <AddTeacher />,
