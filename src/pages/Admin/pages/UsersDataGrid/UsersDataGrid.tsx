@@ -26,7 +26,7 @@ export const UsersDataGrid = () => {
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
 
-  console.log('teachers', teachers.map(item => ));
+  console.log('teachers', teachers.map(item => {}));
   const users = pageMode === 'teachers' ? teachers : students;
 
   const deleteRow = useCallback(

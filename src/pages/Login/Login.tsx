@@ -27,15 +27,6 @@ interface FormData {
 const defaultTheme = createTheme();
 
 export default function LogIn() {
-  function Copyright() {
-    return (
-      <Typography variant="body2" color="textSecondary" align="center">
-        {t('Copyright © ')}
-        <Link color="inherit">Turac</Link> {new Date().getFullYear()} {t('Lion is always lion')}
-      </Typography>
-    );
-  }
-
   const navigate = useNavigate();
   const cookie = new Cookies();
 
@@ -216,7 +207,6 @@ export default function LogIn() {
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={() => {}}>
                 {t('Log In')}
               </Button>
-              <Copyright />
             </Box>
           </Box>
         </Grid>

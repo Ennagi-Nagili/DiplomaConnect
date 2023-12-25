@@ -68,7 +68,7 @@ export const TasksPage = () => {
                       Eng
                     </Button>
                   </div>
-                  <p className="main-head">Tapşırıqlar</p>
+                  <p className="main-head">{t('Tasks')}</p>
                   <TaskTable lng={lng} />
                 </div>
               </Grid>
