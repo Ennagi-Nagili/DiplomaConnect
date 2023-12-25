@@ -88,13 +88,13 @@ const SaveButton = () => {
         fatherName: intermediateVar.fatherName,
         email: intermediateVar.email,
         phoneNumber: intermediateVar.phoneNumber,
-        facultyId: intermediateVar.department?.id,
-        subjectsIds: [intermediateVar.department?.id],
+        facultyId: intermediateVar.faculty?.id,
+        subjectsIds: [intermediateVar.faculty?.id],
       };
 
-      const department = {
-        id: intermediateVar.department?.id ? +intermediateVar.department?.id : 0,
-        name: intermediateVar.department?.name ? intermediateVar.department?.name : '',
+      const faculty = {
+        id: intermediateVar.faculty?.id ? +intermediateVar.faculty?.id : 0,
+        name: intermediateVar.faculty?.name ? intermediateVar.faculty?.name : '',
       };
 
       const addTeacher = () => {
@@ -111,7 +111,7 @@ const SaveButton = () => {
             dispatch(
               addUser({
                 userCategory: 'teachers',
-                data: { ...intermediateVar, id: res.data, department: department },
+                data: { ...intermediateVar, id: res.data, faculty: faculty },
               }),
             ),
           )
