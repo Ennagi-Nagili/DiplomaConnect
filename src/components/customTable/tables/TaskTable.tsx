@@ -54,7 +54,7 @@ export const TaskTable = ({ lng }: { lng: string }) => {
   const navigate = useNavigate();
   const cookie = new Cookies();
 
-  useEffect(() => {
+  async function getTasks() {
     axios
       .get('https://devedu-az.com:7001/Work/' + idData.value, {
         headers: {
@@ -70,6 +70,10 @@ export const TaskTable = ({ lng }: { lng: string }) => {
           navigate('/login');
         }
       });
+  }
+
+  useEffect(() => {
+    getTasks();
   }, []);
 
   function handleGo(id: number) {
@@ -85,7 +89,7 @@ export const TaskTable = ({ lng }: { lng: string }) => {
         },
       })
       .then(() => {
-        location.reload();
+        getTasks();
       });
   }
 

@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from './services/store';
 
 export const AddTaskPage = () => {
   const [number, setNumber] = useState<number>(0);
@@ -16,6 +18,8 @@ export const AddTaskPage = () => {
   const [lang1, setLang1] = useState<string>('outlined');
   const [lang2, setLang2] = useState<string>('contained');
   const [lng, setLng] = useState<string>('');
+
+  const idData = useSelector((state: RootState) => state.detail);
 
   const { t, i18n } = useTranslation();
 
@@ -37,7 +41,7 @@ export const AddTaskPage = () => {
   const handleSubmit = () => {
     axios
       .post(
-        'https://devedu-az.com:7001/Work/215',
+        'https://devedu-az.com:7001/Work/' + idData.value,
         {
           number: number,
           name: header,
@@ -51,7 +55,7 @@ export const AddTaskPage = () => {
           },
         },
       )
-      .then(() => {
+      .then((response) => {
         navigate('/tasks');
       })
       .catch((error) => {
