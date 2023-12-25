@@ -67,10 +67,11 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
     navigate('/tasks');
   }
 
-  type Application = { id: number; student: Student; applicationState: number; workTheme: string; coveringLetter: string };
-  const [data, setData] = React.useState<Application[]>([]);
+  const [data, setData] = React.useState<Student[]>([]);
+  const [appId, setAppId] = React.useState<number[]>([]);
 
   const cookie = new Cookies();
+  type Application = { id: number; student: Student; applicationState: number; workTheme: string; coveringLetter: string };
 
   useEffect(() => {
     if (type === 'student') {
@@ -84,8 +85,10 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
         .then((response) => {
           setData(response.data);
         })
-        .catch(() => {
-          navigate('/login');
+        .catch((error) => {
+          if (error.response.status === 401) {
+            navigate('/login');
+          }
         });
     } else {
       const url = 'https://devedu-az.com:7001/Application/teacher/' + cookie.get('id');
@@ -97,10 +100,19 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
           },
         })
         .then((response) => {
-          setData(response.data);
+          const students: Student[] = [];
+          const ids: number[] = [];
+          response.data.map((item: Application) => {
+            students.push(item.student);
+            ids.push(item.id);
+          });
+          setData(students);
+          setAppId(ids);
         })
-        .catch(() => {
-          navigate('/login');
+        .catch((error) => {
+          if (error.response.status === 401) {
+            navigate('/login');
+          }
         });
     }
   }, []);
@@ -117,6 +129,7 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
         },
       )
       .then(() => {
+        console.log(cookie.get('id') + " " + id);
         location.reload();
       });
   }
@@ -152,17 +165,17 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
         <TableBody>
           {data.map((item, index) => (
             <StyledTableRow key={`row-${index}`}>
-              <StyledTableCell>{item.student.firstName + ' ' + item.student.lastName}</StyledTableCell>
-              <StyledTableCell align="right">{item.student.groupNumber}</StyledTableCell>
-              <StyledTableCell align="right">{item.student.email}</StyledTableCell>
-              <StyledTableCell align="right">{item.student.phoneNumber}</StyledTableCell>
+              <StyledTableCell>{item.firstName + ' ' + item.lastName}</StyledTableCell>
+              <StyledTableCell align="right">{item.groupNumber}</StyledTableCell>
+              <StyledTableCell align="right">{item.email}</StyledTableCell>
+              <StyledTableCell align="right">{item.phoneNumber}</StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
                 <Button
                   variant="contained"
                   color="success"
                   onClick={() => {
-                    handleAccept(item.id);
+                    handleAccept(appId[index]);
                   }}
                 >
                   {t('Accept')}
@@ -170,12 +183,12 @@ export const StudentTable = ({ type, lng }: { type: string; lng: string }) => {
               </StyledTableCell>
 
               <StyledTableCell align="right" sx={{ display: btn }}>
-                <Button variant="contained" color="error" onClick={() => handleDecline(item.id)}>
+                <Button variant="contained" color="error" onClick={() => handleDecline(appId[index])}>
                   {t('Decline')}
                 </Button>
               </StyledTableCell>
 
-              <StyledTableCell align="right" sx={{ display: '' }}>
+              <StyledTableCell align="right" sx={{ display: go }}>
                 <button onClick={() => handleGo(item.id)} className="goBtn">
                   <ArrowForwardIosIcon className="arrow" />
                 </button>

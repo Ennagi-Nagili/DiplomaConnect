@@ -7,6 +7,7 @@ import { task } from '../../../services/reducers/task.slice';
 import { useAppDispatch } from '../../../services/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import AddIcon from '@mui/icons-material/Add';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -21,7 +22,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import axios from 'axios';
-import { useTranslation } from 'react-i18next';
 
 type TableHeader = {
   name: string;
@@ -66,7 +66,7 @@ export const TaskTable = ({ lng }: { lng: string }) => {
         setData(response.data);
       })
       .catch((error) => {
-        if (error.status === 401) {
+        if (error.response.status === 401) {
           navigate('/login');
         }
       });
@@ -78,13 +78,15 @@ export const TaskTable = ({ lng }: { lng: string }) => {
   }
 
   function handleDelete(id: number) {
-    const dt: Task[] = [];
-    for (let i = 0; i < data.length; i++) {
-      if (i !== id) {
-        dt.push(data[i]);
-      }
-    }
-    setData(data.filter((item) => item.id !== id));
+    axios
+      .delete('https://devedu-az.com:7001/Work/' + idData.value + '/' + id, {
+        headers: {
+          Authorization: 'bearer ' + cookie.get('token'),
+        },
+      })
+      .then(() => {
+        location.reload();
+      });
   }
 
   function getFinish(finish: number) {

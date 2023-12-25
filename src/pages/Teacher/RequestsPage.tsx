@@ -36,7 +36,7 @@ export const RequestsPage = () => {
           Aze
         </Button>
         <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
-          En
+          Eng
         </Button>
       </div>
       <div className="table-container">

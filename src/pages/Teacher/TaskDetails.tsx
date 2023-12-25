@@ -55,6 +55,7 @@ export const TaskDetails = () => {
       })
       .then((response) => {
         setTasks(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         if (error.status === 401) {
@@ -128,7 +129,7 @@ export const TaskDetails = () => {
   function handleAccept() {
     axios
       .put(
-        'https://devedu-az.com:7001/Work/state' + idData.studentId + '/' + idData.taskId + '?newState=2',
+        'https://devedu-az.com:7001/Work/' + idData.studentId + '/' + idData.taskId + '/state?state=1',
         {},
         {
           headers: {
@@ -137,7 +138,7 @@ export const TaskDetails = () => {
         },
       )
       .then(() => {
-        location.reload();
+        navigate('/tasks');
       });
   }
 
@@ -151,7 +152,7 @@ export const TaskDetails = () => {
           Aze
         </Button>
         <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
-          En
+          Eng
         </Button>
       </div>
 

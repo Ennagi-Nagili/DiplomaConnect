@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const AddTaskPage = () => {
   const [number, setNumber] = useState<number>(0);
@@ -31,6 +32,7 @@ export const AddTaskPage = () => {
   };
 
   const cookie = new Cookies();
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     axios
@@ -49,9 +51,13 @@ export const AddTaskPage = () => {
           },
         },
       )
-      .then(() => {})
-      .catch(() => {
-        console.log(cookie.get('token'));
+      .then(() => {
+        navigate('/tasks');
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/login');
+        }
       });
   };
 
@@ -63,7 +69,7 @@ export const AddTaskPage = () => {
             Aze
           </Button>
           <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
-            En
+            Eng
           </Button>
         </div>
 

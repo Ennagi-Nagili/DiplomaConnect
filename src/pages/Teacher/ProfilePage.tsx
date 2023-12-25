@@ -34,8 +34,10 @@ export const ProfilePage = () => {
       .then((response) => {
         setTeacher(response.data);
       })
-      .catch(() => {
-        navigate('/login');
+      .catch((error) => {
+        if (error.response.status === 401) {
+          navigate('/login');
+        }
       });
   }, []);
 
@@ -89,7 +91,7 @@ export const ProfilePage = () => {
                     Aze
                   </Button>
                   <Button variant={lang2} size="small" onClick={() => changeLanguage('en')}>
-                    En
+                    Eng
                   </Button>
                 </div>
                 <div>
