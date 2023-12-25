@@ -11,17 +11,15 @@ export interface User {
   confirmPassword?: string;
 }
 
-// const departmentOptions = [...(["Algebra and Geometry", "Analysis", "Mathematical Control Theory"] as const)];
-
 export interface Teacher extends User {
-  // TODOL This should be just a limited set of departments
+  // TODOL This should be just a limited set of faculties
   faculty?: { id: number; name: string };
-  subject?: [{ id: number; name: string }];
+  subjects?: { id: number; name: string }[];
   students?: number[]; // id-s of students
 }
 
 export interface Student extends User {
-  group?: string;
+  groupNumber?: string;
   teacher?: number; // id of teacher
 }
 

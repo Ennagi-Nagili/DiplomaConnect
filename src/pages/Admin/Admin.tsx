@@ -25,7 +25,7 @@ export default function Admin() {
         // Set teachers
         const teachersResponse = await axios.get('https://devedu-az.com:7001/Teacher', { headers: { Authorization: `bearer ${token}` } });
         const teachers = teachersResponse.data;
-        console.log('teachers', teachers);
+        console.log('TEACHERS', teachers);
         dispatch(setUsers({ userCategory: 'teachers', data: teachers }));
         dispatch(setIsSet({ userCategory: 'teachers' }));
       } catch (error: any) {

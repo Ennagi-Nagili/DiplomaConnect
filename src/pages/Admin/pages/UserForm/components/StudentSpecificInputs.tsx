@@ -21,7 +21,7 @@ const StudentSpecificInputs = () => {
 
   const handleGroupChange = (event: SelectChangeEvent) => {
     const temporaryGroupVar = event.target.value;
-    dispatch(setSelectedUser({ ...selectedUser, group: temporaryGroupVar }));
+    dispatch(setSelectedUser({ ...selectedUser, groupNumber: temporaryGroupVar }));
   };
 
   return (
@@ -31,7 +31,7 @@ const StudentSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.group ? selectedUser.group : ''} // when selectedUser.department is undefined, nothing is chosen
+          value={selectedUser.groupNumber ? selectedUser.groupNumber : ''}
           label={groups.title}
           onChange={handleGroupChange}
         >

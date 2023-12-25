@@ -49,11 +49,11 @@ export const TeacherInfo = () => {
         </Typography>
 
         {/* Teacher Specific */}
-        {selectedTeacher.department && selectedTeacher.subject && (
-          <Typography variant="body1">
-            {selectedTeacher.department}, {selectedTeacher.subject}
-          </Typography>
-        )}
+        {/* TODO: PROBLEM */}
+        <Typography variant="body1">
+          {selectedTeacher.faculty?.name ? `${selectedTeacher.faculty.name},` : ''}
+          {/* {selectedTeacher.subject. ? selectedTeacher.subject[0].name : ''} */}
+        </Typography>
         {/* Contact Information */}
         <Typography variant="body1">{selectedTeacher.email}</Typography>
         <Typography variant="body1">{selectedTeacher.phoneNumber}</Typography>

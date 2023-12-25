@@ -144,7 +144,7 @@ export const selectTeachers = (state: RootState) => state.users.teachers.data;
 //     const teacher = item;
 //     return {
 //       ...teacher,
-//       department: `${teacher.department?.id} ${teacher.department?.name}`,
+//       faculty: `${teacher.faculty?.id} ${teacher.faculty?.name}`,
 //       subject: `${teacher.subject?.id} ${teacher.subject?.name}`,
 //     };
 //   });

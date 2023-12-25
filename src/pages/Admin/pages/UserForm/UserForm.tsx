@@ -93,7 +93,6 @@ const UserForm = () => {
         // TODO
         console.log('PAGE MODE: EDIT SOME STUDENT');
         dispatch(setPageMode('edit'));
-
         break;
       }
       default:
