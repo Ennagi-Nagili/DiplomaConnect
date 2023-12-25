@@ -71,14 +71,14 @@ const TeacherSpecificInputs = () => {
     const temporaryDepartmentVar = event.target.value;
     const departmentArray = temporaryDepartmentVar.split(' ');
     console.log('departmentArray', departmentArray);
-    dispatch(setSelectedUser({ ...selectedUser, department: { id: +departmentArray[0], name: departmentArray[1] } }));
+    dispatch(setSelectedUser({ ...selectedUser, faculty: { id: +departmentArray[0], name: departmentArray[1] } }));
     console.log('selectedUser', selectedUser);
   };
 
   const handleSubjectChange = (event: SelectChangeEvent) => {
     const temporarySubjectVar = event.target.value;
     const subjectArray = temporarySubjectVar.split(' ');
-    dispatch(setSelectedUser({ ...selectedUser, subject: { id: +subjectArray[0], name: subjectArray[1] } }));
+    dispatch(setSelectedUser({ ...selectedUser, subject: [{ id: +subjectArray[0], name: subjectArray[1] }] }));
     console.log('selectedUser', selectedUser);
   };
 
@@ -92,7 +92,7 @@ const TeacherSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.department?.name ? `${selectedUser.department?.id} ${selectedUser.department?.name}` : ''}
+          value={selectedUser.faculty?.name ? `${selectedUser.faculty?.id} ${selectedUser.faculty?.name}` : ''}
           defaultValue=""
           label={departments.title}
           onChange={handleDepartmentChange}
@@ -113,7 +113,7 @@ const TeacherSpecificInputs = () => {
         <Select
           labelId="select-small-label"
           id="select-small"
-          value={selectedUser.subject?.name ? `${selectedUser.subject?.id} ${selectedUser.subject?.name}` : ''}
+          // value={selectedUser.subject ? (selectedUser.subject[0] ? `${selectedUser.subject[0].id} ${selectedUser.subject[0]?.name}` : '') : ''}
           defaultValue=""
           label={subjects.title}
           onChange={handleSubjectChange}
