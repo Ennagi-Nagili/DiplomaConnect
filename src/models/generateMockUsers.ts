@@ -22,8 +22,8 @@ export const generateNTeachers = (props: GenerateNUsersProps): Teacher[] => {
       phoneNumber: `00000${index}`,
       email: `email@gmail.com-${index}`,
       password: `password ${index}`,
-      department: { id: 1, name: 'Analysis' },
-      subject: { id: 1, name: 'Real Analysis' },
+      faculty: { id: 1, name: 'Analysis' },
+      subject: [{ id: 1, name: 'Real Analysis' }],
       students: [index, index + 1, index + 2],
     };
     teachers.push(teacher);

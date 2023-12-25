@@ -10,7 +10,7 @@ import DataGridToolbar from '../../components/DataGridToolbar';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 
@@ -26,8 +26,12 @@ export const UsersDataGrid = () => {
   const teachers = useAppSelector(selectTeachers);
   const students = useAppSelector(selectStudents);
 
-  console.log('teachers', teachers.map(item => {}));
-  const users = pageMode === 'teachers' ? teachers : students;
+  console.log('teachers', teachers);
+  let users = pageMode === 'teachers' ? teachers : students;
+  // const users = pageMode === 'teachers' ? teachers : students;
+  useEffect(() => {
+    users = pageMode === 'teachers' ? teachers : students;
+  }, [teachers, students]);
 
   const deleteRow = useCallback(
     (user: Teacher | Student) => () => {
@@ -95,18 +99,21 @@ export const UsersDataGrid = () => {
       description: 'This column has a value getter and is not sortable.',
       sortable: true,
       width: isTeacherScreen5 ? 170 : 200,
+      valueGetter: (params: GridValueGetterParams) => `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
     // Teacher Specific:
     {
       field: 'department',
       headerName: t('Faculty'),
       width: 140,
-      valueGetter: (params: GridValueGetterParams) => `${params.row.department?.id || ''} ${params.row.department?.name || ''}`,
+
+      valueGetter: (params: GridValueGetterParams) => (`${params.row.faculty?.id}` ? `${params.row.faculty?.name}` : ''),
     },
     {
       field: 'subject',
       headerName: t('Subject'),
       width: 140,
+      valueGetter: (params: GridValueGetterParams) => (`${params.row.subject?.id}` ? `${params.row.subject?.name}` : ''),
     },
     // Student Specific:
     {

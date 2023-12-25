@@ -25,8 +25,8 @@ export const emptyTeacher: Teacher = {
   email: '',
   password: '',
   confirmPassword: '',
-  department: { id: -1, name: '' },
-  subject: { id: -1, name: '' },
+  faculty: { id: -1, name: '' },
+  subject: [{ id: -1, name: '' }],
   students: [],
 };
 export const emptyStudent: Student = {
