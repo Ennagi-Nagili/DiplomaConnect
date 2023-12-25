@@ -5,9 +5,9 @@ import { I18nextProvider } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { store } from './services/store.ts';
 import App from './App.tsx';
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
-import i18n from '../src/translation/config.ts';
+import i18n from './translation/config.ts';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 

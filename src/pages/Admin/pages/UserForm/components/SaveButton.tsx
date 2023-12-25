@@ -1,6 +1,6 @@
 import {
   addUser,
-  selectCurrentUser,
+  selectFixedSelectedUser,
   selectIsSaveButtonEnabled,
   selectPageMode,
   selectSelectedUser,
@@ -8,25 +8,33 @@ import {
   setSelectedUser,
 } from '../../../../../services/reducers/users.slice';
 import { Button } from '@mui/material';
+import { emptyStudent, emptyTeacher } from '../../../../../models/mockAdminData';
+import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
+import { useEffect, useState } from 'react';
+import { validateEmail, validateFatherName, validateFirstName, validateLastName, validatePhoneNumber } from '../validations';
+import { Student, Teacher } from '../../../../../models/models';
+import { token } from '../../../Admin';
+import AddIcon from '@mui/icons-material/Add';
+import axios from 'axios';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { emptyStudent, emptyTeacher, mockTeacher } from '../../../../../models/mockAdminData';
-import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import AddIcon from '@mui/icons-material/Add';
 import SaveIcon from '@mui/icons-material/Save';
-import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 // Change name to SaveButton --> accounts for Save User and Save Changes
 const SaveButton = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const currentUser = useAppSelector(selectCurrentUser);
   const selectedUser = useAppSelector(selectSelectedUser);
+  const fixedSelectedUsr = useAppSelector(selectFixedSelectedUser);
   const pageMode = useAppSelector(selectPageMode);
-  const userCategory = (selectedUser.type + 's') as 'teachers' | 'students';
+  const userCategory = window.location.pathname.includes('teacher') ? 'teachers' : 'students';
 
   // RELATED TO DIALOG
   const [open, setOpen] = useState(false);
@@ -38,29 +46,102 @@ const SaveButton = () => {
     setOpen(false);
   };
 
+  console.log('userCategory', userCategory);
+
   const handleAgreeClick = () => {
     handleClose();
 
     dispatch(setIsSaveButtonEnabled(false));
-    if (pageMode === 'add') {
-      userCategory === 'teachers' ? dispatch(setSelectedUser(emptyTeacher)) : dispatch(setSelectedUser(emptyStudent));
-      // TODO:
-      dispatch(addUser({ userCategory: userCategory, data: { ...mockTeacher, id: 42 } }));
-      console.log('Add User Icon Button is clicked');
-    } else {
-      console.log('Edit User Icon Button is clicked');
 
-      // TODO: Connect to API
-      // axios
-      //   .post('https://194.87.210.5:7001/Student', {
-      //     fullName: `${selectedUser.firstName} ${selectedUser.lastName} ${selectedUser.fatherName}`,
-      //     groupNumber: 'selectedUser.group',
-      //     email: selectedUser.email,
-      //     password: selectedUser.password,
-      //     phoneNumber: selectedUser.phoneNumber,
-      //   })
-      //   .then((res) => console.log('res', res));
+    if (userCategory === 'students') {
+      const intermediateVar = selectedUser as Student;
+      console.log('intermediateVar', intermediateVar);
+
+      const requestData = {
+        firstName: intermediateVar.firstName,
+        lastName: intermediateVar.lastName,
+        groupNumber: intermediateVar.group ? intermediateVar.group : null,
+        email: intermediateVar.email,
+        password: intermediateVar.password,
+        phoneNumber: intermediateVar.phoneNumber,
+      };
+
+      const addStudent = () => {
+        console.log('Add Student Button is clicked');
+        axios
+          .post('https://devedu-az.com:7001/Student', requestData, {
+            headers: { Authorization: `bearer ${token}` },
+          })
+          .then((res) => dispatch(addUser({ userCategory: 'students', data: { ...selectedUser, id: res.data } })))
+          .then((_) => dispatch(setSelectedUser(emptyStudent)));
+      };
+
+      addStudent();
+    } else if (userCategory === 'teachers') {
+      const intermediateVar = selectedUser as Teacher;
+      console.log('intermediateVar', intermediateVar);
+
+      const requestId = intermediateVar.id;
+      const requestData = {
+        firstName: intermediateVar.firstName,
+        lastName: intermediateVar.lastName,
+        fatherName: intermediateVar.fatherName,
+        email: intermediateVar.email,
+        phoneNumber: intermediateVar.phoneNumber,
+        facultyId: intermediateVar.department?.id,
+        subjectsIds: [intermediateVar.department?.id],
+      };
+
+      const department = {
+        id: intermediateVar.department?.id ? +intermediateVar.department?.id : 0,
+        name: intermediateVar.department?.name ? intermediateVar.department?.name : '',
+      };
+
+      const addTeacher = () => {
+        console.log('Add Teacehr Button is clicked');
+        axios
+          .post(
+            'https://devedu-az.com:7001/Teacher',
+            { ...requestData, password: intermediateVar.password },
+            {
+              headers: { Authorization: `bearer ${token}` },
+            },
+          )
+          .then((res) =>
+            dispatch(
+              addUser({
+                userCategory: 'teachers',
+                data: { ...intermediateVar, id: res.data, department: department },
+              }),
+            ),
+          )
+          .then((_) => dispatch(setSelectedUser(emptyTeacher)));
+        // .then((_) => navigate(0));
+      };
+      const updateTeacher = () => {
+        console.log('Edit Teacher Button is clicked');
+        // TODO: The same user cannot be updated twice. Backend issue.
+        axios
+          .put(
+            `https://devedu-az.com:7001/Teacher/${requestId}`,
+            // TODO: Profile photo needs to be optional in put request
+            {
+              id: requestId,
+              ...requestData,
+              photoLink: intermediateVar.profilePhoto ? intermediateVar.profilePhoto : '',
+              password: intermediateVar.password,
+            },
+            {
+              headers: { Authorization: `bearer ${token}` },
+            },
+          )
+          .then((res) => dispatch(addUser({ userCategory: 'teachers', data: { ...selectedUser, id: res.data } })))
+          .then((_) => dispatch(setSelectedUser(intermediateVar)));
+      };
+
+      pageMode === 'add' ? addTeacher() : updateTeacher();
     }
+
     console.log(JSON.stringify(selectedUser));
   };
 
@@ -68,30 +149,39 @@ const SaveButton = () => {
 
   useEffect(() => {
     // validations
-    const firstNameError = selectedUser.firstName === '';
-    const lastNameError = selectedUser.lastName === '';
-    const fatherNameError = selectedUser.fatherName.trim() === '';
-    const emailError = !/^\S+@\S+\.\S+$/.test(selectedUser.email);
-    const phoneNumberError = !/^\d+$/.test(selectedUser.phoneNumber);
+    const firstNameError = !validateFirstName(selectedUser.firstName); // firstNameError is set when first name is not valid
+    const lastNameError = !validateLastName(selectedUser.lastName);
+    const fatherNameError = selectedUser.fatherName && !validateFatherName(selectedUser.fatherName);
+    const emailError = !validateEmail(selectedUser.email);
+    const phoneNumberError = !validatePhoneNumber(selectedUser.phoneNumber);
+
     const passwordError = selectedUser.password === '';
+    // let confirmPasswordError = false;
+    const confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
+
+    // if (pageMode === 'add') {
+    //   confirmPasswordError = selectedUser.confirmPassword === '' || selectedUser.password !== selectedUser.confirmPassword;
+    // } else if (pageMode === 'edit') {
+    //   confirmPasswordError = false;
+    // }
 
     // If no error, enable save button
-    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError];
+    const errorsArray = [firstNameError, lastNameError, fatherNameError, emailError, phoneNumberError, passwordError, confirmPasswordError];
     errorsArray.every((item) => item === false) ? dispatch(setIsSaveButtonEnabled(true)) : dispatch(setIsSaveButtonEnabled(false));
-
-    JSON.stringify(selectedUser) === JSON.stringify(currentUser) && dispatch(setIsSaveButtonEnabled(false));
+    JSON.stringify(selectedUser) === JSON.stringify(fixedSelectedUsr) && dispatch(setIsSaveButtonEnabled(false));
   }, [selectedUser]);
 
   return (
+    // TODO: Maybe add a snackbar
     <>
       <Button variant="contained" onClick={handleClickOpen} disabled={!isSaveButtonEnabled}>
         {pageMode === 'add' ? (
           <>
-            <AddIcon /> Add {selectedUser.type}
+            <AddIcon /> {selectedUser.type === 'teacher' ? t('add teacher') : t('add student')}
           </>
         ) : (
           <>
-            <SaveIcon /> Save Changes
+            <SaveIcon /> {t('Save Changes')}
           </>
         )}
       </Button>
@@ -106,7 +196,7 @@ const SaveButton = () => {
         <DialogActions>
           <Button onClick={handleClose}>Disagree</Button>
           <Button onClick={handleAgreeClick} autoFocus>
-            Agree
+            {t('Agree')}
           </Button>
         </DialogActions>
       </Dialog>

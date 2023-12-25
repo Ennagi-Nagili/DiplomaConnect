@@ -1,7 +1,8 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { GridToolbarColumnsButton, GridToolbarDensitySelector, GridToolbarExport, GridToolbarFilterButton } from '@mui/x-data-grid';
 
 const DataGridToolbar = () => {
+  const isSmallScreen = useMediaQuery('(max-width: 600px)');
   return (
     <>
       <Typography variant="h1" fontSize={24} margin={'10px'}>
@@ -9,12 +10,13 @@ const DataGridToolbar = () => {
       </Typography>
 
       <Box sx={{ display: 'flex', margin: '0 15px 0 15px' }}>
-        <div>
-          <GridToolbarColumnsButton />
-          <GridToolbarDensitySelector />
-          <GridToolbarFilterButton />
-        </div>
-
+        {!isSmallScreen && (
+          <div>
+            <GridToolbarColumnsButton />
+            <GridToolbarDensitySelector />
+            <GridToolbarFilterButton />
+          </div>
+        )}
         <div style={{ marginLeft: 'auto' }}>
           <GridToolbarExport />
         </div>

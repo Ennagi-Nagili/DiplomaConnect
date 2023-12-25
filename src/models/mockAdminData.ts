@@ -12,6 +12,7 @@ export const emptyUser: User = {
   phoneNumber: '',
   email: '',
   password: '',
+  confirmPassword: '',
 };
 export const emptyTeacher: Teacher = {
   id: -1,
@@ -23,8 +24,9 @@ export const emptyTeacher: Teacher = {
   phoneNumber: '',
   email: '',
   password: '',
-  department: '',
-  subject: '',
+  confirmPassword: '',
+  department: { id: -1, name: '' },
+  subject: { id: -1, name: '' },
   students: [],
 };
 export const emptyStudent: Student = {
@@ -37,6 +39,7 @@ export const emptyStudent: Student = {
   phoneNumber: '',
   email: '',
   password: '',
+  confirmPassword: '',
   group: '',
   teacher: -1, // id of teacher
 };

@@ -1,15 +1,18 @@
 import { Box, IconButton, InputAdornment, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectPageMode, selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectErrorState, selectSelectedUser, setErrorState, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import InputTextField from './InputTextField';
+import { useTranslation } from 'react-i18next';
 
 const AuthInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
+  const errorState = useAppSelector(selectErrorState);
 
   useEffect(() => {
     // isVisible
@@ -18,11 +21,6 @@ const AuthInputs = () => {
     // isTouched
     setPasswordTouched(false);
     setConfirmPasswordTouched(false);
-    // state
-    setConfirmPassword('');
-    // error state
-    setPasswordError(false);
-    setConfirmPasswordError(false);
   }, [window.location.pathname]);
 
   // Visible State
@@ -39,20 +37,15 @@ const AuthInputs = () => {
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [confirmPasswordTouched, setConfirmPasswordTouched] = useState(false);
 
-  // State
-  const [confirmPassword, setConfirmPassword] = useState('');
-
-  // Corresponding Error State
-  const [passwordError, setPasswordError] = useState(false);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(false);
-
   useEffect(() => {
-    setPasswordError(passwordTouched && selectedUser.password.trim() === '');
+    const error = passwordTouched && selectedUser.password?.trim() === '';
+    dispatch(setErrorState({ ...errorState, passwordError: error }));
   }, [selectedUser.password, passwordTouched]);
 
   useEffect(() => {
-    setConfirmPasswordError(confirmPasswordTouched && confirmPassword !== selectedUser.password);
-  }, [selectedUser.password, confirmPassword, confirmPasswordTouched]);
+    const error = confirmPasswordTouched && selectedUser.confirmPassword !== selectedUser.password;
+    dispatch(setErrorState({ ...errorState, confirmPasswordError: error }));
+  }, [selectedUser.password, selectedUser.confirmPassword, confirmPasswordTouched]);
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const password = e.target.value;
@@ -61,19 +54,20 @@ const AuthInputs = () => {
   };
 
   const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value);
+    const confirmPassword = e.target.value;
+    dispatch(setSelectedUser({ ...selectedUser, confirmPassword: confirmPassword }));
     setConfirmPasswordTouched(true);
   };
 
   // Password, Confirm Password
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'Pasword',
+      label: t('Password'),
       type: isPasswordVisible ? 'text' : 'password',
-      value: selectedUser.password,
+      value: selectedUser.password ? selectedUser.password : '',
       onChange: handlePasswordChange,
-      error: passwordError,
-      helperText: passwordError ? 'Password is required' : ' ',
+      error: errorState.passwordError ? errorState.passwordError : false,
+      helperText: errorState.passwordError ? t('Password is required') : ' ',
       InputProps: {
         endAdornment: (
           <InputAdornment position="end">
@@ -82,31 +76,24 @@ const AuthInputs = () => {
         ),
       },
     },
-  ];
-
-  const confirmPasswordAttrs: TextFieldAttributes = {
-    label: 'Confirm Password',
-    type: isConfirmPasswordVisible ? 'text' : 'password',
-    value: confirmPassword,
-    onChange: handleConfirmPasswordChange,
-    error: confirmPasswordError,
-    helperText: confirmPasswordError ? 'Passwords do not match' : ' ',
-    InputProps: {
-      endAdornment: (
-        <InputAdornment position="end">
-          <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
-            {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
-          </IconButton>
-        </InputAdornment>
-      ),
+    {
+      label: t('Confirm Password'),
+      type: isConfirmPasswordVisible ? 'text' : 'password',
+      value: selectedUser.confirmPassword ? selectedUser.confirmPassword : '',
+      onChange: handleConfirmPasswordChange,
+      error: errorState.confirmPasswordError ? errorState.confirmPasswordError : false,
+      helperText: errorState.confirmPasswordError ? t('Passwords do not match') : ' ',
+      InputProps: {
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton onClick={() => handleToggleConfirmPasswordVisibility()}>
+              {isConfirmPasswordVisible ? <VisibilityIcon /> : <VisibilityOffIcon />}
+            </IconButton>
+          </InputAdornment>
+        ),
+      },
     },
-  };
-
-  const pageMode = useAppSelector(selectPageMode);
-  // NOTE: Confirm Password will be only in 'add' mode for now. I'll change this if I have time at the end.
-  if (pageMode === 'add') {
-    textFieldAttributes.push(confirmPasswordAttrs);
-  }
+  ];
 
   return (
     <Box
@@ -122,8 +109,7 @@ const AuthInputs = () => {
         Authentication
       </Typography>
 
-      {/* Box for First Name and Last Name with wrap */}
-      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {/* Password, Confirm Password */}
       {textFieldAttributes.map((item, index) => (
         <InputTextField item={item} key={item.label + index} />
       ))}

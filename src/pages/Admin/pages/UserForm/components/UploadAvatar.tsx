@@ -2,8 +2,10 @@ import { Avatar, Button } from '@mui/material';
 import { selectSelectedUser, setIsSaveButtonEnabled, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const UploadAvatar: React.FC = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser);
 
@@ -25,7 +27,7 @@ const UploadAvatar: React.FC = () => {
       };
       reader.readAsDataURL(file);
     }
-    
+
     dispatch(setIsSaveButtonEnabled(true));
   };
 
@@ -53,12 +55,12 @@ const UploadAvatar: React.FC = () => {
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {preview ? (
           <Button variant="outlined" onClick={handleClear} sx={{ width: 120 }}>
-            Clear
+            {t('clear')}
           </Button>
         ) : (
           <label htmlFor="avatar-upload">
             <Button component="span" variant="contained" sx={{ width: 160 }}>
-              Upload Photo
+              {t('upload photo')}
             </Button>
           </label>
         )}

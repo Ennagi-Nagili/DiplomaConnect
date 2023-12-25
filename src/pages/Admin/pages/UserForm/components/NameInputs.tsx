@@ -1,8 +1,10 @@
 import { Box } from '@mui/material';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectErrorState, selectSelectedUser, setErrorState, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InputTextField from './InputTextField';
+import { validateFatherName, validateFirstName, validateLastName } from '../validations';
+import { useTranslation } from 'react-i18next';
 
 export type TextFieldAttributes = {
   label: string;
@@ -17,60 +19,54 @@ export type TextFieldAttributes = {
 };
 
 const NameInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
 
   // Note selected user was set either to empty placeholder or currentUser depending on the route in UserForm.tsx
   const placeholderUser = useAppSelector(selectSelectedUser);
-
-  //Corresponding Error States
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [fatherNameError, setFatherNameError] = useState(false);
-
-  useEffect(() => {
-    setFirstNameError(false);
-    setLastNameError(false);
-    setFatherNameError(false);
-  }, [window.location.pathname]);
+  const errorState = useAppSelector(selectErrorState);
 
   // Maybe this 3 function can be merged into one with switch
   const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, firstName: e.target.value }));
-    setFirstNameError(e.target.value.trim() === '');
+    const isValid = validateFirstName(e.target.value);
+    dispatch(setErrorState({ ...errorState, firstNameError: !isValid }));
   };
 
   const handleLastNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, lastName: e.target.value }));
-    setLastNameError(e.target.value.trim() === '');
+    const isValid = validateLastName(e.target.value);
+    dispatch(setErrorState({ ...errorState, lastNameError: !isValid }));
   };
 
   const handleFatherNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, fatherName: e.target.value }));
-    setFatherNameError(e.target.value.trim() === '');
+    const isValid = validateFatherName(e.target.value);
+    dispatch(setErrorState({ ...errorState, fatherNameError: !isValid }));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'First Name',
+      label: t('First Name'),
       value: placeholderUser.firstName,
       onChange: handleFirstNameChange,
-      error: firstNameError,
-      helperText: firstNameError ? 'First Name is required' : ' ',
+      error: errorState.firstNameError ? errorState.firstNameError : false,
+      helperText: errorState.firstNameError ? t('First name is required') : ' ',
     },
     {
-      label: 'Last Name',
+      label: t('Last Name'),
       value: placeholderUser.lastName,
       onChange: handleLastNameChange,
-      error: lastNameError,
-      helperText: lastNameError ? 'Last Name is required' : ' ',
+      error: errorState.lastNameError ? errorState.lastNameError : false,
+      helperText: errorState.lastNameError ? t('Last name is required') : ' ',
     },
     {
-      label: 'FatherName',
-      value: placeholderUser.fatherName,
+      label: t('Father Name'),
+      value: placeholderUser.fatherName ? placeholderUser.fatherName : '',
       onChange: handleFatherNameChange,
-      error: fatherNameError,
-      helperText: fatherNameError ? 'Father Name is required' : ' ',
+      error: errorState.fatherNameError ? errorState.fatherNameError : false,
+      helperText: errorState.fatherNameError ? t('Father name is required') : ' ',
     },
   ];
 
@@ -83,8 +79,7 @@ const NameInputs = () => {
         minWidth: '330px',
       }}
     >
-      {/* Box for First Name and Last Name with wrap */}
-      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {/* First Name, Last Name, Father Name */}
       {textFieldAttributes.map((item, index) => (
         <InputTextField item={item} key={item.label + index} />
       ))}

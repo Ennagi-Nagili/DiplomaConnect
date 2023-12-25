@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
 
-const user = 'admin';
+// const user = 'admin';
 
 interface IInputTextField {
   item: TextFieldAttributes;
@@ -11,7 +11,7 @@ const InputTextField = (props: IInputTextField) => {
   const { item } = props;
   return (
     <TextField
-      disabled={user === 'admin' ? false : true}
+      // disabled={user === 'admin' ? false : true}
       sx={{ width: '80%', margin: '0px', marginBottom: '6px' }}
       label={item.label}
       type={item.type}

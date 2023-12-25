@@ -1,10 +1,10 @@
 import { Avatar, Button, CardContent, Typography } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import { Teacher } from '../../../../models/models';
-import { useAppSelector } from '../../../../services/hooks';
-import { selectSelectedUser } from '../../../../services/reducers/users.slice';
-import { Link } from 'react-router-dom';
 import { emptyTeacher } from '../../../../models/mockAdminData';
+import { Link } from 'react-router-dom';
+import { Teacher } from '../../../../models/models';
+import { selectSelectedUser } from '../../../../services/reducers/users.slice';
+import { useAppSelector } from '../../../../services/hooks';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const TeacherInfo = () => {
   // const dispatch = useAppDispatch();
@@ -18,35 +18,6 @@ export const TeacherInfo = () => {
 
   const selectedTeacher = intermediateVar;
   console.log('selectedTeacher', selectedTeacher);
-
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     await fetch(`https://jsonplaceholder.typicode.com/users/${userID}`)
-  //       .then((response) => response.json())
-  //       .then((json: UserObject) => {
-  //         const fetchedUser: Teacher = {
-  //           id: 1,
-  //           type: 'teacher',
-  //           firstName: json.name,
-  //           lastName: json.name,
-  //           fatherName: json.name,
-  //           phoneNumber: json.phone,
-  //           email: json.email,
-  //           password: 'qwerty',
-  //           department: 'Algebra',
-  //           subject: 'Ring Theory',
-  //         };
-  //         setTeacher(fetchedUser);
-  //       });
-  //   };
-  //   fetchUserData();
-  // }, []);
-
-  const handleEditButton = () => {
-    // TODO
-    // Note: We don't need to change selected user.
-    console.log('Edit Button Clicked');
-  };
 
   return (
     <CardContent
@@ -91,7 +62,7 @@ export const TeacherInfo = () => {
       {/* Edit Profile Button */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '18px' }}>
         <Link to="edit">
-          <Button variant="contained" onClick={handleEditButton}>
+          <Button variant="contained">
             <EditIcon />
             Edit Profile
           </Button>

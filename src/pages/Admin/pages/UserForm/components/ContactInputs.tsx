@@ -1,49 +1,47 @@
 import { Box, Typography } from '@mui/material';
 import { TextFieldAttributes } from './NameInputs';
-import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
+import { selectErrorState, selectSelectedUser, setErrorState, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import InputTextField from './InputTextField';
+import { validateEmail, validatePhoneNumber } from '../validations';
+import { useTranslation } from 'react-i18next';
 
 const ContactInputs = () => {
+  const [t, i18] = useTranslation();
   const dispatch = useAppDispatch();
   const placeholderUser = useAppSelector(selectSelectedUser);
-
-  //Corresponding Error States
-  const [emailError, setEmailError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-
-  useEffect(() => {
-    setEmailError(false);
-    setPhoneError(false);
-  }, [window.location.pathname]);
+  const errorState = useAppSelector(selectErrorState);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, email: e.target.value }));
-    setEmailError(!/^\S+@\S+\.\S+$/.test(e.target.value));
+    const isValid = validateEmail(e.target.value);
+    // when value is erroneous, isValid is false, and error is true
+    dispatch(setErrorState({ ...errorState, emailError: !isValid }));
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSelectedUser({ ...placeholderUser, phoneNumber: e.target.value }));
-    setPhoneError(!/^\d+$/.test(e.target.value));
+    const isValid = validatePhoneNumber(e.target.value);
+    dispatch(setErrorState({ ...errorState, phoneNumberError: !isValid }));
   };
 
   // First Name, Last Name, Father Name, Email Address, Phone Number
   const textFieldAttributes: TextFieldAttributes[] = [
     {
-      label: 'Email Address',
+      label: t('Email Address'),
       type: 'email',
       value: placeholderUser.email,
       onChange: handleEmailChange,
-      error: emailError,
-      helperText: emailError ? 'Enter a valid email address' : ' ',
+      error: errorState.emailError,
+      helperText: errorState.emailError ? t('Enter a valid email address') : ' ',
     },
     {
-      label: 'Phone Number',
+      label: t('Phone number'),
       value: placeholderUser.phoneNumber,
       onChange: handlePhoneChange,
-      error: phoneError,
-      helperText: phoneError ? 'Enter a valid phone number' : ' ',
+      error: errorState.phoneNumberError,
+      helperText: errorState.phoneNumberError ? t('Enter a valid phone number') : ' ',
     },
   ];
 
@@ -60,8 +58,7 @@ const ContactInputs = () => {
         Contact Info
       </Typography>
 
-      {/* Box for First Name and Last Name with wrap */}
-      {/* First Name, Last Name, Email Address, Password, Confirm Password */}
+      {/* Phone Number and Email Address */}
       {textFieldAttributes.map((item, index) => (
         <InputTextField item={item} key={item.label + index} />
       ))}

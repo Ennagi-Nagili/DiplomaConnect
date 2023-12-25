@@ -1,19 +1,21 @@
+import { Student } from '../../../../../models/models';
 import { selectSelectedUser, setSelectedUser } from '../../../../../services/reducers/users.slice';
 import { useAppDispatch, useAppSelector } from '../../../../../services/hooks';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Student } from '../../../../../models/models';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
-// TODO: This info needs to come from backend
-// Note: Each item in itemList should be an array of objects
-const groups = {
-  title: 'Group',
-  itemList: ['R-11', 'RM-23', 'M-65'],
-};
+import { useTranslation } from 'react-i18next';
 
 const StudentSpecificInputs = () => {
+  const [t, i18] = useTranslation();
+  // TODO: This info needs to come from backend
+  // Note: Each item in itemList should be an array of objects
+  const groups = {
+    title: t('Group'),
+    itemList: ['R-11', 'RM-23', 'M-65'],
+  };
+
   const dispatch = useAppDispatch();
   const selectedUser = useAppSelector(selectSelectedUser) as Student;
 
